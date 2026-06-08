@@ -1,6 +1,7 @@
 from grpc_testing import Server # type: ignore
 from src.stubs.ticks_pb2 import LastTickRequest
 from src.stubs.ticks_pb2 import DESCRIPTOR
+import grpc
 
 def test_last_tick(grpc_server: Server):
   request = LastTickRequest(symbol="EURUSD")
@@ -14,6 +15,7 @@ def test_last_tick(grpc_server: Server):
     timeout=1
   )
 
-  response, metadata, code, details = method.termination() # type: ignore
+  response, _, code, _ = method.termination() # type: ignore
 
   assert response is not None
+  assert code == grpc.StatusCode.OK

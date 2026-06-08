@@ -9,8 +9,8 @@ def initialize_mt5():
     mt5.initialize() # type: ignore
 
 @pytest.fixture(scope='module')
-def grpc_server():
+def grpc_server(initialize_mt5):
     servicers = {
-      ticks_pb2.DESCRIPTOR.services_by_name['TickService']: TickService    
+      ticks_pb2.DESCRIPTOR.services_by_name['TickService']: TickService()
     }
-    return server_from_dictionary(servicers, strict_real_time)
+    return server_from_dictionary(servicers, strict_real_time())
