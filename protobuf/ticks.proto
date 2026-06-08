@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package ticks;
+
+message Tick {
+  int64 time = 1; // Time of the last prices update
+  double bid = 2; // Current Bid price
+  double ask = 3; // Current Ask price
+  uint64 volume = 4;
+}
+
+message LastTickRequest {
+  string symbol = 1;
+}
+
+service TickService {
+  rpc LastTick(LastTickRequest) returns (Tick);
+}
+
