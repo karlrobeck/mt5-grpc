@@ -704,7 +704,7 @@ This document catalogs every method and data structure in the `MetaTrader5` Pyth
 | 2 | `order` | `int64` | Order ticket that generated the deal. | **Generic** | Universal order link |
 | 3 | `time` | `int64` | Deal time (Unix seconds). | **Generic** | Universal |
 | 4 | `time_msc` | `int64` | Deal time with milliseconds. | **Generic** | High-precision timestamp |
-| 5 | `type` | `int32` | Deal type (BUY/SELL/BALANCE/CREDIT/CHARGE/CORRECTION/BONUS/COMMISSION/COMMISSION_DAILY/etc). | **MT5-specific** | MT5 enum (`DEAL_TYPE_*`) — includes MT5-specific types like COMMISSION_DAILY, AGENCY_MONTHLY |
+| 5 | `type` | `int32` | Deal type (BUY/SELL/BALANCE/CREDIT/CHARGE/CORRECTION/BONUS/COMMISSION/COMMISSION_DAILY/etc). | **MT5-specific** | MT5 enum (`DEAL_TYPE_*`) — includes MT5-specific types like COMMISSION_DAILY, COMMISSION_AGENT_MONTHLY |
 | 6 | `entry` | `int32` | Deal entry (IN/OUT/INOUT/OUT_BY). | **MT5-specific** | MT5 enum (`DEAL_ENTRY_*`) — proprietary position entry/exit classification |
 | 7 | `magic` | `int64` | Expert Advisor ID. | **MT5-specific** | MQL5 concept |
 | 8 | `position_id` | `int64` | Position ID the deal belongs to. | **Generic** | Position link (common concept) |
@@ -779,43 +779,482 @@ This document catalogs every method and data structure in the `MetaTrader5` Pyth
 
 ## 11. Enum Reference
 
-The following enums are **MT5-specific** and would need corresponding protobuf enum definitions:
+The following enums are used by the MT5 Python API. All values are sourced from the `MetaTrader5` Python module source (`MetaTrader5/__init__.py` v5.0.5735). Each corresponds to a protobuf enum definition.
+
+> **Protobuf note:** Enums with raw values are designed for `int32` mapping in proto3. Non-contiguous values (e.g. `TRADE_REQUEST_ACTIONS`) require explicit `option allow_alias = false` or numbered entries. Bitmask fields (`TICK_FLAG`, `SYMBOL_EXPIRATION_MODE`, `SYMBOL_FILLING_MODE`, `SYMBOL_ORDER_MODE`) should use `int32` in protobuf rather than enum, since multiple bits can be set simultaneously.
+
+---
 
 ### 11.1 `TIMEFRAME` (shared with MQL5 standard)
-M1, M2, M3, M4, M5, M6, M10, M12, M15, M20, M30, H1, H2, H3, H4, H6, H8, H12, D1, W1, MN1
 
-### 11.2 `ORDER_TYPE`
-BUY, SELL, BUY_LIMIT, SELL_LIMIT, BUY_STOP, SELL_STOP, BUY_STOP_LIMIT, SELL_STOP_LIMIT, CLOSE_BY
+| Name | Value |
+|------|-------|
+| `TIMEFRAME_M1` | 1 |
+| `TIMEFRAME_M2` | 2 |
+| `TIMEFRAME_M3` | 3 |
+| `TIMEFRAME_M4` | 4 |
+| `TIMEFRAME_M5` | 5 |
+| `TIMEFRAME_M6` | 6 |
+| `TIMEFRAME_M10` | 10 |
+| `TIMEFRAME_M12` | 12 |
+| `TIMEFRAME_M15` | 15 |
+| `TIMEFRAME_M20` | 20 |
+| `TIMEFRAME_M30` | 30 |
+| `TIMEFRAME_H1` | 1 \| 0x4000 = 16385 |
+| `TIMEFRAME_H2` | 2 \| 0x4000 = 16386 |
+| `TIMEFRAME_H3` | 3 \| 0x4000 = 16387 |
+| `TIMEFRAME_H4` | 4 \| 0x4000 = 16388 |
+| `TIMEFRAME_H6` | 6 \| 0x4000 = 16390 |
+| `TIMEFRAME_H8` | 8 \| 0x4000 = 16392 |
+| `TIMEFRAME_H12` | 12 \| 0x4000 = 16396 |
+| `TIMEFRAME_D1` | 24 \| 0x4000 = 16408 |
+| `TIMEFRAME_W1` | 1 \| 0x8000 = 32769 |
+| `TIMEFRAME_MN1` | 1 \| 0xC000 = 49153 |
 
-### 11.3 `ORDER_TYPE_FILLING`
-FOK, IOC, RETURN
+---
 
-### 11.4 `ORDER_TYPE_TIME`
-GTC, DAY, SPECIFIED, SPECIFIED_DAY
+### 11.2 `ORDER_TYPE` (`ENUM_ORDER_TYPE`)
 
-### 11.5 `ORDER_STATE`
-STARTED, PLACED, CANCELED, PARTIAL, FILLED, REJECTED, EXPIRED, REQUEST_ADD, REQUEST_MODIFY
+| Name | Value | Description |
+|------|-------|-------------|
+| `ORDER_TYPE_BUY` | 0 | Market Buy order |
+| `ORDER_TYPE_SELL` | 1 | Market Sell order |
+| `ORDER_TYPE_BUY_LIMIT` | 2 | Buy Limit pending order |
+| `ORDER_TYPE_SELL_LIMIT` | 3 | Sell Limit pending order |
+| `ORDER_TYPE_BUY_STOP` | 4 | Buy Stop pending order |
+| `ORDER_TYPE_SELL_STOP` | 5 | Sell Stop pending order |
+| `ORDER_TYPE_BUY_STOP_LIMIT` | 6 | Upon reaching the order price, a pending Buy Limit order is placed at the StopLimit price |
+| `ORDER_TYPE_SELL_STOP_LIMIT` | 7 | Upon reaching the order price, a pending Sell Limit order is placed at the StopLimit price |
+| `ORDER_TYPE_CLOSE_BY` | 8 | Order to close a position by an opposite one |
 
-### 11.6 `TRADE_REQUEST_ACTIONS`
-DEAL, PENDING, SLTP, MODIFY, REMOVE, CLOSE_BY
+---
 
-### 11.7 `DEAL_TYPE`
-BUY, SELL, BALANCE, CREDIT, CHARGE, CORRECTION, BONUS, COMMISSION, COMMISSION_DAILY, COMMISSION_MONTHLY, AGENCY_DAILY, AGENCY_MONTHLY
+### 11.3 `ORDER_TYPE_FILLING` (`ENUM_ORDER_TYPE_FILLING`)
 
-### 11.8 `DEAL_ENTRY`
-IN, OUT, INOUT, OUT_BY
+| Name | Value | Description |
+|------|-------|-------------|
+| `ORDER_FILLING_FOK` | 0 | Fill Or Kill — execute entirely or cancel |
+| `ORDER_FILLING_IOC` | 1 | Immediate Or Cancel — execute max available volume |
+| `ORDER_FILLING_RETURN` | 2 | Return — remaining volume stays as an active order |
+| `ORDER_FILLING_BOC` | 3 | Book Or Cancel — placed in Depth of Market only, not immediately executed |
+
+---
+
+### 11.4 `ORDER_TYPE_TIME` (`ENUM_ORDER_TYPE_TIME`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ORDER_TIME_GTC` | 0 | Good till cancelled |
+| `ORDER_TIME_DAY` | 1 | Good till current trading day |
+| `ORDER_TIME_SPECIFIED` | 2 | Good till specified expiration date |
+| `ORDER_TIME_SPECIFIED_DAY` | 3 | Good till 23:59:59 of specified day |
+
+---
+
+### 11.5 `ORDER_STATE` (`ENUM_ORDER_STATE`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ORDER_STATE_STARTED` | 0 | Checked but not yet accepted by broker |
+| `ORDER_STATE_PLACED` | 1 | Accepted |
+| `ORDER_STATE_CANCELED` | 2 | Cancelled by client |
+| `ORDER_STATE_PARTIAL` | 3 | Partially executed |
+| `ORDER_STATE_FILLED` | 4 | Fully executed |
+| `ORDER_STATE_REJECTED` | 5 | Rejected |
+| `ORDER_STATE_EXPIRED` | 6 | Expired |
+| `ORDER_STATE_REQUEST_ADD` | 7 | Being registered (placing to trading system) |
+| `ORDER_STATE_REQUEST_MODIFY` | 8 | Being modified (changing parameters) |
+| `ORDER_STATE_REQUEST_CANCEL` | 9 | Being deleted (deleting from trading system) |
+
+---
+
+### 11.6 `TRADE_REQUEST_ACTIONS` (`ENUM_TRADE_REQUEST_ACTIONS`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `TRADE_ACTION_DEAL` | 1 | Market order (immediate execution) |
+| `TRADE_ACTION_PENDING` | 5 | Place a pending order |
+| `TRADE_ACTION_SLTP` | 6 | Modify Stop Loss and Take Profit |
+| `TRADE_ACTION_MODIFY` | 7 | Modify order parameters |
+| `TRADE_ACTION_REMOVE` | 8 | Delete a pending order |
+| `TRADE_ACTION_CLOSE_BY` | 10 | Close a position by an opposite one |
+
+> **Note:** Values are non-contiguous (gaps at 2,3,4,9). Protobuf enum numbering should preserve these raw values.
+
+---
+
+### 11.7 `DEAL_TYPE` (`ENUM_DEAL_TYPE`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `DEAL_TYPE_BUY` | 0 | Buy |
+| `DEAL_TYPE_SELL` | 1 | Sell |
+| `DEAL_TYPE_BALANCE` | 2 | Balance |
+| `DEAL_TYPE_CREDIT` | 3 | Credit |
+| `DEAL_TYPE_CHARGE` | 4 | Additional charge |
+| `DEAL_TYPE_CORRECTION` | 5 | Correction |
+| `DEAL_TYPE_BONUS` | 6 | Bonus |
+| `DEAL_TYPE_COMMISSION` | 7 | Additional commission |
+| `DEAL_TYPE_COMMISSION_DAILY` | 8 | Daily commission |
+| `DEAL_TYPE_COMMISSION_MONTHLY` | 9 | Monthly commission |
+| `DEAL_TYPE_COMMISSION_AGENT_DAILY` | 10 | Daily agent commission |
+| `DEAL_TYPE_COMMISSION_AGENT_MONTHLY` | 11 | Monthly agent commission |
+| `DEAL_TYPE_INTEREST` | 12 | Interest rate |
+| `DEAL_TYPE_BUY_CANCELED` | 13 | Canceled buy deal |
+| `DEAL_TYPE_SELL_CANCELED` | 14 | Canceled sell deal |
+| `DEAL_DIVIDEND` | 15 | Dividend operations |
+| `DEAL_DIVIDEND_FRANKED` | 16 | Franked (non-taxable) dividend operations |
+| `DEAL_TAX` | 17 | Tax charges |
+
+---
+
+### 11.8 `DEAL_ENTRY` (`ENUM_DEAL_ENTRY`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `DEAL_ENTRY_IN` | 0 | Entry in (position open) |
+| `DEAL_ENTRY_OUT` | 1 | Entry out (position close) |
+| `DEAL_ENTRY_INOUT` | 2 | Reverse |
+| `DEAL_ENTRY_OUT_BY` | 3 | Close by an opposite position |
+
+---
 
 ### 11.9 `COPY_TICKS`
-ALL, INFO, TRADE
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `COPY_TICKS_ALL` | -1 | All ticks |
+| `COPY_TICKS_INFO` | 1 | Ticks with Bid and/or Ask changes |
+| `COPY_TICKS_TRADE` | 2 | Ticks with Last and/or Volume changes |
+
+> **Note:** `COPY_TICKS_ALL = -1` is a signed int, not a bitmask. Use `int32` in protobuf.
+
+---
 
 ### 11.10 `TICK_FLAG` (bitmask)
-BID, ASK, LAST, VOLUME, BUY, SELL
 
-### 11.11 `BOOK_TYPE`
-SELL, BUY, SELL_MARKET, BUY_MARKET
+| Name | Value | Bit | Description |
+|------|-------|-----|-------------|
+| `TICK_FLAG_BID` | `0x02` | 1 | Bid price changed |
+| `TICK_FLAG_ASK` | `0x04` | 2 | Ask price changed |
+| `TICK_FLAG_LAST` | `0x08` | 3 | Last price changed |
+| `TICK_FLAG_VOLUME` | `0x10` | 4 | Volume changed |
+| `TICK_FLAG_BUY` | `0x20` | 5 | Last Buy price changed |
+| `TICK_FLAG_SELL` | `0x40` | 6 | Last Sell price changed |
 
-### 11.12 `TRADE_RETCODE`
-DONE (10009), and many others.
+> **Note:** A reserved internal flag (`0x80`, bit 7) may appear in real tick data. Multiple flags can be combined (e.g. `0x86` = ASK \| BID \| VOLUME).
+
+---
+
+### 11.11 `BOOK_TYPE` (`ENUM_BOOK_TYPE`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `BOOK_TYPE_SELL` | 1 | Sell order |
+| `BOOK_TYPE_BUY` | 2 | Buy order |
+| `BOOK_TYPE_SELL_MARKET` | 3 | Sell market order |
+| `BOOK_TYPE_BUY_MARKET` | 4 | Buy market order |
+
+---
+
+### 11.12 `TRADE_RETCODE` (trade server return codes)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `TRADE_RETCODE_REQUOTE` | 10004 | Requote |
+| `TRADE_RETCODE_REJECT` | 10006 | Request rejected |
+| `TRADE_RETCODE_CANCEL` | 10007 | Request cancelled by trader |
+| `TRADE_RETCODE_PLACED` | 10008 | Order placed |
+| `TRADE_RETCODE_DONE` | 10009 | Request completed |
+| `TRADE_RETCODE_DONE_PARTIAL` | 10010 | Request partially completed |
+| `TRADE_RETCODE_ERROR` | 10011 | Request processing error |
+| `TRADE_RETCODE_TIMEOUT` | 10012 | Request cancelled by timeout |
+| `TRADE_RETCODE_INVALID` | 10013 | Invalid request |
+| `TRADE_RETCODE_INVALID_VOLUME` | 10014 | Invalid volume |
+| `TRADE_RETCODE_INVALID_PRICE` | 10015 | Invalid price |
+| `TRADE_RETCODE_INVALID_STOPS` | 10016 | Invalid stops |
+| `TRADE_RETCODE_TRADE_DISABLED` | 10017 | Trade disabled |
+| `TRADE_RETCODE_MARKET_CLOSED` | 10018 | Market closed |
+| `TRADE_RETCODE_NO_MONEY` | 10019 | Insufficient funds |
+| `TRADE_RETCODE_PRICE_CHANGED` | 10020 | Price changed |
+| `TRADE_RETCODE_PRICE_OFF` | 10021 | Price out of offset |
+| `TRADE_RETCODE_INVALID_EXPIRATION` | 10022 | Invalid expiration |
+| `TRADE_RETCODE_ORDER_CHANGED` | 10023 | Order changed |
+| `TRADE_RETCODE_TOO_MANY_REQUESTS` | 10024 | Too many requests |
+| `TRADE_RETCODE_NO_CHANGES` | 10025 | No changes |
+| `TRADE_RETCODE_SERVER_DISABLES_AT` | 10026 | Auto-trading disabled by server |
+| `TRADE_RETCODE_CLIENT_DISABLES_AT` | 10027 | Auto-trading disabled by client |
+| `TRADE_RETCODE_LOCKED` | 10028 | Request locked |
+| `TRADE_RETCODE_FROZEN` | 10029 | Request frozen |
+| `TRADE_RETCODE_INVALID_FILL` | 10030 | Invalid fill |
+| `TRADE_RETCODE_CONNECTION` | 10031 | No connection |
+| `TRADE_RETCODE_ONLY_REAL` | 10032 | Allowed only for real accounts |
+| `TRADE_RETCODE_LIMIT_ORDERS` | 10033 | Limit orders exceeded |
+| `TRADE_RETCODE_LIMIT_VOLUME` | 10034 | Limit volume exceeded |
+| `TRADE_RETCODE_INVALID_ORDER` | 10035 | Invalid order |
+| `TRADE_RETCODE_POSITION_CLOSED` | 10036 | Position already closed |
+| `TRADE_RETCODE_INVALID_CLOSE_VOLUME` | 10038 | Invalid close volume |
+| `TRADE_RETCODE_CLOSE_ORDER_EXIST` | 10039 | Close order already exists |
+| `TRADE_RETCODE_LIMIT_POSITIONS` | 10040 | Limit positions exceeded |
+| `TRADE_RETCODE_REJECT_CANCEL` | 10041 | Cancel of pending order rejected |
+| `TRADE_RETCODE_LONG_ONLY` | 10042 | Long positions only allowed |
+| `TRADE_RETCODE_SHORT_ONLY` | 10043 | Short positions only allowed |
+| `TRADE_RETCODE_CLOSE_ONLY` | 10044 | Close only allowed |
+| `TRADE_RETCODE_FIFO_CLOSE` | 10045 | FIFO close required |
+
+> **Note:** The range is 10004–10045, not starting at 0. Protobuf enum numbering should preserve these raw values.
+
+---
+
+### 11.13 `POSITION_TYPE` (`ENUM_POSITION_TYPE`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `POSITION_TYPE_BUY` | 0 | Buy |
+| `POSITION_TYPE_SELL` | 1 | Sell |
+
+---
+
+### 11.14 `POSITION_REASON` (`ENUM_POSITION_REASON`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `POSITION_REASON_CLIENT` | 0 | Opened from a desktop terminal |
+| `POSITION_REASON_MOBILE` | 1 | Opened from a mobile application |
+| `POSITION_REASON_WEB` | 2 | Opened from a web platform |
+| `POSITION_REASON_EXPERT` | 3 | Opened from an MQL5 program (EA / script) |
+
+---
+
+### 11.15 `ORDER_REASON` (`ENUM_ORDER_REASON`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ORDER_REASON_CLIENT` | 0 | Placed from a desktop terminal |
+| `ORDER_REASON_MOBILE` | 1 | Placed from a mobile application |
+| `ORDER_REASON_WEB` | 2 | Placed from a web platform |
+| `ORDER_REASON_EXPERT` | 3 | Placed from an MQL5 program |
+| `ORDER_REASON_SL` | 4 | Stop Loss activation |
+| `ORDER_REASON_TP` | 5 | Take Profit activation |
+| `ORDER_REASON_SO` | 6 | Stop Out event |
+
+---
+
+### 11.16 `DEAL_REASON` (`ENUM_DEAL_REASON`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `DEAL_REASON_CLIENT` | 0 | Desktop terminal |
+| `DEAL_REASON_MOBILE` | 1 | Mobile application |
+| `DEAL_REASON_WEB` | 2 | Web platform |
+| `DEAL_REASON_EXPERT` | 3 | MQL5 program |
+| `DEAL_REASON_SL` | 4 | Stop Loss activation |
+| `DEAL_REASON_TP` | 5 | Take Profit activation |
+| `DEAL_REASON_SO` | 6 | Stop Out event |
+| `DEAL_REASON_ROLLOVER` | 7 | Rollover |
+| `DEAL_REASON_VMARGIN` | 8 | Variation margin |
+| `DEAL_REASON_SPLIT` | 9 | Split (price reduction) |
+
+---
+
+### 11.17 `SYMBOL_CALC_MODE` (`ENUM_SYMBOL_CALC_MODE`)
+
+Used by `SymbolInfo.trade_calc_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `SYMBOL_CALC_MODE_FOREX` | 0 | Forex |
+| `SYMBOL_CALC_MODE_FUTURES` | 1 | Futures |
+| `SYMBOL_CALC_MODE_CFD` | 2 | CFD |
+| `SYMBOL_CALC_MODE_CFDINDEX` | 3 | CFD Index |
+| `SYMBOL_CALC_MODE_CFDLEVERAGE` | 4 | CFD Leverage |
+| `SYMBOL_CALC_MODE_FOREX_NO_LEVERAGE` | 5 | Forex no leverage |
+| `SYMBOL_CALC_MODE_EXCH_STOCKS` | 32 | Exchange stocks |
+| `SYMBOL_CALC_MODE_EXCH_FUTURES` | 33 | Exchange futures |
+| `SYMBOL_CALC_MODE_EXCH_OPTIONS` | 34 | Exchange options |
+| `SYMBOL_CALC_MODE_EXCH_OPTIONS_MARGIN` | 36 | Exchange options (margin) |
+| `SYMBOL_CALC_MODE_EXCH_BONDS` | 37 | Exchange bonds |
+| `SYMBOL_CALC_MODE_EXCH_STOCKS_MOEX` | 38 | Exchange stocks (MOEX) |
+| `SYMBOL_CALC_MODE_EXCH_BONDS_MOEX` | 39 | Exchange bonds (MOEX) |
+| `SYMBOL_CALC_MODE_SERV_COLLATERAL` | 64 | Service collateral |
+
+---
+
+### 11.18 `SYMBOL_TRADE_MODE` (`ENUM_SYMBOL_TRADE_MODE`)
+
+Used by `SymbolInfo.trade_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `SYMBOL_TRADE_MODE_DISABLED` | 0 | Trading disabled |
+| `SYMBOL_TRADE_MODE_LONGONLY` | 1 | Long positions only |
+| `SYMBOL_TRADE_MODE_SHORTONLY` | 2 | Short positions only |
+| `SYMBOL_TRADE_MODE_CLOSEONLY` | 3 | Close only |
+| `SYMBOL_TRADE_MODE_FULL` | 4 | Full trading |
+
+---
+
+### 11.19 `SYMBOL_TRADE_EXECUTION` (`ENUM_SYMBOL_TRADE_EXECUTION`)
+
+Used by `SymbolInfo.trade_exemode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `SYMBOL_TRADE_EXECUTION_REQUEST` | 0 | Request execution |
+| `SYMBOL_TRADE_EXECUTION_INSTANT` | 1 | Instant execution |
+| `SYMBOL_TRADE_EXECUTION_MARKET` | 2 | Market execution |
+| `SYMBOL_TRADE_EXECUTION_EXCHANGE` | 3 | Exchange execution |
+
+---
+
+### 11.20 `SYMBOL_SWAP_MODE` (`ENUM_SYMBOL_SWAP_MODE`)
+
+Used by `SymbolInfo.swap_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `SYMBOL_SWAP_MODE_DISABLED` | 0 | Swaps disabled |
+| `SYMBOL_SWAP_MODE_POINTS` | 1 | Points |
+| `SYMBOL_SWAP_MODE_CURRENCY_SYMBOL` | 2 | Currency (symbol deposit) |
+| `SYMBOL_SWAP_MODE_CURRENCY_MARGIN` | 3 | Currency (margin deposit) |
+| `SYMBOL_SWAP_MODE_CURRENCY_DEPOSIT` | 4 | Currency (deposit) |
+| `SYMBOL_SWAP_MODE_INTEREST_CURRENT` | 5 | Interest (current) |
+| `SYMBOL_SWAP_MODE_INTEREST_OPEN` | 6 | Interest (open) |
+| `SYMBOL_SWAP_MODE_REOPEN_CURRENT` | 7 | Reopen (current) |
+| `SYMBOL_SWAP_MODE_REOPEN_BID` | 8 | Reopen (bid) |
+
+---
+
+### 11.21 `SYMBOL_CHART_MODE` (`ENUM_SYMBOL_CHART_MODE`)
+
+Used by `SymbolInfo.chart_mode` field.
+
+| Name | Value |
+|------|-------|
+| `SYMBOL_CHART_MODE_BID` | 0 |
+| `SYMBOL_CHART_MODE_LAST` | 1 |
+
+---
+
+### 11.22 `SYMBOL_ORDER_GTC_MODE` (`ENUM_SYMBOL_ORDER_GTC_MODE`)
+
+Used by `SymbolInfo.order_gtc_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `SYMBOL_ORDERS_GTC` | 0 | Good-till-cancelled orders allowed |
+| `SYMBOL_ORDERS_DAILY` | 1 | Daily orders only |
+| `SYMBOL_ORDERS_DAILY_NO_STOPS` | 2 | Daily orders, no stops |
+
+---
+
+### 11.23 `SYMBOL_OPTION_RIGHT` (`ENUM_SYMBOL_OPTION_RIGHT`)
+
+Used by `SymbolInfo.option_right` field.
+
+| Name | Value |
+|------|-------|
+| `SYMBOL_OPTION_RIGHT_CALL` | 0 |
+| `SYMBOL_OPTION_RIGHT_PUT` | 1 |
+
+---
+
+### 11.24 `SYMBOL_OPTION_MODE` (`ENUM_SYMBOL_OPTION_MODE`)
+
+Used by `SymbolInfo.option_mode` field.
+
+| Name | Value |
+|------|-------|
+| `SYMBOL_OPTION_MODE_EUROPEAN` | 0 |
+| `SYMBOL_OPTION_MODE_AMERICAN` | 1 |
+
+---
+
+### 11.25 `DAY_OF_WEEK` (`ENUM_DAY_OF_WEEK`)
+
+Used by `SymbolInfo.swap_rollover3days` field (day of triple swap).
+
+| Name | Value |
+|------|-------|
+| `DAY_OF_WEEK_SUNDAY` | 0 |
+| `DAY_OF_WEEK_MONDAY` | 1 |
+| `DAY_OF_WEEK_TUESDAY` | 2 |
+| `DAY_OF_WEEK_WEDNESDAY` | 3 |
+| `DAY_OF_WEEK_THURSDAY` | 4 |
+| `DAY_OF_WEEK_FRIDAY` | 5 |
+| `DAY_OF_WEEK_SATURDAY` | 6 |
+
+---
+
+### 11.26 `ACCOUNT_TRADE_MODE` (`ENUM_ACCOUNT_TRADE_MODE`)
+
+Used by `AccountInfo.trade_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ACCOUNT_TRADE_MODE_DEMO` | 0 | Demo account |
+| `ACCOUNT_TRADE_MODE_CONTEST` | 1 | Contest account |
+| `ACCOUNT_TRADE_MODE_REAL` | 2 | Real account |
+
+---
+
+### 11.27 `ACCOUNT_STOPOUT_MODE` (`ENUM_ACCOUNT_STOPOUT_MODE`)
+
+Used by `AccountInfo.margin_so_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ACCOUNT_STOPOUT_MODE_PERCENT` | 0 | Stop-out as percentage |
+| `ACCOUNT_STOPOUT_MODE_MONEY` | 1 | Stop-out as absolute money |
+
+---
+
+### 11.28 `ACCOUNT_MARGIN_MODE` (`ENUM_ACCOUNT_MARGIN_MODE`)
+
+Used by `AccountInfo.margin_mode` field.
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `ACCOUNT_MARGIN_MODE_RETAIL_NETTING` | 0 | Retail netting |
+| `ACCOUNT_MARGIN_MODE_EXCHANGE` | 1 | Exchange |
+| `ACCOUNT_MARGIN_MODE_RETAIL_HEDGING` | 2 | Retail hedging |
+
+---
+
+### 11.29 `RES_E_*` (function error codes — `last_error()`)
+
+| Name | Value | Description |
+|------|-------|-------------|
+| `RES_S_OK` | 1 | Generic success |
+| `RES_E_FAIL` | -1 | Generic failure |
+| `RES_E_INVALID_PARAMS` | -2 | Invalid arguments/parameters |
+| `RES_E_NO_MEMORY` | -3 | No memory condition |
+| `RES_E_NOT_FOUND` | -4 | No history / not found |
+| `RES_E_INVALID_VERSION` | -5 | Invalid version |
+| `RES_E_AUTH_FAILED` | -6 | Authorization failed |
+| `RES_E_UNSUPPORTED` | -7 | Unsupported method |
+| `RES_E_AUTO_TRADING_DISABLED` | -8 | Auto-trading disabled |
+| `RES_E_INTERNAL_FAIL` | -10000 | Internal IPC general error |
+| `RES_E_INTERNAL_FAIL_SEND` | -10001 | Internal IPC send failed |
+| `RES_E_INTERNAL_FAIL_RECEIVE` | -10002 | Internal IPC receive failed |
+| `RES_E_INTERNAL_FAIL_INIT` | -10003 | Internal IPC initialization fail |
+| `RES_E_INTERNAL_FAIL_CONNECT` | -10004 | Internal IPC no connection |
+| `RES_E_INTERNAL_FAIL_TIMEOUT` | -10005 | Internal timeout |
+
+---
+
+### 11.30 Bitmask Fields (no Python constants — raw integers from MQL5)
+
+These `SymbolInfo` fields use bitmask values. The Python package does not expose named constants for them.
+
+**`SYMBOL_EXPIRATION_MODE`** (used by `expiration_mode` field):  
+Bitmask allowing order expiration types: `ORDER_TIME_GTC` (1), `ORDER_TIME_DAY` (2), `ORDER_TIME_SPECIFIED` (4), `ORDER_TIME_SPECIFIED_DAY` (8).
+
+**`SYMBOL_FILLING_MODE`** (used by `filling_mode` field):  
+Bitmask allowing order filling types: `ORDER_FILLING_FOK` (1), `ORDER_FILLING_IOC` (2), `ORDER_FILLING_BOC` (4), `ORDER_FILLING_RETURN` (8).
+
+**`SYMBOL_ORDER_MODE`** (used by `order_mode` field):  
+Bitmask allowing order types: `ORDER_TYPE_BUY` (1), `ORDER_TYPE_SELL` (2), `ORDER_TYPE_BUY_LIMIT` (4), `ORDER_TYPE_SELL_LIMIT` (8), `ORDER_TYPE_BUY_STOP` (16), `ORDER_TYPE_SELL_STOP` (32), `ORDER_TYPE_BUY_STOP_LIMIT` (64), `ORDER_TYPE_SELL_STOP_LIMIT` (128).
 
 ---
 
