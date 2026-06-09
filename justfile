@@ -11,4 +11,4 @@ generate:
   Get-ChildItem src/stubs/*_pb2*.py | ForEach-Object { $f = $_; (Get-Content $f) -replace '^import ticks_pb2 as', 'from . import ticks_pb2 as' | Set-Content $f }
 
 compile:
-  uvx pyinstaller --onefile main.py
+  uvx pyinstaller --onefile src/main.py
