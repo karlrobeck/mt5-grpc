@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package mt5.marketdepth;
+
+import "types.proto";
+
+service MarketDepthService {
+  rpc SubscribeMarketDepth(SymbolRequest) returns (MarketDepthResponse);
+  rpc GetMarketDepth(SymbolRequest) returns (MarketDepthResponse);
+  rpc UnsubscribeMarketDepth(SymbolRequest) returns (MarketDepthResponse);
+}
+
+message SymbolRequest {
+  string symbol = 1;
+}
+
+message MarketDepthResponse {
+  bool success = 1;
+  repeated types.BookInfo entries = 2;
+}

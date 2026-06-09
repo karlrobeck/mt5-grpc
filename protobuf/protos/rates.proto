@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package mt5.rates;
+
+import "enums.proto";
+import "types.proto";
+
+service RatesService {
+  rpc CopyRatesFrom(RatesFromRequest) returns (RatesResponse);
+  rpc CopyRatesFromPos(RatesFromPosRequest) returns (RatesResponse);
+  rpc CopyRatesRange(RatesRangeRequest) returns (RatesResponse);
+}
+
+message RatesFromRequest {
+  string symbol = 1;
+  enums.Timeframe timeframe = 2;
+  int64 date_from = 3;
+  int32 count = 4;
+}
+
+message RatesFromPosRequest {
+  string symbol = 1;
+  enums.Timeframe timeframe = 2;
+  int32 start_pos = 3;
+  int32 count = 4;
+}
+
+message RatesRangeRequest {
+  string symbol = 1;
+  enums.Timeframe timeframe = 2;
+  int64 date_from = 3;
+  int64 date_to = 4;
+}
+
+message RatesResponse {
+  repeated types.Rate rates = 1;
+}

@@ -3,8 +3,7 @@
 import grpc
 import warnings
 
-from . import ticks_pb2 as ticks__pb2
-from . import types_pb2 as types__pb2
+from . import market_depth_pb2 as market__depth__pb2
 
 GRPC_GENERATED_VERSION = '1.81.0'
 GRPC_VERSION = grpc.__version__
@@ -19,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in ticks_pb2_grpc.py depends on'
+        + ' but the generated code in market_depth_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class TickServiceStub:
+class MarketDepthServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,75 +34,75 @@ class TickServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.LastTick = channel.unary_unary(
-                '/mt5.ticks.TickService/LastTick',
-                request_serializer=ticks__pb2.LastTickRequest.SerializeToString,
-                response_deserializer=types__pb2.Tick.FromString,
+        self.SubscribeMarketDepth = channel.unary_unary(
+                '/mt5.marketdepth.MarketDepthService/SubscribeMarketDepth',
+                request_serializer=market__depth__pb2.SymbolRequest.SerializeToString,
+                response_deserializer=market__depth__pb2.MarketDepthResponse.FromString,
                 _registered_method=True)
-        self.CopyTicksFrom = channel.unary_unary(
-                '/mt5.ticks.TickService/CopyTicksFrom',
-                request_serializer=ticks__pb2.TickFromRequest.SerializeToString,
-                response_deserializer=ticks__pb2.TicksResponse.FromString,
+        self.GetMarketDepth = channel.unary_unary(
+                '/mt5.marketdepth.MarketDepthService/GetMarketDepth',
+                request_serializer=market__depth__pb2.SymbolRequest.SerializeToString,
+                response_deserializer=market__depth__pb2.MarketDepthResponse.FromString,
                 _registered_method=True)
-        self.CopyTicksRange = channel.unary_unary(
-                '/mt5.ticks.TickService/CopyTicksRange',
-                request_serializer=ticks__pb2.TickRangeRequest.SerializeToString,
-                response_deserializer=ticks__pb2.TicksResponse.FromString,
+        self.UnsubscribeMarketDepth = channel.unary_unary(
+                '/mt5.marketdepth.MarketDepthService/UnsubscribeMarketDepth',
+                request_serializer=market__depth__pb2.SymbolRequest.SerializeToString,
+                response_deserializer=market__depth__pb2.MarketDepthResponse.FromString,
                 _registered_method=True)
 
 
-class TickServiceServicer:
+class MarketDepthServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
-    def LastTick(self, request, context):
+    def SubscribeMarketDepth(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyTicksFrom(self, request, context):
+    def GetMarketDepth(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyTicksRange(self, request, context):
+    def UnsubscribeMarketDepth(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_TickServiceServicer_to_server(servicer, server):
+def add_MarketDepthServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'LastTick': grpc.unary_unary_rpc_method_handler(
-                    servicer.LastTick,
-                    request_deserializer=ticks__pb2.LastTickRequest.FromString,
-                    response_serializer=types__pb2.Tick.SerializeToString,
+            'SubscribeMarketDepth': grpc.unary_unary_rpc_method_handler(
+                    servicer.SubscribeMarketDepth,
+                    request_deserializer=market__depth__pb2.SymbolRequest.FromString,
+                    response_serializer=market__depth__pb2.MarketDepthResponse.SerializeToString,
             ),
-            'CopyTicksFrom': grpc.unary_unary_rpc_method_handler(
-                    servicer.CopyTicksFrom,
-                    request_deserializer=ticks__pb2.TickFromRequest.FromString,
-                    response_serializer=ticks__pb2.TicksResponse.SerializeToString,
+            'GetMarketDepth': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetMarketDepth,
+                    request_deserializer=market__depth__pb2.SymbolRequest.FromString,
+                    response_serializer=market__depth__pb2.MarketDepthResponse.SerializeToString,
             ),
-            'CopyTicksRange': grpc.unary_unary_rpc_method_handler(
-                    servicer.CopyTicksRange,
-                    request_deserializer=ticks__pb2.TickRangeRequest.FromString,
-                    response_serializer=ticks__pb2.TicksResponse.SerializeToString,
+            'UnsubscribeMarketDepth': grpc.unary_unary_rpc_method_handler(
+                    servicer.UnsubscribeMarketDepth,
+                    request_deserializer=market__depth__pb2.SymbolRequest.FromString,
+                    response_serializer=market__depth__pb2.MarketDepthResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'mt5.ticks.TickService', rpc_method_handlers)
+            'mt5.marketdepth.MarketDepthService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('mt5.ticks.TickService', rpc_method_handlers)
+    server.add_registered_method_handlers('mt5.marketdepth.MarketDepthService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class TickService:
+class MarketDepthService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def LastTick(request,
+    def SubscribeMarketDepth(request,
             target,
             options=(),
             channel_credentials=None,
@@ -116,9 +115,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/LastTick',
-            ticks__pb2.LastTickRequest.SerializeToString,
-            types__pb2.Tick.FromString,
+            '/mt5.marketdepth.MarketDepthService/SubscribeMarketDepth',
+            market__depth__pb2.SymbolRequest.SerializeToString,
+            market__depth__pb2.MarketDepthResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -130,7 +129,7 @@ class TickService:
             _registered_method=True)
 
     @staticmethod
-    def CopyTicksFrom(request,
+    def GetMarketDepth(request,
             target,
             options=(),
             channel_credentials=None,
@@ -143,9 +142,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/CopyTicksFrom',
-            ticks__pb2.TickFromRequest.SerializeToString,
-            ticks__pb2.TicksResponse.FromString,
+            '/mt5.marketdepth.MarketDepthService/GetMarketDepth',
+            market__depth__pb2.SymbolRequest.SerializeToString,
+            market__depth__pb2.MarketDepthResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -157,7 +156,7 @@ class TickService:
             _registered_method=True)
 
     @staticmethod
-    def CopyTicksRange(request,
+    def UnsubscribeMarketDepth(request,
             target,
             options=(),
             channel_credentials=None,
@@ -170,9 +169,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/CopyTicksRange',
-            ticks__pb2.TickRangeRequest.SerializeToString,
-            ticks__pb2.TicksResponse.FromString,
+            '/mt5.marketdepth.MarketDepthService/UnsubscribeMarketDepth',
+            market__depth__pb2.SymbolRequest.SerializeToString,
+            market__depth__pb2.MarketDepthResponse.FromString,
             options,
             channel_credentials,
             insecure,

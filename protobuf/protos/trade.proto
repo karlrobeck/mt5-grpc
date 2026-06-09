@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package mt5.trade;
+
+import "google/protobuf/empty.proto";
+import "types.proto";
+
+service TradeService {
+  rpc GetOrdersTotal(google.protobuf.Empty) returns (OrdersTotalResponse);
+  rpc GetOrders(OrdersRequest) returns (OrdersResponse);
+  rpc GetPositionsTotal(google.protobuf.Empty) returns (PositionsTotalResponse);
+  rpc GetPositions(PositionsRequest) returns (PositionsResponse);
+  rpc GetHistoryOrdersTotal(HistoryRangeRequest) returns (HistoryOrdersTotalResponse);
+  rpc GetHistoryOrders(HistoryOrdersRequest) returns (HistoryOrdersResponse);
+  rpc GetHistoryDealsTotal(HistoryRangeRequest) returns (HistoryDealsTotalResponse);
+  rpc GetHistoryDeals(HistoryDealsRequest) returns (HistoryDealsResponse);
+  rpc CalcMargin(CalcMarginRequest) returns (CalcMarginResponse);
+  rpc CalcProfit(CalcProfitRequest) returns (CalcProfitResponse);
+  rpc CheckOrder(CheckOrderRequest) returns (types.TradeCheckResult);
+  rpc SendOrder(SendOrderRequest) returns (types.TradeSendResult);
+}
+
+// -- Orders --
+message OrdersRequest {
+  string symbol = 1;
+  string group = 2;
+  int64 ticket = 3;
+}
+
+message OrdersTotalResponse {
+  int32 total = 1;
+}
+
+message OrdersResponse {
+  repeated types.TradeOrder orders = 1;
+}
+
+// -- Positions --
+message PositionsRequest {
+  string symbol = 1;
+  string group = 2;
+  int64 ticket = 3;
+}
+
+message PositionsTotalResponse {
+  int32 total = 1;
+}
+
+message PositionsResponse {
+  repeated types.TradePosition positions = 1;
+}
+
+// -- History common --
+message HistoryRangeRequest {
+  int64 date_from = 1;
+  int64 date_to = 2;
+}
+
+message HistoryOrdersRequest {
+  int64 date_from = 1;
+  int64 date_to = 2;
+  string group = 3;
+  int64 ticket = 4;
+  int64 position = 5;
+}
+
+message HistoryDealsRequest {
+  int64 date_from = 1;
+  int64 date_to = 2;
+  string group = 3;
+  int64 ticket = 4;
+  int64 position = 5;
+}
+
+message HistoryOrdersTotalResponse {
+  int32 total = 1;
+}
+
+message HistoryOrdersResponse {
+  repeated types.TradeOrder orders = 1;
+}
+
+message HistoryDealsTotalResponse {
+  int32 total = 1;
+}
+
+message HistoryDealsResponse {
+  repeated types.TradeDeal deals = 1;
+}
+
+// -- Calculations --
+message CalcMarginRequest {
+  types.TradeRequest request = 1;
+}
+
+message CalcMarginResponse {
+  double margin = 1;
+}
+
+message CalcProfitRequest {
+  types.TradeRequest request = 1;
+}
+
+message CalcProfitResponse {
+  double profit = 1;
+}
+
+// -- Order execution --
+message CheckOrderRequest {
+  types.TradeRequest request = 1;
+}
+
+message SendOrderRequest {
+  types.TradeRequest request = 1;
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package mt5.account;
+
+import "google/protobuf/empty.proto";
+import "types.proto";
+
+service AccountService {
+  rpc GetAccountInfo(google.protobuf.Empty) returns (types.AccountInfo);
+  rpc GetTerminalInfo(google.protobuf.Empty) returns (types.TerminalInfo);
+}

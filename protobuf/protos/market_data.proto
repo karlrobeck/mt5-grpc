@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package mt5.marketdata;
+
+import "google/protobuf/empty.proto";
+import "types.proto";
+
+service MarketDataService {
+  rpc GetSymbolsTotal(google.protobuf.Empty) returns (SymbolsTotalResponse);
+  rpc GetSymbols(SymbolsRequest) returns (SymbolsResponse);
+  rpc GetSymbolInfo(SymbolRequest) returns (types.SymbolInfo);
+  rpc SelectSymbol(SelectSymbolRequest) returns (SelectSymbolResponse);
+}
+
+message SymbolRequest {
+  string symbol = 1;
+}
+
+message SymbolsRequest {
+  string group = 1;
+}
+
+message SymbolsTotalResponse {
+  int32 total = 1;
+}
+
+message SymbolsResponse {
+  repeated types.SymbolInfo symbols = 1;
+}
+
+message SelectSymbolRequest {
+  string symbol = 1;
+  bool enable = 2;
+}
+
+message SelectSymbolResponse {
+  bool success = 1;
+}

@@ -1,0 +1,381 @@
+syntax = "proto3";
+
+package mt5.types;
+
+import "enums.proto";
+
+// -- AccountInfo (Section 2.1) --
+message AccountInfo {
+  int64 login = 1;
+  int64 leverage = 2;
+  bool trade_allowed = 3;
+  double balance = 4;
+  double credit = 5;
+  double profit = 6;
+  double equity = 7;
+  double margin = 8;
+  double margin_free = 9;
+  double margin_level = 10;
+  double margin_so_call = 11;
+  double margin_so_so = 12;
+  string name = 13;
+  string server = 14;
+  string currency = 15;
+  string company = 16;
+
+  oneof broker_ext {
+    Mt5AccountInfo mt5 = 20;
+  }
+}
+
+message Mt5AccountInfo {
+  enums.AccountTradeMode trade_mode = 1;
+  int32 limit_orders = 2;
+  enums.AccountStopoutMode margin_so_mode = 3;
+  bool trade_expert = 4;
+  enums.AccountMarginMode margin_mode = 5;
+  int32 currency_digits = 6;
+  bool fifo_close = 7;
+  double margin_initial = 8;
+  double margin_maintenance = 9;
+  double assets = 10;
+  double liabilities = 11;
+  double commission_blocked = 12;
+}
+
+// -- TerminalInfo (Section 2.2) --
+message TerminalInfo {
+  bool connected = 1;
+  bool trade_allowed = 2;
+  int64 ping_last = 3;
+  string company = 4;
+  string name = 5;
+
+  oneof broker_ext {
+    Mt5TerminalInfo mt5 = 10;
+  }
+}
+
+message Mt5TerminalInfo {
+  bool community_account = 1;
+  bool community_connection = 2;
+  bool dlls_allowed = 3;
+  bool tradeapi_disabled = 4;
+  bool email_enabled = 5;
+  bool ftp_enabled = 6;
+  bool notifications_enabled = 7;
+  bool mqid = 8;
+  int32 build = 9;
+  int64 maxbars = 10;
+  int32 codepage = 11;
+  double community_balance = 12;
+  double retransmission = 13;
+  string language = 14;
+  string path = 15;
+  string data_path = 16;
+  string commondata_path = 17;
+}
+
+// -- SymbolInfo (Section 3.3) --
+message SymbolInfo {
+  // Generic fields
+  int32 digits = 1;
+  int32 spread = 2;
+  bool spread_float = 3;
+  double bid = 4;
+  double ask = 5;
+  double last = 6;
+  double point = 7;
+  double trade_tick_size = 8;
+  double trade_contract_size = 9;
+  double volume_min = 10;
+  double volume_max = 11;
+  double volume_step = 12;
+  double swap_long = 13;
+  double swap_short = 14;
+  double margin_initial = 15;
+  double margin_maintenance = 16;
+  double margin_hedged = 17;
+  double price_change = 18;
+  double price_volatility = 19;
+  int64 start_time = 20;
+  int64 expiration_time = 21;
+  int32 trade_stops_level = 22;
+  int32 trade_freeze_level = 23;
+  double bidhigh = 24;
+  double bidlow = 25;
+  double askhigh = 26;
+  double asklow = 27;
+  double lasthigh = 28;
+  double lastlow = 29;
+  double volume = 30;
+  double volume_real = 31;
+  double volumehigh_real = 32;
+  double volumelow_real = 33;
+  string currency_base = 34;
+  string currency_profit = 35;
+  string currency_margin = 36;
+  string description = 37;
+  string exchange = 38;
+  string isin = 39;
+  string name = 40;
+  double trade_tick_value = 41;
+  double trade_tick_value_profit = 42;
+  double trade_tick_value_loss = 43;
+  double price_theoretical = 44;
+  double price_greeks_delta = 45;
+  double price_greeks_theta = 46;
+  double price_greeks_gamma = 47;
+  double price_greeks_vega = 48;
+  double price_greeks_rho = 49;
+  double price_greeks_omega = 50;
+  double price_sensitivity = 51;
+  string basis = 52;
+  double trade_accrued_interest = 53;
+  double trade_face_value = 54;
+  double trade_liquidity_rate = 55;
+
+  oneof broker_ext {
+    Mt5SymbolInfo mt5 = 60;
+  }
+}
+
+message Mt5SymbolInfo {
+  bool custom = 1;
+  enums.SymbolChartMode chart_mode = 2;
+  bool select = 3;
+  bool visible = 4;
+  enums.SymbolCalcMode trade_calc_mode = 5;
+  enums.SymbolTradeMode trade_mode = 6;
+  enums.SymbolTradeExecution trade_exemode = 7;
+  enums.SymbolSwapMode swap_mode = 8;
+  enums.DayOfWeek swap_rollover3days = 9;
+  bool margin_hedged_use_leg = 10;
+  int32 expiration_mode = 11;
+  int32 filling_mode = 12;
+  int32 order_mode = 13;
+  enums.SymbolOrderGtcMode order_gtc_mode = 14;
+  int32 session_deals = 15;
+  int32 session_buy_orders = 16;
+  int32 session_sell_orders = 17;
+  int32 ticks_bookdepth = 18;
+  int64 volumehigh = 19;
+  int64 volumelow = 20;
+  int64 time = 21;
+  double volume_limit = 22;
+  double session_volume = 23;
+  double session_turnover = 24;
+  double session_interest = 25;
+  double session_buy_orders_volume = 26;
+  double session_sell_orders_volume = 27;
+  double session_open = 28;
+  double session_close = 29;
+  double session_aw = 30;
+  double session_price_settlement = 31;
+  double session_price_limit_min = 32;
+  double session_price_limit_max = 33;
+  enums.SymbolOptionMode option_mode = 34;
+  enums.SymbolOptionRight option_right = 35;
+  double option_strike = 36;
+  string category = 37;
+  string bank = 38;
+  string formula = 39;
+  string page = 40;
+  string path = 41;
+}
+
+// -- Tick (Sections 3.4, 6) --
+message Tick {
+  int64 time = 1;
+  double bid = 2;
+  double ask = 3;
+  double last = 4;
+  double volume = 5;
+  int64 time_msc = 6;
+  double volume_real = 7;
+
+  oneof broker_ext {
+    Mt5Tick mt5 = 10;
+  }
+}
+
+message Mt5Tick {
+  int32 flags = 1;
+}
+
+// -- Rate (Section 5) --
+message Rate {
+  int64 time = 1;
+  double open = 2;
+  double high = 3;
+  double low = 4;
+  double close = 5;
+  int64 tick_volume = 6;
+  int32 spread = 7;
+  int64 real_volume = 8;
+}
+
+// -- BookInfo (Section 4) --
+message BookInfo {
+  double price = 1;
+  double volume = 2;
+  double volume_dbl = 3;
+
+  oneof broker_ext {
+    Mt5BookInfo mt5 = 10;
+  }
+}
+
+message Mt5BookInfo {
+  enums.BookType type = 1;
+}
+
+// -- TradeOrder (Sections 7.2, 9.2) --
+message TradeOrder {
+  int64 ticket = 1;
+  int64 time_setup = 2;
+  int64 time_setup_msc = 3;
+  int64 time_done = 4;
+  int64 time_done_msc = 5;
+  int64 time_expiration = 6;
+  double volume_current = 7;
+  double volume_initial = 8;
+  double price_open = 9;
+  double sl = 10;
+  double tp = 11;
+  double price_current = 12;
+  double price_stoplimit = 13;
+  string symbol = 14;
+  string comment = 15;
+  string external_id = 16;
+  int64 position_id = 17;
+
+  oneof broker_ext {
+    Mt5TradeOrder mt5 = 20;
+  }
+}
+
+message Mt5TradeOrder {
+  enums.OrderType type = 1;
+  enums.OrderTypeTime type_time = 2;
+  enums.OrderTypeFilling type_filling = 3;
+  enums.OrderState state = 4;
+  int64 magic = 5;
+  int64 position_by_id = 6;
+  enums.OrderReason reason = 7;
+}
+
+// -- TradePosition (Section 8.2) --
+message TradePosition {
+  int64 ticket = 1;
+  int64 time = 2;
+  int64 time_msc = 3;
+  int64 time_update = 4;
+  int64 time_update_msc = 5;
+  double volume = 6;
+  double price_open = 7;
+  double sl = 8;
+  double tp = 9;
+  double price_current = 10;
+  double swap = 11;
+  double profit = 12;
+  string symbol = 13;
+  string comment = 14;
+  string external_id = 15;
+
+  oneof broker_ext {
+    Mt5TradePosition mt5 = 20;
+  }
+}
+
+message Mt5TradePosition {
+  enums.PositionType type = 1;
+  int64 magic = 2;
+  int64 identifier = 3;
+  enums.PositionReason reason = 4;
+}
+
+// -- TradeDeal (Section 9.4) --
+message TradeDeal {
+  int64 ticket = 1;
+  int64 order = 2;
+  int64 time = 3;
+  int64 time_msc = 4;
+  double volume = 5;
+  double price = 6;
+  double commission = 7;
+  double swap = 8;
+  double profit = 9;
+  double fee = 10;
+  string symbol = 11;
+  string comment = 12;
+  string external_id = 13;
+  int64 position_id = 14;
+
+  oneof broker_ext {
+    Mt5TradeDeal mt5 = 20;
+  }
+}
+
+message Mt5TradeDeal {
+  enums.DealType type = 1;
+  enums.DealEntry entry = 2;
+  int64 magic = 3;
+  enums.DealReason reason = 4;
+}
+
+// -- TradeRequest (Section 10.1) --
+message TradeRequest {
+  string symbol = 1;
+  double volume = 2;
+  double price = 3;
+  double stoplimit = 4;
+  double sl = 5;
+  double tp = 6;
+  int32 deviation = 7;
+  int64 expiration = 8;
+  string comment = 9;
+  int64 order = 10;
+  int64 position = 11;
+
+  oneof broker_ext {
+    Mt5TradeRequest mt5 = 20;
+  }
+}
+
+message Mt5TradeRequest {
+  enums.TradeRequestAction action = 1;
+  int64 magic = 2;
+  enums.OrderType type = 3;
+  enums.OrderTypeFilling type_filling = 4;
+  enums.OrderTypeTime type_time = 5;
+  int64 position_by = 6;
+}
+
+// -- TradeCheckResult (Section 10.2) --
+message TradeCheckResult {
+  int32 retcode = 1;
+  double balance = 2;
+  double equity = 3;
+  double profit = 4;
+  double margin = 5;
+  double margin_free = 6;
+  double margin_level = 7;
+  string comment = 8;
+  TradeRequest request = 9;
+}
+
+// -- TradeSendResult (Section 10.3) --
+message TradeSendResult {
+  int32 retcode = 1;
+  int64 deal = 2;
+  int64 order = 3;
+  double volume = 4;
+  double price = 5;
+  double bid = 6;
+  double ask = 7;
+  string comment = 8;
+  int32 request_id = 9;
+  int32 retcode_external = 10;
+  TradeRequest request = 11;
+}

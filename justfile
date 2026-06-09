@@ -1,14 +1,8 @@
 set windows-shell := ["powershell.exe", "-NoLogo", "-Command"]
 
 generate:
-  uv run -m grpc_tools.protoc \
-    --proto_path=protobuf \
-    --python_out=src/stubs \
-    --pyi_out=src/stubs \
-    --grpc_python_out=src/stubs \
-    ticks.proto
-  
-  Get-ChildItem src/stubs/*_pb2*.py | ForEach-Object { $f = $_; (Get-Content $f) -replace '^import ticks_pb2 as', 'from . import ticks_pb2 as' | Set-Content $f }
+	uv run -m grpc_tools.protoc --proto_path=protobuf/protos --python_out=src/stubs --pyi_out=src/stubs --grpc_python_out=src/stubs enums.proto types.proto account.proto market_data.proto market_depth.proto rates.proto ticks.proto trade.proto
+	Get-ChildItem src/stubs/*_pb2*.py | ForEach-Object { $f = $_; (Get-Content $f) -replace '^import (\w+_pb2) as ', 'from . import $1 as ' | Set-Content $f }
 
 compile:
-  uvx pyinstaller --onefile src/main.py
+	uvx pyinstaller --onefile src/main.py

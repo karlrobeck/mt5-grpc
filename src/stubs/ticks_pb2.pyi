@@ -1,23 +1,45 @@
+import enums_pb2 as _enums_pb2
+import types_pb2 as _types_pb2
+from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Optional as _Optional
+from collections.abc import Iterable as _Iterable, Mapping as _Mapping
+from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
-
-class Tick(_message.Message):
-    __slots__ = ("time", "bid", "ask", "volume")
-    TIME_FIELD_NUMBER: _ClassVar[int]
-    BID_FIELD_NUMBER: _ClassVar[int]
-    ASK_FIELD_NUMBER: _ClassVar[int]
-    VOLUME_FIELD_NUMBER: _ClassVar[int]
-    time: int
-    bid: float
-    ask: float
-    volume: int
-    def __init__(self, time: _Optional[int] = ..., bid: _Optional[float] = ..., ask: _Optional[float] = ..., volume: _Optional[int] = ...) -> None: ...
 
 class LastTickRequest(_message.Message):
     __slots__ = ("symbol",)
     SYMBOL_FIELD_NUMBER: _ClassVar[int]
     symbol: str
     def __init__(self, symbol: _Optional[str] = ...) -> None: ...
+
+class TickFromRequest(_message.Message):
+    __slots__ = ("symbol", "date_from", "count", "flags")
+    SYMBOL_FIELD_NUMBER: _ClassVar[int]
+    DATE_FROM_FIELD_NUMBER: _ClassVar[int]
+    COUNT_FIELD_NUMBER: _ClassVar[int]
+    FLAGS_FIELD_NUMBER: _ClassVar[int]
+    symbol: str
+    date_from: int
+    count: int
+    flags: _enums_pb2.CopyTicks
+    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[int] = ..., count: _Optional[int] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
+
+class TickRangeRequest(_message.Message):
+    __slots__ = ("symbol", "date_from", "date_to", "flags")
+    SYMBOL_FIELD_NUMBER: _ClassVar[int]
+    DATE_FROM_FIELD_NUMBER: _ClassVar[int]
+    DATE_TO_FIELD_NUMBER: _ClassVar[int]
+    FLAGS_FIELD_NUMBER: _ClassVar[int]
+    symbol: str
+    date_from: int
+    date_to: int
+    flags: _enums_pb2.CopyTicks
+    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[int] = ..., date_to: _Optional[int] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
+
+class TicksResponse(_message.Message):
+    __slots__ = ("ticks",)
+    TICKS_FIELD_NUMBER: _ClassVar[int]
+    ticks: _containers.RepeatedCompositeFieldContainer[_types_pb2.Tick]
+    def __init__(self, ticks: _Optional[_Iterable[_Union[_types_pb2.Tick, _Mapping]]] = ...) -> None: ...

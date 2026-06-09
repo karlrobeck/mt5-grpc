@@ -3,8 +3,7 @@
 import grpc
 import warnings
 
-from . import ticks_pb2 as ticks__pb2
-from . import types_pb2 as types__pb2
+from . import rates_pb2 as rates__pb2
 
 GRPC_GENERATED_VERSION = '1.81.0'
 GRPC_VERSION = grpc.__version__
@@ -19,14 +18,14 @@ except ImportError:
 if _version_not_supported:
     raise RuntimeError(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + ' but the generated code in ticks_pb2_grpc.py depends on'
+        + ' but the generated code in rates_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
     )
 
 
-class TickServiceStub:
+class RatesServiceStub:
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -35,75 +34,75 @@ class TickServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.LastTick = channel.unary_unary(
-                '/mt5.ticks.TickService/LastTick',
-                request_serializer=ticks__pb2.LastTickRequest.SerializeToString,
-                response_deserializer=types__pb2.Tick.FromString,
+        self.CopyRatesFrom = channel.unary_unary(
+                '/mt5.rates.RatesService/CopyRatesFrom',
+                request_serializer=rates__pb2.RatesFromRequest.SerializeToString,
+                response_deserializer=rates__pb2.RatesResponse.FromString,
                 _registered_method=True)
-        self.CopyTicksFrom = channel.unary_unary(
-                '/mt5.ticks.TickService/CopyTicksFrom',
-                request_serializer=ticks__pb2.TickFromRequest.SerializeToString,
-                response_deserializer=ticks__pb2.TicksResponse.FromString,
+        self.CopyRatesFromPos = channel.unary_unary(
+                '/mt5.rates.RatesService/CopyRatesFromPos',
+                request_serializer=rates__pb2.RatesFromPosRequest.SerializeToString,
+                response_deserializer=rates__pb2.RatesResponse.FromString,
                 _registered_method=True)
-        self.CopyTicksRange = channel.unary_unary(
-                '/mt5.ticks.TickService/CopyTicksRange',
-                request_serializer=ticks__pb2.TickRangeRequest.SerializeToString,
-                response_deserializer=ticks__pb2.TicksResponse.FromString,
+        self.CopyRatesRange = channel.unary_unary(
+                '/mt5.rates.RatesService/CopyRatesRange',
+                request_serializer=rates__pb2.RatesRangeRequest.SerializeToString,
+                response_deserializer=rates__pb2.RatesResponse.FromString,
                 _registered_method=True)
 
 
-class TickServiceServicer:
+class RatesServiceServicer:
     """Missing associated documentation comment in .proto file."""
 
-    def LastTick(self, request, context):
+    def CopyRatesFrom(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyTicksFrom(self, request, context):
+    def CopyRatesFromPos(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CopyTicksRange(self, request, context):
+    def CopyRatesRange(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_TickServiceServicer_to_server(servicer, server):
+def add_RatesServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'LastTick': grpc.unary_unary_rpc_method_handler(
-                    servicer.LastTick,
-                    request_deserializer=ticks__pb2.LastTickRequest.FromString,
-                    response_serializer=types__pb2.Tick.SerializeToString,
+            'CopyRatesFrom': grpc.unary_unary_rpc_method_handler(
+                    servicer.CopyRatesFrom,
+                    request_deserializer=rates__pb2.RatesFromRequest.FromString,
+                    response_serializer=rates__pb2.RatesResponse.SerializeToString,
             ),
-            'CopyTicksFrom': grpc.unary_unary_rpc_method_handler(
-                    servicer.CopyTicksFrom,
-                    request_deserializer=ticks__pb2.TickFromRequest.FromString,
-                    response_serializer=ticks__pb2.TicksResponse.SerializeToString,
+            'CopyRatesFromPos': grpc.unary_unary_rpc_method_handler(
+                    servicer.CopyRatesFromPos,
+                    request_deserializer=rates__pb2.RatesFromPosRequest.FromString,
+                    response_serializer=rates__pb2.RatesResponse.SerializeToString,
             ),
-            'CopyTicksRange': grpc.unary_unary_rpc_method_handler(
-                    servicer.CopyTicksRange,
-                    request_deserializer=ticks__pb2.TickRangeRequest.FromString,
-                    response_serializer=ticks__pb2.TicksResponse.SerializeToString,
+            'CopyRatesRange': grpc.unary_unary_rpc_method_handler(
+                    servicer.CopyRatesRange,
+                    request_deserializer=rates__pb2.RatesRangeRequest.FromString,
+                    response_serializer=rates__pb2.RatesResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'mt5.ticks.TickService', rpc_method_handlers)
+            'mt5.rates.RatesService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('mt5.ticks.TickService', rpc_method_handlers)
+    server.add_registered_method_handlers('mt5.rates.RatesService', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class TickService:
+class RatesService:
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def LastTick(request,
+    def CopyRatesFrom(request,
             target,
             options=(),
             channel_credentials=None,
@@ -116,9 +115,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/LastTick',
-            ticks__pb2.LastTickRequest.SerializeToString,
-            types__pb2.Tick.FromString,
+            '/mt5.rates.RatesService/CopyRatesFrom',
+            rates__pb2.RatesFromRequest.SerializeToString,
+            rates__pb2.RatesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -130,7 +129,7 @@ class TickService:
             _registered_method=True)
 
     @staticmethod
-    def CopyTicksFrom(request,
+    def CopyRatesFromPos(request,
             target,
             options=(),
             channel_credentials=None,
@@ -143,9 +142,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/CopyTicksFrom',
-            ticks__pb2.TickFromRequest.SerializeToString,
-            ticks__pb2.TicksResponse.FromString,
+            '/mt5.rates.RatesService/CopyRatesFromPos',
+            rates__pb2.RatesFromPosRequest.SerializeToString,
+            rates__pb2.RatesResponse.FromString,
             options,
             channel_credentials,
             insecure,
@@ -157,7 +156,7 @@ class TickService:
             _registered_method=True)
 
     @staticmethod
-    def CopyTicksRange(request,
+    def CopyRatesRange(request,
             target,
             options=(),
             channel_credentials=None,
@@ -170,9 +169,9 @@ class TickService:
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/mt5.ticks.TickService/CopyTicksRange',
-            ticks__pb2.TickRangeRequest.SerializeToString,
-            ticks__pb2.TicksResponse.FromString,
+            '/mt5.rates.RatesService/CopyRatesRange',
+            rates__pb2.RatesRangeRequest.SerializeToString,
+            rates__pb2.RatesResponse.FromString,
             options,
             channel_credentials,
             insecure,

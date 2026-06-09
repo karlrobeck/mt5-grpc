@@ -22,19 +22,25 @@ _runtime_version.ValidateProtobufRuntimeVersion(
 _sym_db = _symbol_database.Default()
 
 
+from . import enums_pb2 as enums__pb2
+from . import types_pb2 as types__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bticks.proto\x12\x05ticks\">\n\x04Tick\x12\x0c\n\x04time\x18\x01 \x01(\x03\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\x12\x0e\n\x06volume\x18\x04 \x01(\x04\"!\n\x0fLastTickRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t2>\n\x0bTickService\x12/\n\x08LastTick\x12\x16.ticks.LastTickRequest\x1a\x0b.ticks.Tickb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bticks.proto\x12\tmt5.ticks\x1a\x0b\x65nums.proto\x1a\x0btypes.proto\"!\n\x0fLastTickRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\"h\n\x0fTickFromRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x11\n\tdate_from\x18\x02 \x01(\x03\x12\r\n\x05\x63ount\x18\x03 \x01(\x05\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"k\n\x10TickRangeRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x11\n\tdate_from\x18\x02 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x03 \x01(\x03\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"/\n\rTicksResponse\x12\x1e\n\x05ticks\x18\x01 \x03(\x0b\x32\x0f.mt5.types.Tick2\xd6\x01\n\x0bTickService\x12\x37\n\x08LastTick\x12\x1a.mt5.ticks.LastTickRequest\x1a\x0f.mt5.types.Tick\x12\x45\n\rCopyTicksFrom\x12\x1a.mt5.ticks.TickFromRequest\x1a\x18.mt5.ticks.TicksResponse\x12G\n\x0e\x43opyTicksRange\x12\x1b.mt5.ticks.TickRangeRequest\x1a\x18.mt5.ticks.TicksResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ticks_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_TICK']._serialized_start=22
-  _globals['_TICK']._serialized_end=84
-  _globals['_LASTTICKREQUEST']._serialized_start=86
-  _globals['_LASTTICKREQUEST']._serialized_end=119
-  _globals['_TICKSERVICE']._serialized_start=121
-  _globals['_TICKSERVICE']._serialized_end=183
+  _globals['_LASTTICKREQUEST']._serialized_start=52
+  _globals['_LASTTICKREQUEST']._serialized_end=85
+  _globals['_TICKFROMREQUEST']._serialized_start=87
+  _globals['_TICKFROMREQUEST']._serialized_end=191
+  _globals['_TICKRANGEREQUEST']._serialized_start=193
+  _globals['_TICKRANGEREQUEST']._serialized_end=300
+  _globals['_TICKSRESPONSE']._serialized_start=302
+  _globals['_TICKSRESPONSE']._serialized_end=349
+  _globals['_TICKSERVICE']._serialized_start=352
+  _globals['_TICKSERVICE']._serialized_end=566
 # @@protoc_insertion_point(module_scope)
