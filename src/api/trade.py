@@ -12,14 +12,14 @@ from typing import Any, Dict, Optional
 import MetaTrader5 as mt5
 from google.protobuf import empty_pb2
 
-from api.exceptions import MT5Exception
-from api.helpers import (
+from src.api.exceptions import MT5Exception
+from src.api.helpers import (
     convert_trade_deal,
     convert_trade_order,
     convert_trade_position,
 )
-from stubs import trade_pb2, types_pb2
-from stubs.trade_pb2_grpc import TradeServiceServicer
+from src.stubs import trade_pb2, types_pb2
+from src.stubs.trade_pb2_grpc import TradeServiceServicer
 
 logger = logging.getLogger(__name__)
 

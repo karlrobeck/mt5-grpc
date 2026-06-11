@@ -13,10 +13,10 @@ import logging
 from typing import Any
 import MetaTrader5 as mt5
 
-from stubs.ticks_pb2_grpc import TickServiceServicer
-from stubs import ticks_pb2, types_pb2
-from api.exceptions import MT5Exception
-from api.helpers import convert_tick
+from src.stubs.ticks_pb2_grpc import TickServiceServicer
+from src.stubs import ticks_pb2, types_pb2
+from src.api.exceptions import MT5Exception
+from src.api.helpers import convert_tick
 
 # Configure logging for this module
 logger = logging.getLogger(__name__)

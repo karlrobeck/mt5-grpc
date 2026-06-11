@@ -11,10 +11,10 @@ from typing import Any
 import MetaTrader5 as mt5
 from google.protobuf import empty_pb2
 
-from api.exceptions import MT5Exception
-from api.helpers import convert_account_info, convert_terminal_info
-from stubs.account_pb2_grpc import AccountServiceServicer
-from stubs import types_pb2
+from src.api.exceptions import MT5Exception
+from src.api.helpers import convert_account_info, convert_terminal_info
+from src.stubs.account_pb2_grpc import AccountServiceServicer
+from src.stubs import types_pb2
 
 logger = logging.getLogger(__name__)
 

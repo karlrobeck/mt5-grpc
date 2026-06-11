@@ -13,10 +13,10 @@ The service handles:
 from typing import Any
 import MetaTrader5 as mt5
 
-from stubs.market_depth_pb2_grpc import MarketDepthServiceServicer
-from stubs import market_depth_pb2, types_pb2
-from api.exceptions import MT5Exception
-from api.helpers import convert_book_info
+from src.stubs.market_depth_pb2_grpc import MarketDepthServiceServicer
+from src.stubs import market_depth_pb2, types_pb2
+from src.api.exceptions import MT5Exception
+from src.api.helpers import convert_book_info
 
 
 class MarketDepthService(MarketDepthServiceServicer):

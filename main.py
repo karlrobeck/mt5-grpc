@@ -28,13 +28,50 @@ logger = logging.getLogger(__name__)
 
 @click.command("serve")
 @click.option("--path", default=None, help="Path to metatrader.exe")
+@click.option("--login", default=None, help="Account login number")
+@click.option("--password", default=None, help="Account password")
+@click.option("--server", default=None, help="Account server")
+@click.option("--timeout", default=60_000, help="Terminal connection timeout")
+@click.option("--portable", default=False, help="Run in portable mode")
 @click.option("--host", default="127.0.0.1", help="host address")
 @click.option("--port", default="8080", help="port number")
 @click.option("--max-workers", default=10, help="Max thread pool executor workers")
-def run_grpc(path: str | None, host: str, port: str, max_workers: int):
+def run_grpc(
+    path: str | None, 
+    login: int | None,
+    password: str | None,
+    server: str | None,
+    timeout: int,
+    portable: bool,
+    host: str, 
+    port: str, 
+    max_workers: int
+):
     """Run the MT5 gRPC service server."""
-    if not mt5.initialize():  # type: ignore
-        raise RuntimeError("Unable to connect to metatrader.exe")
+
+    init_args = {}
+
+    if login:
+        init_args['login'] = login
+    
+    if password:
+        init_args['password'] = password
+    
+    if server:
+        init_args['server'] = server
+    
+    if timeout:
+        init_args['timeout'] = timeout
+    
+    if portable:
+        init_args['portable'] = portable
+
+    if path:
+        if not mt5.initialize(path,**init_args): # type: ignore
+            raise RuntimeError("Unablt to connect to metatrader.exe")
+    else:
+        if not mt5.initialize(**init_args):  # type: ignore
+            raise RuntimeError("Unable to connect to metatrader.exe")
     
     # Create gRPC server with error handling interceptor
     server = grpc.server(
