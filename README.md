@@ -377,10 +377,6 @@ Future enhancements:
 
 - [ ] Async/streaming support for market data
 - [ ] Client library for common languages (Python, Go, Node.js)
-- [ ] Metrics and monitoring integration
-- [ ] Connection pooling and load balancing
-- [ ] WebSocket fallback support
-- [ ] Docker containerization
 
 ## Version History
 
