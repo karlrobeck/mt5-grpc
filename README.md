@@ -45,7 +45,7 @@ A production-ready gRPC service layer for MetaTrader5 Python API, providing remo
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/mt5-grpc.git
+git clone https://github.com/karlrobeck/mt5-grpc.git
 cd mt5-grpc
 ```
 
