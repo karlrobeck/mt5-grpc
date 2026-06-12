@@ -102,7 +102,7 @@ def run_grpc(
 
     if path:
         if not mt5.initialize(path,**init_args): # type: ignore
-            raise RuntimeError("Unablt to connect to metatrader.exe")
+            raise RuntimeError("Unable to connect to metatrader.exe")
     else:
         if not mt5.initialize(**init_args):  # type: ignore
             raise RuntimeError("Unable to connect to metatrader.exe")
