@@ -9,6 +9,7 @@ service TickService {
   rpc LastTick(LastTickRequest) returns (types.Tick);
   rpc CopyTicksFrom(TickFromRequest) returns (TicksResponse);
   rpc CopyTicksRange(TickRangeRequest) returns (TicksResponse);
+  rpc ListenToSymbols(ListenToSymbolsRequest) returns (stream StreamTickResponse);
 }
 
 message LastTickRequest {
@@ -31,4 +32,13 @@ message TickRangeRequest {
 
 message TicksResponse {
   repeated types.Tick ticks = 1;
+}
+
+message ListenToSymbolsRequest {
+  repeated string symbols = 1;
+}
+
+message StreamTickResponse {
+  string symbol = 1;
+  types.Tick ticks = 2;
 }

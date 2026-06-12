@@ -50,6 +50,11 @@ class TickServiceStub:
                 request_serializer=ticks__pb2.TickRangeRequest.SerializeToString,
                 response_deserializer=ticks__pb2.TicksResponse.FromString,
                 _registered_method=True)
+        self.ListenToSymbols = channel.unary_stream(
+                '/mt5.ticks.TickService/ListenToSymbols',
+                request_serializer=ticks__pb2.ListenToSymbolsRequest.SerializeToString,
+                response_deserializer=ticks__pb2.StreamTickResponse.FromString,
+                _registered_method=True)
 
 
 class TickServiceServicer:
@@ -73,6 +78,12 @@ class TickServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def ListenToSymbols(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_TickServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -90,6 +101,11 @@ def add_TickServiceServicer_to_server(servicer, server):
                     servicer.CopyTicksRange,
                     request_deserializer=ticks__pb2.TickRangeRequest.FromString,
                     response_serializer=ticks__pb2.TicksResponse.SerializeToString,
+            ),
+            'ListenToSymbols': grpc.unary_stream_rpc_method_handler(
+                    servicer.ListenToSymbols,
+                    request_deserializer=ticks__pb2.ListenToSymbolsRequest.FromString,
+                    response_serializer=ticks__pb2.StreamTickResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -173,6 +189,33 @@ class TickService:
             '/mt5.ticks.TickService/CopyTicksRange',
             ticks__pb2.TickRangeRequest.SerializeToString,
             ticks__pb2.TicksResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListenToSymbols(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(
+            request,
+            target,
+            '/mt5.ticks.TickService/ListenToSymbols',
+            ticks__pb2.ListenToSymbolsRequest.SerializeToString,
+            ticks__pb2.StreamTickResponse.FromString,
             options,
             channel_credentials,
             insecure,

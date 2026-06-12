@@ -43,3 +43,17 @@ class TicksResponse(_message.Message):
     TICKS_FIELD_NUMBER: _ClassVar[int]
     ticks: _containers.RepeatedCompositeFieldContainer[_types_pb2.Tick]
     def __init__(self, ticks: _Optional[_Iterable[_Union[_types_pb2.Tick, _Mapping]]] = ...) -> None: ...
+
+class ListenToSymbolsRequest(_message.Message):
+    __slots__ = ("symbols",)
+    SYMBOLS_FIELD_NUMBER: _ClassVar[int]
+    symbols: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, symbols: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class StreamTickResponse(_message.Message):
+    __slots__ = ("symbol", "ticks")
+    SYMBOL_FIELD_NUMBER: _ClassVar[int]
+    TICKS_FIELD_NUMBER: _ClassVar[int]
+    symbol: str
+    ticks: _types_pb2.Tick
+    def __init__(self, symbol: _Optional[str] = ..., ticks: _Optional[_Union[_types_pb2.Tick, _Mapping]] = ...) -> None: ...

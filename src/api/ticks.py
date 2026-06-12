@@ -129,3 +129,83 @@ class TicksService(TickServiceServicer):
         )
 
         return ticks_pb2.TicksResponse(ticks=ticks)
+
+    def ListenToSymbols(
+        self, request: ticks_pb2.ListenToSymbolsRequest, context: Any
+    ) -> Any:
+        """
+        Stream real-time tick updates for a list of symbols.
+
+        Args:
+            request: ListenToSymbolsRequest containing list of symbols
+            context: gRPC context for checking connection state
+
+        Yields:
+            StreamTickResponse containing the symbol and its latest Tick
+        """
+        logger.info(f"ListenToSymbols request received for symbols: {request.symbols}")
+
+        # Determine polling interval from terminal info
+        terminal_info = mt5.terminal_info()
+        ping_last = getattr(terminal_info, "ping_last", 0) if terminal_info is not None else 0
+        if ping_last <= 0:
+            ping_last = 100000  # fallback to 100ms
+        
+        # Determine sleep interval (min 10ms)
+        interval_seconds = max(0.01, ping_last / 1000000.0)
+        logger.debug(f"ListenToSymbols: ping_last={ping_last}us, using polling interval={interval_seconds}s")
+
+        # Validate and select symbols in Market Watch
+        valid_symbols = []
+        for symbol in request.symbols:
+            info = mt5.symbol_info(symbol)
+            if info is None:
+                logger.warning(f"ListenToSymbols: Symbol '{symbol}' is invalid or not found. Skipping.")
+                continue
+            
+            # Ensure it is selected in Market Watch so tick updates are received
+            if not info.select:
+                if not mt5.symbol_select(symbol, True):
+                    logger.warning(f"ListenToSymbols: Failed to select symbol '{symbol}' in Market Watch.")
+            
+            valid_symbols.append(symbol)
+
+        if not valid_symbols:
+            logger.warning("ListenToSymbols: No valid symbols specified in request.")
+            return
+
+        # Track the last seen tick for each symbol to avoid duplicates
+        last_ticks_msc = {}
+        last_ticks_data = {}
+
+        import time
+
+        while context.is_active():
+            for symbol in valid_symbols:
+                tick = mt5.symbol_info_tick(symbol)
+                if tick is not None:
+                    last_msc = last_ticks_msc.get(symbol)
+                    
+                    is_new = False
+                    if last_msc is None:
+                        is_new = True
+                    elif tick.time_msc > last_msc:
+                        is_new = True
+                    elif tick.time_msc == last_msc:
+                        # Compare critical fields for potential sub-millisecond updates
+                        prev_data = last_ticks_data.get(symbol)
+                        current_data = (tick.bid, tick.ask, tick.last, tick.volume_real, getattr(tick, "flags", 0))
+                        if prev_data != current_data:
+                            is_new = True
+                    
+                    if is_new:
+                        last_ticks_msc[symbol] = tick.time_msc
+                        last_ticks_data[symbol] = (tick.bid, tick.ask, tick.last, tick.volume_real, getattr(tick, "flags", 0))
+                        
+                        yield ticks_pb2.StreamTickResponse(
+                            symbol=symbol,
+                            ticks=convert_tick(tick)
+                        )
+            
+            # Sleep until the next polling cycle
+            time.sleep(interval_seconds)

@@ -12,7 +12,7 @@ from src.api.trade import TradeService
 from src.api.market_depth import MarketDepthService
 from src.api.ticks import TicksService
 from src.api.rates import RatesService
-from src.api.middleware import ErrorHandlingInterceptor
+from src.api.middleware import ErrorHandlingInterceptor, AuthenticationInterceptor
 
 # gRPC stub imports
 from src.stubs import (
@@ -49,6 +49,10 @@ def run_grpc(
 ):
     """Run the MT5 gRPC service server."""
 
+    # Validate login/password
+    if (login is not None) != (password is not None):
+        raise click.UsageError("Both --login and --password must be provided, or neither.")
+
     init_args = {}
 
     if login:
@@ -73,10 +77,21 @@ def run_grpc(
         if not mt5.initialize(**init_args):  # type: ignore
             raise RuntimeError("Unable to connect to metatrader.exe")
     
-    # Create gRPC server with error handling interceptor
+    # Create gRPC server with interceptors
+    interceptors = []
+    if (login is not None and password is not None) or server is not None:
+        interceptors.append(
+            AuthenticationInterceptor(
+                expected_login=str(login) if login is not None else None,
+                expected_password=password,
+                expected_server=server
+            )
+        )
+    interceptors.append(ErrorHandlingInterceptor())
+
     server = grpc.server(
         futures.ThreadPoolExecutor(max_workers),
-        interceptors=[ErrorHandlingInterceptor()]
+        interceptors=interceptors
     )
 
     # Register all service servicers

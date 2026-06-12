@@ -68,9 +68,38 @@ python -m src.main serve --host 127.0.0.1 --port 8080 --max-workers 10
 
 **Options:**
 - `--path`: Path to metatrader.exe (auto-detected if omitted)
+- `--login`: MT5 account login number (requires `--password` to enable Basic auth)
+- `--password`: MT5 account password (requires `--login` to enable Basic auth)
+- `--server`: MT5 account server (enables case-insensitive `X-MT5-Server` validation)
 - `--host`: Server host address (default: 127.0.0.1)
 - `--port`: Server port (default: 8080)
 - `--max-workers`: Max thread pool executor workers (default: 10)
+
+### Authentication (Optional)
+
+You can secure the gRPC server by configuring authentication credentials. 
+
+#### Enabling Authentication on the Server
+Pass `--login`, `--password`, and/or `--server` parameters to the `serve` command:
+
+```bash
+python main.py serve \
+  --login 123456 \
+  --password my_password \
+  --server MetaQuotes-Demo
+```
+
+*Note: If only one of `--login` or `--password` is provided, the server will raise an error and fail to start.*
+
+#### Authenticating Client Requests
+When authentication is enabled, clients must supply the following metadata headers with every request:
+
+1. **`Authorization`**: Using the standard Basic authentication scheme: `Basic <base64(login:password)>`
+   - Example: `Basic MTIzNDU2Om15X3Bhc3N3b3Jk`
+2. **`X-MT5-Server`**: The exact configured MT5 server name (compared case-insensitively).
+   - Example: `MetaQuotes-Demo`
+
+If a client fails to provide the required headers, or if the credentials/server do not match, the request will immediately return a `StatusCode.UNAUTHENTICATED` error.
 
 ### Connecting a Client
 
@@ -86,7 +115,13 @@ channel = grpc.aio.secure_channel('127.0.0.1:8080', grpc.ssl_channel_credentials
 
 # Account Service
 account_stub = account_pb2_grpc.AccountServiceStub(channel)
-account_info = await account_stub.GetAccountInfo(empty_pb2.Empty())
+
+# If authentication is enabled, pass metadata with the request
+metadata = (
+    ('authorization', 'Basic MTIzNDU2Om15X3Bhc3N3b3Jk'),
+    ('x-mt5-server', 'MetaQuotes-Demo')
+)
+account_info = await account_stub.GetAccountInfo(empty_pb2.Empty(), metadata=metadata)
 print(f"Account: {account_info.login}")
 
 # Market Data Service
