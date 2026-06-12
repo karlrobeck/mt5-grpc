@@ -115,7 +115,7 @@ def run_grpc(
     rates_pb2_grpc.add_RatesServiceServicer_to_server(RatesService(),server)
     logger.info("All services registered successfully")
 
-    print(f"Listening to {host}:{port}")
+    logger.info(f"Listening to {host}:{port}")
 
     server.add_insecure_port(f"{host}:{port}")
     server.start()
