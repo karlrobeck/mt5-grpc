@@ -26,7 +26,7 @@ from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from . import types_pb2 as types__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11market_data.proto\x12\x0emt5.marketdata\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0btypes.proto\"\x1f\n\rSymbolRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\"\x1f\n\x0eSymbolsRequest\x12\r\n\x05group\x18\x01 \x01(\t\"%\n\x14SymbolsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"9\n\x0fSymbolsResponse\x12&\n\x07symbols\x18\x01 \x03(\x0b\x32\x15.mt5.types.SymbolInfo\"5\n\x13SelectSymbolRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x0e\n\x06\x65nable\x18\x02 \x01(\x08\"\'\n\x14SelectSymbolResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\xd5\x02\n\x11MarketDataService\x12O\n\x0fGetSymbolsTotal\x12\x16.google.protobuf.Empty\x1a$.mt5.marketdata.SymbolsTotalResponse\x12M\n\nGetSymbols\x12\x1e.mt5.marketdata.SymbolsRequest\x1a\x1f.mt5.marketdata.SymbolsResponse\x12\x45\n\rGetSymbolInfo\x12\x1d.mt5.marketdata.SymbolRequest\x1a\x15.mt5.types.SymbolInfo\x12Y\n\x0cSelectSymbol\x12#.mt5.marketdata.SelectSymbolRequest\x1a$.mt5.marketdata.SelectSymbolResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11market_data.proto\x12\x0emt5.marketdata\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0btypes.proto\"\x1f\n\rSymbolRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\"\x1f\n\x0eSymbolsRequest\x12\r\n\x05group\x18\x01 \x01(\t\"%\n\x14SymbolsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"9\n\x0fSymbolsResponse\x12&\n\x07symbols\x18\x01 \x03(\x0b\x32\x15.mt5.types.SymbolInfo\"5\n\x13SelectSymbolRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x0e\n\x06\x65nable\x18\x02 \x01(\x08\"\'\n\x14SelectSymbolResponse\x12\x0f\n\x07success\x18\x01 \x01(\x08\x32\x9a\x03\n\x11MarketDataService\x12O\n\x0fGetSymbolsTotal\x12\x16.google.protobuf.Empty\x1a$.mt5.marketdata.SymbolsTotalResponse\x12M\n\nGetSymbols\x12\x1e.mt5.marketdata.SymbolsRequest\x1a\x1f.mt5.marketdata.SymbolsResponse\x12\x45\n\rGetSymbolInfo\x12\x1d.mt5.marketdata.SymbolRequest\x1a\x15.mt5.types.SymbolInfo\x12\x43\n\x11GetSymbolInfoTick\x12\x1d.mt5.marketdata.SymbolRequest\x1a\x0f.mt5.types.Tick\x12Y\n\x0cSelectSymbol\x12#.mt5.marketdata.SelectSymbolRequest\x1a$.mt5.marketdata.SelectSymbolResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -46,5 +46,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_SELECTSYMBOLRESPONSE']._serialized_start=298
   _globals['_SELECTSYMBOLRESPONSE']._serialized_end=337
   _globals['_MARKETDATASERVICE']._serialized_start=340
-  _globals['_MARKETDATASERVICE']._serialized_end=681
+  _globals['_MARKETDATASERVICE']._serialized_end=750
 # @@protoc_insertion_point(module_scope)

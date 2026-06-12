@@ -9,6 +9,7 @@ service MarketDataService {
   rpc GetSymbolsTotal(google.protobuf.Empty) returns (SymbolsTotalResponse);
   rpc GetSymbols(SymbolsRequest) returns (SymbolsResponse);
   rpc GetSymbolInfo(SymbolRequest) returns (types.SymbolInfo);
+  rpc GetSymbolInfoTick(SymbolRequest) returns (types.Tick);
   rpc SelectSymbol(SelectSymbolRequest) returns (SelectSymbolResponse);
 }
 

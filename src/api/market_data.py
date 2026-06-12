@@ -17,7 +17,7 @@ import MetaTrader5 as mt5
 from src.stubs.market_data_pb2_grpc import MarketDataServiceServicer
 from src.stubs import market_data_pb2, types_pb2
 from src.api.exceptions import MT5Exception
-from src.api.helpers import convert_symbol_info
+from src.api.helpers import convert_symbol_info, convert_tick
 
 
 class MarketDataService(MarketDataServiceServicer):
@@ -99,6 +99,28 @@ class MarketDataService(MarketDataServiceServicer):
             raise MT5Exception(error_code, description)
 
         return convert_symbol_info(result)
+
+    def GetSymbolInfoTick(self, request, context) -> types_pb2.Tick:
+        """
+        Get the last tick for a specific symbol.
+
+        Args:
+            request: SymbolRequest with symbol name
+            context: gRPC context for error handling
+
+        Returns:
+            Tick protobuf message with the latest tick data
+
+        Raises:
+            MT5Exception: If MT5 API call fails or tick not found
+        """
+        result = mt5.symbol_info_tick(request.symbol)
+
+        if result is None:
+            error_code, description = mt5.last_error()
+            raise MT5Exception(error_code, description)
+
+        return convert_tick(result)
 
     def SelectSymbol(
         self, request, context

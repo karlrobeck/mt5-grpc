@@ -33,6 +33,9 @@ We are proud to release version `1.2.0` of **MT5 gRPC Service**. This release in
 ### 4. Empty Market Depth Handling
 - Modified `GetMarketDepth` to return `success=True` with an empty collection if the book contains `0` entries (e.g. immediately after subscription or when market is closed), rather than raising a gRPC exception.
 
+### 5. GetSymbolInfoTick added to MarketDataService
+- Added the `GetSymbolInfoTick` RPC method to `MarketDataService` (taking `SymbolRequest` and returning `types.Tick`). This provides a cleaner classification of the native `mt5.symbol_info_tick()` query inside the Market Data namespace.
+
 ---
 
 # Release Notes - v1.1.1

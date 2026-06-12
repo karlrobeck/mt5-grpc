@@ -51,6 +51,11 @@ class MarketDataServiceStub:
                 request_serializer=market__data__pb2.SymbolRequest.SerializeToString,
                 response_deserializer=types__pb2.SymbolInfo.FromString,
                 _registered_method=True)
+        self.GetSymbolInfoTick = channel.unary_unary(
+                '/mt5.marketdata.MarketDataService/GetSymbolInfoTick',
+                request_serializer=market__data__pb2.SymbolRequest.SerializeToString,
+                response_deserializer=types__pb2.Tick.FromString,
+                _registered_method=True)
         self.SelectSymbol = channel.unary_unary(
                 '/mt5.marketdata.MarketDataService/SelectSymbol',
                 request_serializer=market__data__pb2.SelectSymbolRequest.SerializeToString,
@@ -79,6 +84,12 @@ class MarketDataServiceServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetSymbolInfoTick(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def SelectSymbol(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -102,6 +113,11 @@ def add_MarketDataServiceServicer_to_server(servicer, server):
                     servicer.GetSymbolInfo,
                     request_deserializer=market__data__pb2.SymbolRequest.FromString,
                     response_serializer=types__pb2.SymbolInfo.SerializeToString,
+            ),
+            'GetSymbolInfoTick': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetSymbolInfoTick,
+                    request_deserializer=market__data__pb2.SymbolRequest.FromString,
+                    response_serializer=types__pb2.Tick.SerializeToString,
             ),
             'SelectSymbol': grpc.unary_unary_rpc_method_handler(
                     servicer.SelectSymbol,
@@ -190,6 +206,33 @@ class MarketDataService:
             '/mt5.marketdata.MarketDataService/GetSymbolInfo',
             market__data__pb2.SymbolRequest.SerializeToString,
             types__pb2.SymbolInfo.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetSymbolInfoTick(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/mt5.marketdata.MarketDataService/GetSymbolInfoTick',
+            market__data__pb2.SymbolRequest.SerializeToString,
+            types__pb2.Tick.FromString,
             options,
             channel_credentials,
             insecure,

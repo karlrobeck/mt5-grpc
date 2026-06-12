@@ -203,3 +203,33 @@ def test_select_symbol_success(grpc_server, mt5_mock):
     assert code == grpc.StatusCode.OK
     assert response.success is True
     mt5_mock.symbol_select.assert_called_once_with("EURUSD", True)
+
+def test_get_symbol_info_tick_success(grpc_server, mt5_mock):
+    mock_tick = MockObject(
+        time=1600000000,
+        bid=1.1234,
+        ask=1.1235,
+        last=0.0,
+        volume=10,
+        time_msc=1600000000123,
+        flags=1,
+        volume_real=10.0
+    )
+    mt5_mock.symbol_info_tick.return_value = mock_tick
+
+    req = market_data_pb2.SymbolRequest(symbol="EURUSD")
+    rpc = grpc_server.invoke_unary_unary(
+        method_descriptor=market_data_pb2.DESCRIPTOR.services_by_name['MarketDataService'].methods_by_name['GetSymbolInfoTick'],
+        invocation_metadata=[
+            ('authorization', 'Basic MTIzNDU2OnBhc3N3b3JkMTIz'),
+            ('x-mt5-server', 'MT5-Server')
+        ],
+        request=req,
+        timeout=1.0
+    )
+
+    response, initial_metadata, code, details = rpc.termination()
+    assert code == grpc.StatusCode.OK
+    assert response.bid == 1.1234
+    assert response.ask == 1.1235
+    mt5_mock.symbol_info_tick.assert_called_once_with("EURUSD")
