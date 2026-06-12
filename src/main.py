@@ -1,5 +1,6 @@
 import click
 import logging
+import os
 import numpy
 import MetaTrader5 as mt5  # type: ignore
 
@@ -37,6 +38,8 @@ logger = logging.getLogger(__name__)
 @click.option("--host", default="127.0.0.1", help="host address")
 @click.option("--port", default="8080", help="port number")
 @click.option("--max-workers", default=10, help="Max thread pool executor workers")
+@click.option("--ssl-key", default=None, help="Path to the SSL private key file for HTTPS/TLS")
+@click.option("--ssl-cert", default=None, help="Path to the SSL certificate chain file for HTTPS/TLS")
 @click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging (DEBUG level)")
 def run_grpc(
     path: str | None, 
@@ -48,6 +51,8 @@ def run_grpc(
     host: str, 
     port: str, 
     max_workers: int,
+    ssl_key: str | None,
+    ssl_cert: str | None,
     verbose: bool
 ):
     """Run the MT5 gRPC service server."""
@@ -63,6 +68,20 @@ def run_grpc(
     # Validate login/password
     if (login is not None) != (password is not None):
         raise click.UsageError("Both --login and --password must be provided, or neither.")
+
+    # Validate SSL key/cert
+    if (ssl_key is not None) != (ssl_cert is not None):
+        raise click.UsageError("Both --ssl-key and --ssl-cert must be provided, or neither.")
+
+    if ssl_key is not None and ssl_cert is not None:
+        if not os.path.exists(ssl_key):
+            raise click.UsageError(f"SSL key file not found: {ssl_key}")
+        if not os.path.exists(ssl_cert):
+            raise click.UsageError(f"SSL certificate file not found: {ssl_cert}")
+        if not os.access(ssl_key, os.R_OK):
+            raise click.UsageError(f"SSL key file is not readable: {ssl_key}")
+        if not os.access(ssl_cert, os.R_OK):
+            raise click.UsageError(f"SSL certificate file is not readable: {ssl_cert}")
 
     init_args = {}
 
@@ -115,9 +134,22 @@ def run_grpc(
     rates_pb2_grpc.add_RatesServiceServicer_to_server(RatesService(),server)
     logger.info("All services registered successfully")
 
-    logger.info(f"Listening to {host}:{port}")
+    if ssl_key is not None and ssl_cert is not None:
+        logger.info(f"Loading SSL/TLS credentials...")
+        try:
+            with open(ssl_key, "rb") as f:
+                private_key = f.read()
+            with open(ssl_cert, "rb") as f:
+                certificate_chain = f.read()
+            server_credentials = grpc.ssl_server_credentials(((private_key, certificate_chain),))
+            server.add_secure_port(f"{host}:{port}", server_credentials)
+            logger.info(f"Listening securely to {host}:{port} (SSL/TLS enabled)")
+        except Exception as e:
+            raise RuntimeError(f"Failed to load SSL credentials or bind secure port: {e}")
+    else:
+        logger.info(f"Listening to {host}:{port}")
+        server.add_insecure_port(f"{host}:{port}")
 
-    server.add_insecure_port(f"{host}:{port}")
     server.start()
     server.wait_for_termination()
     

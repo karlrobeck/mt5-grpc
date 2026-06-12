@@ -1,3 +1,19 @@
+# Release Notes - v1.1.0
+
+We are proud to release version `1.1.0` of **MT5 gRPC Service**. This release introduces SSL/TLS support for secure gRPC communication, new command-line options for certificate keys and certificate chains, and path validation.
+
+---
+
+## Key Features and Enhancements in v1.1.0
+
+### 1. SSL/TLS Secure gRPC Communication (`--ssl-key` and `--ssl-cert`)
+- Added `--ssl-key` and `--ssl-cert` optional command-line flags to enable secure gRPC transport.
+- Checks and validates that both files are present, exist, and are readable before attempting to bind to the port.
+- Initializes gRPC server credentials via `grpc.ssl_server_credentials` and attaches the secure port via `add_secure_port`.
+- Automatically falls back to insecure communication (`add_insecure_port`) if the flags are omitted.
+
+---
+
 # Release Notes - v1.0.1
 
 We are proud to release version `1.0.1` of **MT5 gRPC Service**. This release introduces dynamic verbose logging, improved PyInstaller executable compilation, CLI testing, and simplified protobuf stub generation configurations.
