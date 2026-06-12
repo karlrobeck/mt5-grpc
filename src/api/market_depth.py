@@ -55,7 +55,7 @@ class MarketDepthService(MarketDepthServiceServicer):
 
         return market_depth_pb2.MarketDepthResponse(success=result)
 
-    def GetDepth(
+    def GetMarketDepth(
         self, request: market_depth_pb2.SymbolRequest, context: Any
     ) -> market_depth_pb2.MarketDepthResponse:
         """
