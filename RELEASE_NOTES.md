@@ -1,3 +1,40 @@
+# Release Notes - v1.2.0
+
+We are proud to release version `1.2.0` of **MT5 gRPC Service**. This release introduces significant API improvements (specifically simplifying calculations), supports robust field presence tracking, and resolves several key bugs reported in client environments.
+
+---
+
+## Breaking API Changes in v1.2.0
+
+### 1. Flat Calculation Request Layout
+- Refactored `CalcMarginRequest` and `CalcProfitRequest` in `trade.proto` to define parameter fields directly on the request messages instead of wrapping a nested `types.TradeRequest`. This matches the native MT5 functions directly and simplifies client integration:
+  - `CalcMarginRequest`: takes `action`, `symbol`, `volume`, and `price`.
+  - `CalcProfitRequest`: takes `action`, `symbol`, `volume`, `price_open`, and `price_close` (allowing hypothetical calculations between different open/close prices).
+
+### 2. Redundant Method Removal
+- Removed the redundant `LastTick` RPC method and `LastTickRequest` message from `ticks.proto`. Clients should query tick data or subscribe using standard methods.
+
+---
+
+## Key Features & Bug Fixes in v1.2.0
+
+### 1. Optional Fields & Preserving Falsy Values (`HasField()`)
+- Marked all primitive fields in `TradeRequest` and `Mt5TradeRequest` as `optional` in `types.proto`.
+- Updated `_convert_trade_request_to_dict` in `trade.py` to check presence with `HasField()` instead of truthiness. This ensures that explicitly set falsy or default values (e.g. `type=0` for BUY, `magic=0`, `deviation=0`) are not dropped during serialization.
+
+### 2. Safe NumPy Structured Array Record Access
+- Implemented a `get_field` utility in `helpers.py` that checks dictionary-style indexing (`obj['field']`) before falling back to attribute access. This resolves:
+  - All-zero rates and tick details caused by `hasattr` checks failing on NumPy structured records.
+  - Tick conversion crashes due to name collisions with the built-in NumPy `.flags` memory layout descriptor.
+
+### 3. Global History Queries by Ticket/Position
+- Updated history query handlers in `trade.py` to omit `date_from` and `date_to` parameters if a specific `ticket` or `position` filter is supplied, allowing MT5 to retrieve the matching records globally.
+
+### 4. Empty Market Depth Handling
+- Modified `GetMarketDepth` to return `success=True` with an empty collection if the book contains `0` entries (e.g. immediately after subscription or when market is closed), rather than raising a gRPC exception.
+
+---
+
 # Release Notes - v1.1.1
 
 We are proud to release version `1.1.1` of **MT5 gRPC Service**. This release introduces SSL/TLS support for secure gRPC communication, new command-line options for certificate keys and certificate chains, and path validation.

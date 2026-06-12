@@ -253,10 +253,12 @@ def test_get_history_deals_success(grpc_server, mt5_mock):
 def test_calc_margin_success(grpc_server, mt5_mock):
     mt5_mock.order_calc_margin.return_value = 1200.0
 
-    trade_req = types_pb2.TradeRequest(symbol="EURUSD", volume=1.0, price=1.1200)
-    trade_req.mt5.action = 1 # TRADE_ACTION_DEAL
-    
-    req = trade_pb2.CalcMarginRequest(request=trade_req)
+    req = trade_pb2.CalcMarginRequest(
+        action=0, # ORDER_TYPE_BUY
+        symbol="EURUSD",
+        volume=1.0,
+        price=1.1200
+    )
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['CalcMargin'],
         invocation_metadata=[
@@ -270,15 +272,18 @@ def test_calc_margin_success(grpc_server, mt5_mock):
     response, initial_metadata, code, details = rpc.termination()
     assert code == grpc.StatusCode.OK
     assert response.margin == 1200.0
-    mt5_mock.order_calc_margin.assert_called_once_with(1, "EURUSD", 1.0, 1.1200)
+    mt5_mock.order_calc_margin.assert_called_once_with(0, "EURUSD", 1.0, 1.1200)
 
 def test_calc_profit_success(grpc_server, mt5_mock):
     mt5_mock.order_calc_profit.return_value = 150.0
 
-    trade_req = types_pb2.TradeRequest(symbol="EURUSD", volume=1.0, price=1.1200)
-    trade_req.mt5.action = 1
-    
-    req = trade_pb2.CalcProfitRequest(request=trade_req)
+    req = trade_pb2.CalcProfitRequest(
+        action=0, # ORDER_TYPE_BUY
+        symbol="EURUSD",
+        volume=1.0,
+        price_open=1.1200,
+        price_close=1.1300
+    )
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['CalcProfit'],
         invocation_metadata=[
@@ -292,7 +297,7 @@ def test_calc_profit_success(grpc_server, mt5_mock):
     response, initial_metadata, code, details = rpc.termination()
     assert code == grpc.StatusCode.OK
     assert response.profit == 150.0
-    mt5_mock.order_calc_profit.assert_called_once_with(1, "EURUSD", 1.0, 1.1200, 1.1200)
+    mt5_mock.order_calc_profit.assert_called_once_with(0, "EURUSD", 1.0, 1.1200, 1.1300)
 
 def test_check_order_success(grpc_server, mt5_mock):
     mock_check = MockObject(
@@ -307,7 +312,18 @@ def test_check_order_success(grpc_server, mt5_mock):
     )
     mt5_mock.order_check.return_value = mock_check
 
-    trade_req = types_pb2.TradeRequest(symbol="EURUSD", volume=1.0, price=1.1200)
+    # Test with explicitly set falsy/default values (0/0.0)
+    trade_req = types_pb2.TradeRequest(
+        symbol="EURUSD", 
+        volume=1.0, 
+        price=1.1200,
+        deviation=0
+    )
+    trade_req.mt5.action = 1 # TRADE_ACTION_DEAL
+    trade_req.mt5.magic = 0
+    trade_req.mt5.type = 0 # ORDER_TYPE_BUY
+    trade_req.mt5.type_filling = 0 # ORDER_FILLING_FOK
+    trade_req.mt5.type_time = 0 # ORDER_TIME_GTC
     
     req = trade_pb2.CheckOrderRequest(request=trade_req)
     rpc = grpc_server.invoke_unary_unary(
@@ -324,6 +340,17 @@ def test_check_order_success(grpc_server, mt5_mock):
     assert code == grpc.StatusCode.OK
     assert response.retcode == 10009
     assert response.comment == "Check OK"
+    mt5_mock.order_check.assert_called_once_with({
+        "symbol": "EURUSD",
+        "volume": 1.0,
+        "price": 1.1200,
+        "deviation": 0,
+        "magic": 0,
+        "action": 1,
+        "type": 0,
+        "type_filling": 0,
+        "type_time": 0
+    })
 
 def test_send_order_success(grpc_server, mt5_mock):
     mock_result = MockObject(
@@ -358,3 +385,69 @@ def test_send_order_success(grpc_server, mt5_mock):
     assert response.retcode == 10009
     assert response.deal == 55555
     assert response.comment == "Done"
+
+def test_get_history_orders_by_ticket_success(grpc_server, mt5_mock):
+    mock_order = MockObject(
+        ticket=33333,
+        symbol="EURUSD",
+        volume_initial=1.0,
+        price_open=1.1200,
+        comment="history",
+        external_id=""
+    )
+    mt5_mock.history_orders_get.return_value = (mock_order,)
+
+    req = trade_pb2.HistoryOrdersRequest(ticket=33333)
+    rpc = grpc_server.invoke_unary_unary(
+        method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryOrders'],
+        invocation_metadata=[
+            ('authorization', 'Basic MTIzNDU2OnBhc3N3b3JkMTIz'),
+            ('x-mt5-server', 'MT5-Server')
+        ],
+        request=req,
+        timeout=1.0
+    )
+
+    response, initial_metadata, code, details = rpc.termination()
+    assert code == grpc.StatusCode.OK
+    assert len(response.orders) == 1
+    assert response.orders[0].ticket == 33333
+    mt5_mock.history_orders_get.assert_called_once_with(
+        group=None,
+        ticket=33333,
+        position=None
+    )
+
+def test_get_history_deals_by_position_success(grpc_server, mt5_mock):
+    mock_deal = MockObject(
+        ticket=44444,
+        order=33333,
+        symbol="EURUSD",
+        volume=1.0,
+        price=1.1200,
+        comment="deal",
+        external_id="",
+        position_id=22222
+    )
+    mt5_mock.history_deals_get.return_value = (mock_deal,)
+
+    req = trade_pb2.HistoryDealsRequest(position=22222)
+    rpc = grpc_server.invoke_unary_unary(
+        method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryDeals'],
+        invocation_metadata=[
+            ('authorization', 'Basic MTIzNDU2OnBhc3N3b3JkMTIz'),
+            ('x-mt5-server', 'MT5-Server')
+        ],
+        request=req,
+        timeout=1.0
+    )
+
+    response, initial_metadata, code, details = rpc.termination()
+    assert code == grpc.StatusCode.OK
+    assert len(response.deals) == 1
+    assert response.deals[0].ticket == 44444
+    mt5_mock.history_deals_get.assert_called_once_with(
+        group=None,
+        ticket=None,
+        position=22222
+    )

@@ -8,12 +8,6 @@ from typing import ClassVar as _ClassVar, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
-class LastTickRequest(_message.Message):
-    __slots__ = ("symbol",)
-    SYMBOL_FIELD_NUMBER: _ClassVar[int]
-    symbol: str
-    def __init__(self, symbol: _Optional[str] = ...) -> None: ...
-
 class TickFromRequest(_message.Message):
     __slots__ = ("symbol", "date_from", "count", "flags")
     SYMBOL_FIELD_NUMBER: _ClassVar[int]

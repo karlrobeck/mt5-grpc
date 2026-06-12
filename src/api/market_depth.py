@@ -76,7 +76,7 @@ class MarketDepthService(MarketDepthServiceServicer):
         """
         result = mt5.market_book_get(request.symbol)
 
-        if result is None or not result:
+        if result is None:
             error_code, description = mt5.last_error()
             raise MT5Exception(error_code, description)
 

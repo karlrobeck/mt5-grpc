@@ -3,6 +3,7 @@ syntax = "proto3";
 package mt5.trade;
 
 import "google/protobuf/empty.proto";
+import "enums.proto";
 import "types.proto";
 
 service TradeService {
@@ -90,7 +91,10 @@ message HistoryDealsResponse {
 
 // -- Calculations --
 message CalcMarginRequest {
-  types.TradeRequest request = 1;
+  enums.OrderType action = 1;
+  string symbol = 2;
+  double volume = 3;
+  double price = 4;
 }
 
 message CalcMarginResponse {
@@ -98,7 +102,11 @@ message CalcMarginResponse {
 }
 
 message CalcProfitRequest {
-  types.TradeRequest request = 1;
+  enums.OrderType action = 1;
+  string symbol = 2;
+  double volume = 3;
+  double price_open = 4;
+  double price_close = 5;
 }
 
 message CalcProfitResponse {

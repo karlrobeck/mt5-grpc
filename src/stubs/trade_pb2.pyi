@@ -1,4 +1,5 @@
 from google.protobuf import empty_pb2 as _empty_pb2
+import enums_pb2 as _enums_pb2
 import types_pb2 as _types_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
@@ -113,10 +114,16 @@ class HistoryDealsResponse(_message.Message):
     def __init__(self, deals: _Optional[_Iterable[_Union[_types_pb2.TradeDeal, _Mapping]]] = ...) -> None: ...
 
 class CalcMarginRequest(_message.Message):
-    __slots__ = ("request",)
-    REQUEST_FIELD_NUMBER: _ClassVar[int]
-    request: _types_pb2.TradeRequest
-    def __init__(self, request: _Optional[_Union[_types_pb2.TradeRequest, _Mapping]] = ...) -> None: ...
+    __slots__ = ("action", "symbol", "volume", "price")
+    ACTION_FIELD_NUMBER: _ClassVar[int]
+    SYMBOL_FIELD_NUMBER: _ClassVar[int]
+    VOLUME_FIELD_NUMBER: _ClassVar[int]
+    PRICE_FIELD_NUMBER: _ClassVar[int]
+    action: _enums_pb2.OrderType
+    symbol: str
+    volume: float
+    price: float
+    def __init__(self, action: _Optional[_Union[_enums_pb2.OrderType, str]] = ..., symbol: _Optional[str] = ..., volume: _Optional[float] = ..., price: _Optional[float] = ...) -> None: ...
 
 class CalcMarginResponse(_message.Message):
     __slots__ = ("margin",)
@@ -125,10 +132,18 @@ class CalcMarginResponse(_message.Message):
     def __init__(self, margin: _Optional[float] = ...) -> None: ...
 
 class CalcProfitRequest(_message.Message):
-    __slots__ = ("request",)
-    REQUEST_FIELD_NUMBER: _ClassVar[int]
-    request: _types_pb2.TradeRequest
-    def __init__(self, request: _Optional[_Union[_types_pb2.TradeRequest, _Mapping]] = ...) -> None: ...
+    __slots__ = ("action", "symbol", "volume", "price_open", "price_close")
+    ACTION_FIELD_NUMBER: _ClassVar[int]
+    SYMBOL_FIELD_NUMBER: _ClassVar[int]
+    VOLUME_FIELD_NUMBER: _ClassVar[int]
+    PRICE_OPEN_FIELD_NUMBER: _ClassVar[int]
+    PRICE_CLOSE_FIELD_NUMBER: _ClassVar[int]
+    action: _enums_pb2.OrderType
+    symbol: str
+    volume: float
+    price_open: float
+    price_close: float
+    def __init__(self, action: _Optional[_Union[_enums_pb2.OrderType, str]] = ..., symbol: _Optional[str] = ..., volume: _Optional[float] = ..., price_open: _Optional[float] = ..., price_close: _Optional[float] = ...) -> None: ...
 
 class CalcProfitResponse(_message.Message):
     __slots__ = ("profit",)

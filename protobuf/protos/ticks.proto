@@ -6,14 +6,9 @@ import "enums.proto";
 import "types.proto";
 
 service TickService {
-  rpc LastTick(LastTickRequest) returns (types.Tick);
   rpc CopyTicksFrom(TickFromRequest) returns (TicksResponse);
   rpc CopyTicksRange(TickRangeRequest) returns (TicksResponse);
   rpc ListenToSymbols(ListenToSymbolsRequest) returns (stream StreamTickResponse);
-}
-
-message LastTickRequest {
-  string symbol = 1;
 }
 
 message TickFromRequest {

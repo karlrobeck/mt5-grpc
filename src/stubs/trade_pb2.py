@@ -23,54 +23,55 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from . import enums_pb2 as enums__pb2
 from . import types_pb2 as types__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btrade.proto\x12\tmt5.trade\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0btypes.proto\">\n\rOrdersRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05group\x18\x02 \x01(\t\x12\x0e\n\x06ticket\x18\x03 \x01(\x03\"$\n\x13OrdersTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"7\n\x0eOrdersResponse\x12%\n\x06orders\x18\x01 \x03(\x0b\x32\x15.mt5.types.TradeOrder\"A\n\x10PositionsRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05group\x18\x02 \x01(\t\x12\x0e\n\x06ticket\x18\x03 \x01(\x03\"\'\n\x16PositionsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"@\n\x11PositionsResponse\x12+\n\tpositions\x18\x01 \x03(\x0b\x32\x18.mt5.types.TradePosition\"9\n\x13HistoryRangeRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\"k\n\x14HistoryOrdersRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\x12\r\n\x05group\x18\x03 \x01(\t\x12\x0e\n\x06ticket\x18\x04 \x01(\x03\x12\x10\n\x08position\x18\x05 \x01(\x03\"j\n\x13HistoryDealsRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\x12\r\n\x05group\x18\x03 \x01(\t\x12\x0e\n\x06ticket\x18\x04 \x01(\x03\x12\x10\n\x08position\x18\x05 \x01(\x03\"+\n\x1aHistoryOrdersTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\">\n\x15HistoryOrdersResponse\x12%\n\x06orders\x18\x01 \x03(\x0b\x32\x15.mt5.types.TradeOrder\"*\n\x19HistoryDealsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\";\n\x14HistoryDealsResponse\x12#\n\x05\x64\x65\x61ls\x18\x01 \x03(\x0b\x32\x14.mt5.types.TradeDeal\"=\n\x11\x43\x61lcMarginRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest\"$\n\x12\x43\x61lcMarginResponse\x12\x0e\n\x06margin\x18\x01 \x01(\x01\"=\n\x11\x43\x61lcProfitRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest\"$\n\x12\x43\x61lcProfitResponse\x12\x0e\n\x06profit\x18\x01 \x01(\x01\"=\n\x11\x43heckOrderRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest\"<\n\x10SendOrderRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest2\xc3\x07\n\x0cTradeService\x12H\n\x0eGetOrdersTotal\x12\x16.google.protobuf.Empty\x1a\x1e.mt5.trade.OrdersTotalResponse\x12@\n\tGetOrders\x12\x18.mt5.trade.OrdersRequest\x1a\x19.mt5.trade.OrdersResponse\x12N\n\x11GetPositionsTotal\x12\x16.google.protobuf.Empty\x1a!.mt5.trade.PositionsTotalResponse\x12I\n\x0cGetPositions\x12\x1b.mt5.trade.PositionsRequest\x1a\x1c.mt5.trade.PositionsResponse\x12^\n\x15GetHistoryOrdersTotal\x12\x1e.mt5.trade.HistoryRangeRequest\x1a%.mt5.trade.HistoryOrdersTotalResponse\x12U\n\x10GetHistoryOrders\x12\x1f.mt5.trade.HistoryOrdersRequest\x1a .mt5.trade.HistoryOrdersResponse\x12\\\n\x14GetHistoryDealsTotal\x12\x1e.mt5.trade.HistoryRangeRequest\x1a$.mt5.trade.HistoryDealsTotalResponse\x12R\n\x0fGetHistoryDeals\x12\x1e.mt5.trade.HistoryDealsRequest\x1a\x1f.mt5.trade.HistoryDealsResponse\x12I\n\nCalcMargin\x12\x1c.mt5.trade.CalcMarginRequest\x1a\x1d.mt5.trade.CalcMarginResponse\x12I\n\nCalcProfit\x12\x1c.mt5.trade.CalcProfitRequest\x1a\x1d.mt5.trade.CalcProfitResponse\x12G\n\nCheckOrder\x12\x1c.mt5.trade.CheckOrderRequest\x1a\x1b.mt5.types.TradeCheckResult\x12\x44\n\tSendOrder\x12\x1b.mt5.trade.SendOrderRequest\x1a\x1a.mt5.types.TradeSendResultb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0btrade.proto\x12\tmt5.trade\x1a\x1bgoogle/protobuf/empty.proto\x1a\x0b\x65nums.proto\x1a\x0btypes.proto\">\n\rOrdersRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05group\x18\x02 \x01(\t\x12\x0e\n\x06ticket\x18\x03 \x01(\x03\"$\n\x13OrdersTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"7\n\x0eOrdersResponse\x12%\n\x06orders\x18\x01 \x03(\x0b\x32\x15.mt5.types.TradeOrder\"A\n\x10PositionsRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\r\n\x05group\x18\x02 \x01(\t\x12\x0e\n\x06ticket\x18\x03 \x01(\x03\"\'\n\x16PositionsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\"@\n\x11PositionsResponse\x12+\n\tpositions\x18\x01 \x03(\x0b\x32\x18.mt5.types.TradePosition\"9\n\x13HistoryRangeRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\"k\n\x14HistoryOrdersRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\x12\r\n\x05group\x18\x03 \x01(\t\x12\x0e\n\x06ticket\x18\x04 \x01(\x03\x12\x10\n\x08position\x18\x05 \x01(\x03\"j\n\x13HistoryDealsRequest\x12\x11\n\tdate_from\x18\x01 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x02 \x01(\x03\x12\r\n\x05group\x18\x03 \x01(\t\x12\x0e\n\x06ticket\x18\x04 \x01(\x03\x12\x10\n\x08position\x18\x05 \x01(\x03\"+\n\x1aHistoryOrdersTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\">\n\x15HistoryOrdersResponse\x12%\n\x06orders\x18\x01 \x03(\x0b\x32\x15.mt5.types.TradeOrder\"*\n\x19HistoryDealsTotalResponse\x12\r\n\x05total\x18\x01 \x01(\x05\";\n\x14HistoryDealsResponse\x12#\n\x05\x64\x65\x61ls\x18\x01 \x03(\x0b\x32\x14.mt5.types.TradeDeal\"h\n\x11\x43\x61lcMarginRequest\x12$\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x14.mt5.enums.OrderType\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\r\n\x05price\x18\x04 \x01(\x01\"$\n\x12\x43\x61lcMarginResponse\x12\x0e\n\x06margin\x18\x01 \x01(\x01\"\x82\x01\n\x11\x43\x61lcProfitRequest\x12$\n\x06\x61\x63tion\x18\x01 \x01(\x0e\x32\x14.mt5.enums.OrderType\x12\x0e\n\x06symbol\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\x12\n\nprice_open\x18\x04 \x01(\x01\x12\x13\n\x0bprice_close\x18\x05 \x01(\x01\"$\n\x12\x43\x61lcProfitResponse\x12\x0e\n\x06profit\x18\x01 \x01(\x01\"=\n\x11\x43heckOrderRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest\"<\n\x10SendOrderRequest\x12(\n\x07request\x18\x01 \x01(\x0b\x32\x17.mt5.types.TradeRequest2\xc3\x07\n\x0cTradeService\x12H\n\x0eGetOrdersTotal\x12\x16.google.protobuf.Empty\x1a\x1e.mt5.trade.OrdersTotalResponse\x12@\n\tGetOrders\x12\x18.mt5.trade.OrdersRequest\x1a\x19.mt5.trade.OrdersResponse\x12N\n\x11GetPositionsTotal\x12\x16.google.protobuf.Empty\x1a!.mt5.trade.PositionsTotalResponse\x12I\n\x0cGetPositions\x12\x1b.mt5.trade.PositionsRequest\x1a\x1c.mt5.trade.PositionsResponse\x12^\n\x15GetHistoryOrdersTotal\x12\x1e.mt5.trade.HistoryRangeRequest\x1a%.mt5.trade.HistoryOrdersTotalResponse\x12U\n\x10GetHistoryOrders\x12\x1f.mt5.trade.HistoryOrdersRequest\x1a .mt5.trade.HistoryOrdersResponse\x12\\\n\x14GetHistoryDealsTotal\x12\x1e.mt5.trade.HistoryRangeRequest\x1a$.mt5.trade.HistoryDealsTotalResponse\x12R\n\x0fGetHistoryDeals\x12\x1e.mt5.trade.HistoryDealsRequest\x1a\x1f.mt5.trade.HistoryDealsResponse\x12I\n\nCalcMargin\x12\x1c.mt5.trade.CalcMarginRequest\x1a\x1d.mt5.trade.CalcMarginResponse\x12I\n\nCalcProfit\x12\x1c.mt5.trade.CalcProfitRequest\x1a\x1d.mt5.trade.CalcProfitResponse\x12G\n\nCheckOrder\x12\x1c.mt5.trade.CheckOrderRequest\x1a\x1b.mt5.types.TradeCheckResult\x12\x44\n\tSendOrder\x12\x1b.mt5.trade.SendOrderRequest\x1a\x1a.mt5.types.TradeSendResultb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'trade_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_ORDERSREQUEST']._serialized_start=68
-  _globals['_ORDERSREQUEST']._serialized_end=130
-  _globals['_ORDERSTOTALRESPONSE']._serialized_start=132
-  _globals['_ORDERSTOTALRESPONSE']._serialized_end=168
-  _globals['_ORDERSRESPONSE']._serialized_start=170
-  _globals['_ORDERSRESPONSE']._serialized_end=225
-  _globals['_POSITIONSREQUEST']._serialized_start=227
-  _globals['_POSITIONSREQUEST']._serialized_end=292
-  _globals['_POSITIONSTOTALRESPONSE']._serialized_start=294
-  _globals['_POSITIONSTOTALRESPONSE']._serialized_end=333
-  _globals['_POSITIONSRESPONSE']._serialized_start=335
-  _globals['_POSITIONSRESPONSE']._serialized_end=399
-  _globals['_HISTORYRANGEREQUEST']._serialized_start=401
-  _globals['_HISTORYRANGEREQUEST']._serialized_end=458
-  _globals['_HISTORYORDERSREQUEST']._serialized_start=460
-  _globals['_HISTORYORDERSREQUEST']._serialized_end=567
-  _globals['_HISTORYDEALSREQUEST']._serialized_start=569
-  _globals['_HISTORYDEALSREQUEST']._serialized_end=675
-  _globals['_HISTORYORDERSTOTALRESPONSE']._serialized_start=677
-  _globals['_HISTORYORDERSTOTALRESPONSE']._serialized_end=720
-  _globals['_HISTORYORDERSRESPONSE']._serialized_start=722
-  _globals['_HISTORYORDERSRESPONSE']._serialized_end=784
-  _globals['_HISTORYDEALSTOTALRESPONSE']._serialized_start=786
-  _globals['_HISTORYDEALSTOTALRESPONSE']._serialized_end=828
-  _globals['_HISTORYDEALSRESPONSE']._serialized_start=830
-  _globals['_HISTORYDEALSRESPONSE']._serialized_end=889
-  _globals['_CALCMARGINREQUEST']._serialized_start=891
-  _globals['_CALCMARGINREQUEST']._serialized_end=952
-  _globals['_CALCMARGINRESPONSE']._serialized_start=954
-  _globals['_CALCMARGINRESPONSE']._serialized_end=990
-  _globals['_CALCPROFITREQUEST']._serialized_start=992
-  _globals['_CALCPROFITREQUEST']._serialized_end=1053
-  _globals['_CALCPROFITRESPONSE']._serialized_start=1055
-  _globals['_CALCPROFITRESPONSE']._serialized_end=1091
-  _globals['_CHECKORDERREQUEST']._serialized_start=1093
-  _globals['_CHECKORDERREQUEST']._serialized_end=1154
-  _globals['_SENDORDERREQUEST']._serialized_start=1156
-  _globals['_SENDORDERREQUEST']._serialized_end=1216
-  _globals['_TRADESERVICE']._serialized_start=1219
-  _globals['_TRADESERVICE']._serialized_end=2182
+  _globals['_ORDERSREQUEST']._serialized_start=81
+  _globals['_ORDERSREQUEST']._serialized_end=143
+  _globals['_ORDERSTOTALRESPONSE']._serialized_start=145
+  _globals['_ORDERSTOTALRESPONSE']._serialized_end=181
+  _globals['_ORDERSRESPONSE']._serialized_start=183
+  _globals['_ORDERSRESPONSE']._serialized_end=238
+  _globals['_POSITIONSREQUEST']._serialized_start=240
+  _globals['_POSITIONSREQUEST']._serialized_end=305
+  _globals['_POSITIONSTOTALRESPONSE']._serialized_start=307
+  _globals['_POSITIONSTOTALRESPONSE']._serialized_end=346
+  _globals['_POSITIONSRESPONSE']._serialized_start=348
+  _globals['_POSITIONSRESPONSE']._serialized_end=412
+  _globals['_HISTORYRANGEREQUEST']._serialized_start=414
+  _globals['_HISTORYRANGEREQUEST']._serialized_end=471
+  _globals['_HISTORYORDERSREQUEST']._serialized_start=473
+  _globals['_HISTORYORDERSREQUEST']._serialized_end=580
+  _globals['_HISTORYDEALSREQUEST']._serialized_start=582
+  _globals['_HISTORYDEALSREQUEST']._serialized_end=688
+  _globals['_HISTORYORDERSTOTALRESPONSE']._serialized_start=690
+  _globals['_HISTORYORDERSTOTALRESPONSE']._serialized_end=733
+  _globals['_HISTORYORDERSRESPONSE']._serialized_start=735
+  _globals['_HISTORYORDERSRESPONSE']._serialized_end=797
+  _globals['_HISTORYDEALSTOTALRESPONSE']._serialized_start=799
+  _globals['_HISTORYDEALSTOTALRESPONSE']._serialized_end=841
+  _globals['_HISTORYDEALSRESPONSE']._serialized_start=843
+  _globals['_HISTORYDEALSRESPONSE']._serialized_end=902
+  _globals['_CALCMARGINREQUEST']._serialized_start=904
+  _globals['_CALCMARGINREQUEST']._serialized_end=1008
+  _globals['_CALCMARGINRESPONSE']._serialized_start=1010
+  _globals['_CALCMARGINRESPONSE']._serialized_end=1046
+  _globals['_CALCPROFITREQUEST']._serialized_start=1049
+  _globals['_CALCPROFITREQUEST']._serialized_end=1179
+  _globals['_CALCPROFITRESPONSE']._serialized_start=1181
+  _globals['_CALCPROFITRESPONSE']._serialized_end=1217
+  _globals['_CHECKORDERREQUEST']._serialized_start=1219
+  _globals['_CHECKORDERREQUEST']._serialized_end=1280
+  _globals['_SENDORDERREQUEST']._serialized_start=1282
+  _globals['_SENDORDERREQUEST']._serialized_end=1342
+  _globals['_TRADESERVICE']._serialized_start=1345
+  _globals['_TRADESERVICE']._serialized_end=2308
 # @@protoc_insertion_point(module_scope)

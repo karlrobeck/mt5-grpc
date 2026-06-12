@@ -326,17 +326,17 @@ message Mt5TradeDeal {
 
 // -- TradeRequest (Section 10.1) --
 message TradeRequest {
-  string symbol = 1;
-  double volume = 2;
-  double price = 3;
-  double stoplimit = 4;
-  double sl = 5;
-  double tp = 6;
-  int32 deviation = 7;
-  int64 expiration = 8;
-  string comment = 9;
-  int64 order = 10;
-  int64 position = 11;
+  optional string symbol = 1;
+  optional double volume = 2;
+  optional double price = 3;
+  optional double stoplimit = 4;
+  optional double sl = 5;
+  optional double tp = 6;
+  optional int32 deviation = 7;
+  optional int64 expiration = 8;
+  optional string comment = 9;
+  optional int64 order = 10;
+  optional int64 position = 11;
 
   oneof broker_ext {
     Mt5TradeRequest mt5 = 20;
@@ -344,12 +344,12 @@ message TradeRequest {
 }
 
 message Mt5TradeRequest {
-  enums.TradeRequestAction action = 1;
-  int64 magic = 2;
-  enums.OrderType type = 3;
-  enums.OrderTypeFilling type_filling = 4;
-  enums.OrderTypeTime type_time = 5;
-  int64 position_by = 6;
+  optional enums.TradeRequestAction action = 1;
+  optional int64 magic = 2;
+  optional enums.OrderType type = 3;
+  optional enums.OrderTypeFilling type_filling = 4;
+  optional enums.OrderTypeTime type_time = 5;
+  optional int64 position_by = 6;
 }
 
 // -- TradeCheckResult (Section 10.2) --

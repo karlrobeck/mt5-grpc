@@ -250,13 +250,19 @@ class TradeService(TradeServiceServicer):
         ticket = request.ticket if request.ticket else None
         position = request.position if request.position else None
 
-        result = mt5.history_orders_get(
-            date_from=request.date_from,
-            date_to=request.date_to,
-            group=group,
-            ticket=ticket,
-            position=position,
-        )
+        if ticket is not None or position is not None:
+            # Query history globally by ticket or position
+            result = mt5.history_orders_get(
+                group=group,
+                ticket=ticket,
+                position=position,
+            )
+        else:
+            result = mt5.history_orders_get(
+                date_from=request.date_from,
+                date_to=request.date_to,
+                group=group,
+            )
 
         # Handle empty result gracefully (no history found is not an error)
         if result is None:
@@ -339,13 +345,19 @@ class TradeService(TradeServiceServicer):
         ticket = request.ticket if request.ticket else None
         position = request.position if request.position else None
 
-        result = mt5.history_deals_get(
-            date_from=request.date_from,
-            date_to=request.date_to,
-            group=group,
-            ticket=ticket,
-            position=position,
-        )
+        if ticket is not None or position is not None:
+            # Query history globally by ticket or position
+            result = mt5.history_deals_get(
+                group=group,
+                ticket=ticket,
+                position=position,
+            )
+        else:
+            result = mt5.history_deals_get(
+                date_from=request.date_from,
+                date_to=request.date_to,
+                group=group,
+            )
 
         # Handle empty result gracefully (no history found is not an error)
         if result is None:
@@ -380,13 +392,11 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug("CalcMargin called")
 
-        # Extract calculation parameters from nested TradeRequest
-        trade_req = request.request
         result = mt5.order_calc_margin(
-            trade_req.mt5.action,
-            trade_req.symbol,
-            trade_req.volume,
-            trade_req.price,
+            request.action,
+            request.symbol,
+            request.volume,
+            request.price,
         )
 
         if result is None:
@@ -419,14 +429,12 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug("CalcProfit called")
 
-        # Extract calculation parameters from nested TradeRequest
-        trade_req = request.request
         result = mt5.order_calc_profit(
-            trade_req.mt5.action,
-            trade_req.symbol,
-            trade_req.volume,
-            trade_req.price,
-            trade_req.price,  # price_open and price_close (using same price field)
+            request.action,
+            request.symbol,
+            request.volume,
+            request.price_open,
+            request.price_close,
         )
 
         if result is None:
@@ -567,43 +575,44 @@ class TradeService(TradeServiceServicer):
         request_dict: Dict[str, Any] = {}
 
         # Generic fields
-        if trade_request.symbol:
+        if trade_request.HasField("symbol"):
             request_dict["symbol"] = trade_request.symbol
-        if trade_request.volume:
+        if trade_request.HasField("volume"):
             request_dict["volume"] = trade_request.volume
-        if trade_request.price:
+        if trade_request.HasField("price"):
             request_dict["price"] = trade_request.price
-        if trade_request.stoplimit:
+        if trade_request.HasField("stoplimit"):
             request_dict["stoplimit"] = trade_request.stoplimit
-        if trade_request.sl:
+        if trade_request.HasField("sl"):
             request_dict["sl"] = trade_request.sl
-        if trade_request.tp:
+        if trade_request.HasField("tp"):
             request_dict["tp"] = trade_request.tp
-        if trade_request.deviation:
+        if trade_request.HasField("deviation"):
             request_dict["deviation"] = trade_request.deviation
-        if trade_request.expiration:
+        if trade_request.HasField("expiration"):
             request_dict["expiration"] = trade_request.expiration
-        if trade_request.comment:
+        if trade_request.HasField("comment"):
             request_dict["comment"] = trade_request.comment
-        if trade_request.order:
+        if trade_request.HasField("order"):
             request_dict["order"] = trade_request.order
-        if trade_request.position:
+        if trade_request.HasField("position"):
             request_dict["position"] = trade_request.position
 
         # MT5-specific nested fields
-        mt5_request = trade_request.mt5
-        if mt5_request.action:
-            request_dict["action"] = mt5_request.action
-        if mt5_request.magic:
-            request_dict["magic"] = mt5_request.magic
-        if mt5_request.type:
-            request_dict["type"] = mt5_request.type
-        if mt5_request.type_filling:
-            request_dict["type_filling"] = mt5_request.type_filling
-        if mt5_request.type_time:
-            request_dict["type_time"] = mt5_request.type_time
-        if mt5_request.position_by:
-            request_dict["position_by"] = mt5_request.position_by
+        if trade_request.HasField("mt5"):
+            mt5_request = trade_request.mt5
+            if mt5_request.HasField("action"):
+                request_dict["action"] = mt5_request.action
+            if mt5_request.HasField("magic"):
+                request_dict["magic"] = mt5_request.magic
+            if mt5_request.HasField("type"):
+                request_dict["type"] = mt5_request.type
+            if mt5_request.HasField("type_filling"):
+                request_dict["type_filling"] = mt5_request.type_filling
+            if mt5_request.HasField("type_time"):
+                request_dict["type_time"] = mt5_request.type_time
+            if mt5_request.HasField("position_by"):
+                request_dict["position_by"] = mt5_request.position_by
 
         return request_dict
 

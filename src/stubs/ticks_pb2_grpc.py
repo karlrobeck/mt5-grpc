@@ -4,7 +4,6 @@ import grpc
 import warnings
 
 from . import ticks_pb2 as ticks__pb2
-from . import types_pb2 as types__pb2
 
 GRPC_GENERATED_VERSION = '1.81.0'
 GRPC_VERSION = grpc.__version__
@@ -35,11 +34,6 @@ class TickServiceStub:
         Args:
             channel: A grpc.Channel.
         """
-        self.LastTick = channel.unary_unary(
-                '/mt5.ticks.TickService/LastTick',
-                request_serializer=ticks__pb2.LastTickRequest.SerializeToString,
-                response_deserializer=types__pb2.Tick.FromString,
-                _registered_method=True)
         self.CopyTicksFrom = channel.unary_unary(
                 '/mt5.ticks.TickService/CopyTicksFrom',
                 request_serializer=ticks__pb2.TickFromRequest.SerializeToString,
@@ -59,12 +53,6 @@ class TickServiceStub:
 
 class TickServiceServicer:
     """Missing associated documentation comment in .proto file."""
-
-    def LastTick(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
 
     def CopyTicksFrom(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -87,11 +75,6 @@ class TickServiceServicer:
 
 def add_TickServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'LastTick': grpc.unary_unary_rpc_method_handler(
-                    servicer.LastTick,
-                    request_deserializer=ticks__pb2.LastTickRequest.FromString,
-                    response_serializer=types__pb2.Tick.SerializeToString,
-            ),
             'CopyTicksFrom': grpc.unary_unary_rpc_method_handler(
                     servicer.CopyTicksFrom,
                     request_deserializer=ticks__pb2.TickFromRequest.FromString,
@@ -117,33 +100,6 @@ def add_TickServiceServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class TickService:
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def LastTick(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(
-            request,
-            target,
-            '/mt5.ticks.TickService/LastTick',
-            ticks__pb2.LastTickRequest.SerializeToString,
-            types__pb2.Tick.FromString,
-            options,
-            channel_credentials,
-            insecure,
-            call_credentials,
-            compression,
-            wait_for_ready,
-            timeout,
-            metadata,
-            _registered_method=True)
 
     @staticmethod
     def CopyTicksFrom(request,
