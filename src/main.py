@@ -37,6 +37,7 @@ logger = logging.getLogger(__name__)
 @click.option("--host", default="127.0.0.1", help="host address")
 @click.option("--port", default="8080", help="port number")
 @click.option("--max-workers", default=10, help="Max thread pool executor workers")
+@click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging (DEBUG level)")
 def run_grpc(
     path: str | None, 
     login: int | None,
@@ -46,9 +47,18 @@ def run_grpc(
     portable: bool,
     host: str, 
     port: str, 
-    max_workers: int
+    max_workers: int,
+    verbose: bool
 ):
     """Run the MT5 gRPC service server."""
+    # Configure logging
+    log_level = logging.DEBUG if verbose else logging.INFO
+    
+    logging.basicConfig(
+        level=log_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+
 
     # Validate login/password
     if (login is not None) != (password is not None):
