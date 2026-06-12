@@ -414,7 +414,11 @@ Future enhancements:
 
 ## Version History
 
-### 0.1.0 (Current)
+### 0.2.0 (Current)
+- Added `ListenToSymbols` gRPC method in `ticks.proto` for streaming tick data of multiple symbols.
+- Implemented authentication middleware support validating requests against CLI credentials and MT5 configuration.
+
+### 0.1.0
 - Initial release
 - Full MT5 API coverage
 - Complete error handling
