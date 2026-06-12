@@ -249,6 +249,7 @@ gRPC Client Response
 ### TicksService
 - `CopyTicksFrom()` - Get ticks starting from a specific date
 - `CopyTicksRange()` - Get ticks within a date range
+- `ListenToSymbols()` - Stream real-time tick updates for a list of symbols (Server Streaming API)
 
 ## Development
 
