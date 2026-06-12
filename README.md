@@ -436,7 +436,20 @@ Future enhancements:
 
 ## Version History
 
-### 0.2.0 (Current)
+### 1.0.1 (Current)
+- Added `-v` / `--verbose` command-line flag to configure logging level dynamically (enables `DEBUG` mode).
+- Improved CLI startup logging to output server listening address via standard logging instead of plain standard output.
+- Updated protobuf generation scripts in `justfile` to dynamically glob all proto files.
+
+### 1.0.0
+- Transitioned to production-ready packageable architecture with modern `src/` layout.
+- Switched build backend to `hatchling` and added support for direct `uvx` execution from Git repository.
+- Added comprehensive authentication middleware with server-side validation (`login`, `password`, and custom `X-MT5-Server` header).
+- Added real-time streaming support (`ListenToSymbols` method).
+- Integrated unit tests for CLI and authentication using `grpc-testing` framework.
+- Standardized PyInstaller standalone executable building pipeline.
+
+### 0.2.0
 - Added `ListenToSymbols` gRPC method in `ticks.proto` for streaming tick data of multiple symbols.
 - Implemented authentication middleware support validating requests against CLI credentials and MT5 configuration.
 

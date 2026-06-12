@@ -1,3 +1,24 @@
+# Release Notes - v1.0.1
+
+We are proud to release version `1.0.1` of **MT5 gRPC Service**. This release introduces dynamic verbose logging, improved PyInstaller executable compilation, CLI testing, and simplified protobuf stub generation configurations.
+
+---
+
+## Key Features and Enhancements in v1.0.1
+
+### 1. Dynamic Verbose Logging (`-v` / `--verbose`)
+- Added a `-v`/`--verbose` command-line flag to configure logging level to `DEBUG` dynamically (default is `INFO`).
+- Replaced standard output `print()` with standard logging (`logger.info`) for server listening address notifications.
+
+### 2. Streamlined Code Generation & Standalone Compilations
+- Updated `justfile`'s protobuf generation step to dynamically glob all proto files (`protobuf/protos/*.proto`) rather than hardcoding individual names.
+- Refactored PyInstaller compilation pipeline to build using `main.spec` with PyInstaller via `uv run --with pyinstaller`, fixing dependency inclusion issues.
+
+### 3. CLI Testing Suite
+- Added a comprehensive testing suite for CLI flags (validating `-v` / `--verbose` logging configurations).
+
+---
+
 # Release Notes - v1.0.0
 
 We are proud to release version `1.0.0` of **MT5 gRPC Service**. This version marks the project's transition to a production-ready, packageable, and secure gRPC interface layer for the MetaTrader 5 Python API on Windows.
