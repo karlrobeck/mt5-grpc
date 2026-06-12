@@ -103,7 +103,7 @@ wheels = [
 [[package]]
 name = "mt5-grpc"
 version = "0.2.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "grpcio" },

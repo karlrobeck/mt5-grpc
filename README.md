@@ -60,8 +60,23 @@ uv sync
 
 ### Running the Server
 
-Start the MT5 gRPC server:
+You can run the MT5 gRPC server directly using `uvx` (without cloning the repository), or run it locally as a package or module.
 
+#### Option A: Run directly from the Git repository (using `uvx`)
+```bash
+uvx --from git+https://github.com/karlrobeck/mt5-grpc mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
+```
+
+#### Option B: Run locally after installing the package
+```bash
+# Install the package in editable mode
+pip install -e . # or: uv pip install -e .
+
+# Run the CLI tool
+mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
+```
+
+#### Option C: Run using the Python module path
 ```bash
 python -m src.main serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
@@ -83,7 +98,7 @@ You can secure the gRPC server by configuring authentication credentials.
 Pass `--login`, `--password`, and/or `--server` parameters to the `serve` command:
 
 ```bash
-python main.py serve \
+mt5-grpc serve \
   --login 123456 \
   --password my_password \
   --server MetaQuotes-Demo
