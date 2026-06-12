@@ -1,5 +1,6 @@
 import click
 import logging
+import numpy
 import MetaTrader5 as mt5  # type: ignore
 
 import grpc

@@ -5,4 +5,4 @@ generate:
 	Get-ChildItem src/stubs/*_pb2*.py | ForEach-Object { $f = $_; (Get-Content $f) -replace '^import (\w+_pb2) as ', 'from . import $1 as ' | Set-Content $f }
 
 compile:
-	uvx pyinstaller --onefile src/main.py
+	uv run --with pyinstaller pyinstaller main.spec
