@@ -410,7 +410,6 @@ For issues, feature requests, or questions:
 
 Future enhancements:
 
-- [ ] Async/streaming support for market data
 - [ ] Client library for common languages (Python, Go, Node.js)
 
 ## Version History
