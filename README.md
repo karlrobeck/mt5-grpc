@@ -68,9 +68,9 @@ You can run the tool directly from git without cloning it first. To run the late
 uvx --from git+https://github.com/karlrobeck/mt5-grpc mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
 
-To run a specific release (such as `1.1.0`), pin the version by appending `@1.1.0` to the Git URL:
+To run a specific release (such as `1.1.1`), pin the version by appending `@1.1.1` to the Git URL:
 ```bash
-uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.1.0 mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
+uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.1.1 mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
 
 #### Option B: Run locally after installing the package
@@ -436,7 +436,7 @@ Future enhancements:
 
 ## Version History
 
-### 1.1.0 (Current)
+### 1.1.1 (Current)
 - Added SSL/TLS support for secure gRPC communication (`--ssl-key` and `--ssl-cert` CLI flags).
 - Added explicit file existence and readability validation for key/certificate paths.
 - Automatically falls back to insecure communication if SSL flags are omitted.

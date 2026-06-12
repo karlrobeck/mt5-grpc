@@ -1,10 +1,10 @@
-# Release Notes - v1.1.0
+# Release Notes - v1.1.1
 
-We are proud to release version `1.1.0` of **MT5 gRPC Service**. This release introduces SSL/TLS support for secure gRPC communication, new command-line options for certificate keys and certificate chains, and path validation.
+We are proud to release version `1.1.1` of **MT5 gRPC Service**. This release introduces SSL/TLS support for secure gRPC communication, new command-line options for certificate keys and certificate chains, and path validation.
 
 ---
 
-## Key Features and Enhancements in v1.1.0
+## Key Features and Enhancements in v1.1.1
 
 ### 1. SSL/TLS Secure gRPC Communication (`--ssl-key` and `--ssl-cert`)
 - Added `--ssl-key` and `--ssl-cert` optional command-line flags to enable secure gRPC transport.
