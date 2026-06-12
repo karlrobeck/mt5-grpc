@@ -8,7 +8,7 @@ Here is a summary of the key features and enhancements included in this release:
 
 ## Key Features
 
-### 1. 🚀 Zero-Setup Execution (`uvx` Support)
+### 1. Zero-Setup Execution (`uvx` Support)
 - You can now run the gRPC server instantly on any Windows machine using `uvx` without cloning the repository or manually installing dependencies:
   ```bash
   uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.0.0 mt5-grpc serve
@@ -16,16 +16,16 @@ Here is a summary of the key features and enhancements included in this release:
 - Restructured the project layout to place all source files under `src/` (conforming to modern Python packaging standards).
 - Switched the build system to `hatchling` and registered the global `mt5-grpc` CLI script alias.
 
-### 2. 🔑 Secure gRPC Authentication Middleware
+### 2. Secure gRPC Authentication Middleware
 - Added an authentication interceptor to restrict access to the gRPC server.
 - Supports server-side validation of client credentials (`login` and `password` via standard HTTP Basic auth) and verification of the target MetaTrader 5 server name (`X-MT5-Server` header).
 - Credentials can be configured during startup using `--login`, `--password`, and `--server` CLI flags.
 
-### 3. 📊 Real-Time Streaming (`ListenToSymbols`)
+### 3. Real-Time Streaming (`ListenToSymbols`)
 - Introduced the `ListenToSymbols` streaming RPC in `TickService`.
 - Allows clients to subscribe to and receive real-time, multiplexed tick data streams for a list of financial symbols in a single, persistent server-streaming connection.
 
-### 4. 🧪 Robust Pytest Test Suite
+### 4. Robust Pytest Test Suite
 - Integrated a comprehensive test suite using the `grpc-testing` framework to validate all service handlers.
 - The suite contains 41 tests covering:
   - Account and terminal metadata queries.
@@ -35,7 +35,7 @@ Here is a summary of the key features and enhancements included in this release:
   - Authentication middleware and header validation.
   - Custom gRPC error interceptors and conversion logic.
 
-### 5. 📦 Standalone Executable Bundling (PyInstaller)
+### 5. Standalone Executable Bundling (PyInstaller)
 - Updated PyInstaller configurations (`main.spec` and `justfile`) to build a single-file executable (`dist/main.exe`) directly from the package's entry point, enabling convenient distributions for Windows systems without Python installed.
 
 ---
