@@ -165,7 +165,7 @@ src/api/
 ├── middleware.py       # gRPC error handling interceptor
 ├── helpers.py          # MT5 → Protobuf conversion utilities
 ├── account.py          # AccountService (2 methods)
-├── market_data.py      # MarketDataService (4 methods)
+├── market_data.py      # MarketDataService (5 methods)
 ├── trade.py            # TradeService (12 methods)
 ├── market_depth.py     # MarketDepthService (3 methods)
 ├── rates.py            # RatesService (3 methods)
@@ -220,6 +220,7 @@ gRPC Client Response
 - `GetSymbolsTotal()` - Get total count of available symbols
 - `GetSymbols()` - Get list of symbols (with optional filtering)
 - `GetSymbolInfo()` - Get detailed information for a specific symbol
+- `GetSymbolInfoTick()` - Get the last tick for a specific symbol
 - `SelectSymbol()` - Add/remove symbol from MarketWatch
 
 ### TradeService
