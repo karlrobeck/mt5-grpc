@@ -63,8 +63,14 @@ uv sync
 You can run the MT5 gRPC server directly using `uvx` (without cloning the repository), or run it locally as a package or module.
 
 #### Option A: Run directly from the Git repository (using `uvx`)
+You can run the tool directly from git without cloning it first. To run the latest code from the default branch:
 ```bash
 uvx --from git+https://github.com/karlrobeck/mt5-grpc mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
+```
+
+To run a specific release (such as `1.0.0`), pin the version by appending `@1.0.0` to the Git URL:
+```bash
+uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.0.0 mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
 
 #### Option B: Run locally after installing the package
