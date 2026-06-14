@@ -1,5 +1,8 @@
+import datetime
+
 import enums_pb2 as _enums_pb2
 import types_pb2 as _types_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -16,9 +19,9 @@ class RatesFromRequest(_message.Message):
     COUNT_FIELD_NUMBER: _ClassVar[int]
     symbol: str
     timeframe: _enums_pb2.Timeframe
-    date_from: int
+    date_from: _timestamp_pb2.Timestamp
     count: int
-    def __init__(self, symbol: _Optional[str] = ..., timeframe: _Optional[_Union[_enums_pb2.Timeframe, str]] = ..., date_from: _Optional[int] = ..., count: _Optional[int] = ...) -> None: ...
+    def __init__(self, symbol: _Optional[str] = ..., timeframe: _Optional[_Union[_enums_pb2.Timeframe, str]] = ..., date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., count: _Optional[int] = ...) -> None: ...
 
 class RatesFromPosRequest(_message.Message):
     __slots__ = ("symbol", "timeframe", "start_pos", "count")
@@ -40,9 +43,9 @@ class RatesRangeRequest(_message.Message):
     DATE_TO_FIELD_NUMBER: _ClassVar[int]
     symbol: str
     timeframe: _enums_pb2.Timeframe
-    date_from: int
-    date_to: int
-    def __init__(self, symbol: _Optional[str] = ..., timeframe: _Optional[_Union[_enums_pb2.Timeframe, str]] = ..., date_from: _Optional[int] = ..., date_to: _Optional[int] = ...) -> None: ...
+    date_from: _timestamp_pb2.Timestamp
+    date_to: _timestamp_pb2.Timestamp
+    def __init__(self, symbol: _Optional[str] = ..., timeframe: _Optional[_Union[_enums_pb2.Timeframe, str]] = ..., date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., date_to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class RatesResponse(_message.Message):
     __slots__ = ("rates",)

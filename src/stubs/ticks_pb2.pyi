@@ -1,5 +1,8 @@
+import datetime
+
 import enums_pb2 as _enums_pb2
 import types_pb2 as _types_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -15,10 +18,10 @@ class TickFromRequest(_message.Message):
     COUNT_FIELD_NUMBER: _ClassVar[int]
     FLAGS_FIELD_NUMBER: _ClassVar[int]
     symbol: str
-    date_from: int
+    date_from: _timestamp_pb2.Timestamp
     count: int
     flags: _enums_pb2.CopyTicks
-    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[int] = ..., count: _Optional[int] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
+    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., count: _Optional[int] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
 
 class TickRangeRequest(_message.Message):
     __slots__ = ("symbol", "date_from", "date_to", "flags")
@@ -27,10 +30,10 @@ class TickRangeRequest(_message.Message):
     DATE_TO_FIELD_NUMBER: _ClassVar[int]
     FLAGS_FIELD_NUMBER: _ClassVar[int]
     symbol: str
-    date_from: int
-    date_to: int
+    date_from: _timestamp_pb2.Timestamp
+    date_to: _timestamp_pb2.Timestamp
     flags: _enums_pb2.CopyTicks
-    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[int] = ..., date_to: _Optional[int] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
+    def __init__(self, symbol: _Optional[str] = ..., date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., date_to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., flags: _Optional[_Union[_enums_pb2.CopyTicks, str]] = ...) -> None: ...
 
 class TicksResponse(_message.Message):
     __slots__ = ("ticks",)

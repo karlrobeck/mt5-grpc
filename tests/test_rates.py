@@ -1,5 +1,6 @@
 import pytest
 import grpc
+from google.protobuf.timestamp_pb2 import Timestamp
 from src.stubs import rates_pb2, types_pb2
 
 class MockObject:
@@ -20,7 +21,7 @@ def test_copy_rates_from_success(grpc_server, mt5_mock):
     )
     mt5_mock.copy_rates_from.return_value = (mock_rate,)
 
-    req = rates_pb2.RatesFromRequest(symbol="EURUSD", timeframe=1, date_from=1600000000, count=10)
+    req = rates_pb2.RatesFromRequest(symbol="EURUSD", timeframe=1, date_from=Timestamp(seconds=1600000000), count=10)
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=rates_pb2.DESCRIPTOR.services_by_name['RatesService'].methods_by_name['CopyRatesFrom'],
         invocation_metadata=[
@@ -41,7 +42,7 @@ def test_copy_rates_from_failure(grpc_server, mt5_mock):
     mt5_mock.copy_rates_from.return_value = None
     mt5_mock.last_error.return_value = (1000, "Copy rates failed")
 
-    req = rates_pb2.RatesFromRequest(symbol="EURUSD", timeframe=1, date_from=1600000000, count=10)
+    req = rates_pb2.RatesFromRequest(symbol="EURUSD", timeframe=1, date_from=Timestamp(seconds=1600000000), count=10)
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=rates_pb2.DESCRIPTOR.services_by_name['RatesService'].methods_by_name['CopyRatesFrom'],
         invocation_metadata=[
@@ -98,7 +99,7 @@ def test_copy_rates_range_success(grpc_server, mt5_mock):
     )
     mt5_mock.copy_rates_range.return_value = (mock_rate,)
 
-    req = rates_pb2.RatesRangeRequest(symbol="EURUSD", timeframe=1, date_from=1600000000, date_to=1600010000)
+    req = rates_pb2.RatesRangeRequest(symbol="EURUSD", timeframe=1, date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000))
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=rates_pb2.DESCRIPTOR.services_by_name['RatesService'].methods_by_name['CopyRatesRange'],
         invocation_metadata=[

@@ -1,6 +1,7 @@
 import pytest
 import grpc
 from google.protobuf import empty_pb2
+from google.protobuf.timestamp_pb2 import Timestamp
 from src.stubs import trade_pb2, types_pb2
 
 class MockObject:
@@ -131,7 +132,7 @@ def test_get_positions_success(grpc_server, mt5_mock):
 def test_get_history_orders_total_success(grpc_server, mt5_mock):
     mt5_mock.history_orders_total.return_value = 10
 
-    req = trade_pb2.HistoryRangeRequest(date_from=1600000000, date_to=1600010000)
+    req = trade_pb2.HistoryRangeRequest(date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000))
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryOrdersTotal'],
         invocation_metadata=[
@@ -176,7 +177,7 @@ def test_get_history_orders_success(grpc_server, mt5_mock):
     )
     mt5_mock.history_orders_get.return_value = (mock_order,)
 
-    req = trade_pb2.HistoryOrdersRequest(date_from=1600000000, date_to=1600010000)
+    req = trade_pb2.HistoryOrdersRequest(date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000))
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryOrders'],
         invocation_metadata=[
@@ -195,7 +196,7 @@ def test_get_history_orders_success(grpc_server, mt5_mock):
 def test_get_history_deals_total_success(grpc_server, mt5_mock):
     mt5_mock.history_deals_total.return_value = 8
 
-    req = trade_pb2.HistoryRangeRequest(date_from=1600000000, date_to=1600010000)
+    req = trade_pb2.HistoryRangeRequest(date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000))
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryDealsTotal'],
         invocation_metadata=[
@@ -234,7 +235,7 @@ def test_get_history_deals_success(grpc_server, mt5_mock):
     )
     mt5_mock.history_deals_get.return_value = (mock_deal,)
 
-    req = trade_pb2.HistoryDealsRequest(date_from=1600000000, date_to=1600010000)
+    req = trade_pb2.HistoryDealsRequest(date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000))
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=trade_pb2.DESCRIPTOR.services_by_name['TradeService'].methods_by_name['GetHistoryDeals'],
         invocation_metadata=[

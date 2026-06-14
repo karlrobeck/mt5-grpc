@@ -202,11 +202,11 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug(
             "GetHistoryOrdersTotal called with date_from=%d, date_to=%d",
-            request.date_from,
-            request.date_to,
+            request.date_from.seconds,
+            request.date_to.seconds,
         )
 
-        result = mt5.history_orders_total(request.date_from, request.date_to)
+        result = mt5.history_orders_total(request.date_from.seconds, request.date_to.seconds)
 
         if result is None:
             last_error = mt5.last_error()
@@ -238,8 +238,8 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug(
             "GetHistoryOrders called with date_from=%d, date_to=%d, group=%s, ticket=%d, position=%d",
-            request.date_from,
-            request.date_to,
+            request.date_from.seconds,
+            request.date_to.seconds,
             request.group,
             request.ticket,
             request.position,
@@ -259,8 +259,8 @@ class TradeService(TradeServiceServicer):
             )
         else:
             result = mt5.history_orders_get(
-                date_from=request.date_from,
-                date_to=request.date_to,
+                date_from=request.date_from.seconds,
+                date_to=request.date_to.seconds,
                 group=group,
             )
 
@@ -297,11 +297,11 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug(
             "GetHistoryDealsTotal called with date_from=%d, date_to=%d",
-            request.date_from,
-            request.date_to,
+            request.date_from.seconds,
+            request.date_to.seconds,
         )
 
-        result = mt5.history_deals_total(request.date_from, request.date_to)
+        result = mt5.history_deals_total(request.date_from.seconds, request.date_to.seconds)
 
         if result is None:
             last_error = mt5.last_error()
@@ -333,8 +333,8 @@ class TradeService(TradeServiceServicer):
         """
         logger.debug(
             "GetHistoryDeals called with date_from=%d, date_to=%d, group=%s, ticket=%d, position=%d",
-            request.date_from,
-            request.date_to,
+            request.date_from.seconds,
+            request.date_to.seconds,
             request.group,
             request.ticket,
             request.position,
@@ -354,8 +354,8 @@ class TradeService(TradeServiceServicer):
             )
         else:
             result = mt5.history_deals_get(
-                date_from=request.date_from,
-                date_to=request.date_to,
+                date_from=request.date_from.seconds,
+                date_to=request.date_to.seconds,
                 group=group,
             )
 
@@ -590,7 +590,7 @@ class TradeService(TradeServiceServicer):
         if trade_request.HasField("deviation"):
             request_dict["deviation"] = trade_request.deviation
         if trade_request.HasField("expiration"):
-            request_dict["expiration"] = trade_request.expiration
+            request_dict["expiration"] = trade_request.expiration.seconds
         if trade_request.HasField("comment"):
             request_dict["comment"] = trade_request.comment
         if trade_request.HasField("order"):
@@ -645,7 +645,7 @@ class TradeService(TradeServiceServicer):
         if "deviation" in request_dict:
             trade_request.deviation = int(request_dict["deviation"])
         if "expiration" in request_dict:
-            trade_request.expiration = int(request_dict["expiration"])
+            trade_request.expiration.FromSeconds(int(request_dict["expiration"]))
         if "comment" in request_dict:
             trade_request.comment = str(request_dict["comment"])
         if "order" in request_dict:
