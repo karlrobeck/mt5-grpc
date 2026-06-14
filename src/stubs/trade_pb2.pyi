@@ -1,4 +1,7 @@
+import datetime
+
 from google.protobuf import empty_pb2 as _empty_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
 import enums_pb2 as _enums_pb2
 import types_pb2 as _types_pb2
 from google.protobuf.internal import containers as _containers
@@ -57,9 +60,9 @@ class HistoryRangeRequest(_message.Message):
     __slots__ = ("date_from", "date_to")
     DATE_FROM_FIELD_NUMBER: _ClassVar[int]
     DATE_TO_FIELD_NUMBER: _ClassVar[int]
-    date_from: int
-    date_to: int
-    def __init__(self, date_from: _Optional[int] = ..., date_to: _Optional[int] = ...) -> None: ...
+    date_from: _timestamp_pb2.Timestamp
+    date_to: _timestamp_pb2.Timestamp
+    def __init__(self, date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., date_to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
 
 class HistoryOrdersRequest(_message.Message):
     __slots__ = ("date_from", "date_to", "group", "ticket", "position")
@@ -68,12 +71,12 @@ class HistoryOrdersRequest(_message.Message):
     GROUP_FIELD_NUMBER: _ClassVar[int]
     TICKET_FIELD_NUMBER: _ClassVar[int]
     POSITION_FIELD_NUMBER: _ClassVar[int]
-    date_from: int
-    date_to: int
+    date_from: _timestamp_pb2.Timestamp
+    date_to: _timestamp_pb2.Timestamp
     group: str
     ticket: int
     position: int
-    def __init__(self, date_from: _Optional[int] = ..., date_to: _Optional[int] = ..., group: _Optional[str] = ..., ticket: _Optional[int] = ..., position: _Optional[int] = ...) -> None: ...
+    def __init__(self, date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., date_to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., group: _Optional[str] = ..., ticket: _Optional[int] = ..., position: _Optional[int] = ...) -> None: ...
 
 class HistoryDealsRequest(_message.Message):
     __slots__ = ("date_from", "date_to", "group", "ticket", "position")
@@ -82,12 +85,12 @@ class HistoryDealsRequest(_message.Message):
     GROUP_FIELD_NUMBER: _ClassVar[int]
     TICKET_FIELD_NUMBER: _ClassVar[int]
     POSITION_FIELD_NUMBER: _ClassVar[int]
-    date_from: int
-    date_to: int
+    date_from: _timestamp_pb2.Timestamp
+    date_to: _timestamp_pb2.Timestamp
     group: str
     ticket: int
     position: int
-    def __init__(self, date_from: _Optional[int] = ..., date_to: _Optional[int] = ..., group: _Optional[str] = ..., ticket: _Optional[int] = ..., position: _Optional[int] = ...) -> None: ...
+    def __init__(self, date_from: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., date_to: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., group: _Optional[str] = ..., ticket: _Optional[int] = ..., position: _Optional[int] = ...) -> None: ...
 
 class HistoryOrdersTotalResponse(_message.Message):
     __slots__ = ("total",)

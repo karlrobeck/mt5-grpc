@@ -24,25 +24,26 @@ _sym_db = _symbol_database.Default()
 
 from . import enums_pb2 as enums__pb2
 from . import types_pb2 as types__pb2
+from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bticks.proto\x12\tmt5.ticks\x1a\x0b\x65nums.proto\x1a\x0btypes.proto\"h\n\x0fTickFromRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x11\n\tdate_from\x18\x02 \x01(\x03\x12\r\n\x05\x63ount\x18\x03 \x01(\x05\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"k\n\x10TickRangeRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x11\n\tdate_from\x18\x02 \x01(\x03\x12\x0f\n\x07\x64\x61te_to\x18\x03 \x01(\x03\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"/\n\rTicksResponse\x12\x1e\n\x05ticks\x18\x01 \x03(\x0b\x32\x0f.mt5.types.Tick\")\n\x16ListenToSymbolsRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\"D\n\x12StreamTickResponse\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x1e\n\x05ticks\x18\x02 \x01(\x0b\x32\x0f.mt5.types.Tick2\xf4\x01\n\x0bTickService\x12\x45\n\rCopyTicksFrom\x12\x1a.mt5.ticks.TickFromRequest\x1a\x18.mt5.ticks.TicksResponse\x12G\n\x0e\x43opyTicksRange\x12\x1b.mt5.ticks.TickRangeRequest\x1a\x18.mt5.ticks.TicksResponse\x12U\n\x0fListenToSymbols\x12!.mt5.ticks.ListenToSymbolsRequest\x1a\x1d.mt5.ticks.StreamTickResponse0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bticks.proto\x12\tmt5.ticks\x1a\x0b\x65nums.proto\x1a\x0btypes.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x01\n\x0fTickFromRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12-\n\tdate_from\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05\x63ount\x18\x03 \x01(\x05\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"\xa3\x01\n\x10TickRangeRequest\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12-\n\tdate_from\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12+\n\x07\x64\x61te_to\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12#\n\x05\x66lags\x18\x04 \x01(\x0e\x32\x14.mt5.enums.CopyTicks\"/\n\rTicksResponse\x12\x1e\n\x05ticks\x18\x01 \x03(\x0b\x32\x0f.mt5.types.Tick\")\n\x16ListenToSymbolsRequest\x12\x0f\n\x07symbols\x18\x01 \x03(\t\"D\n\x12StreamTickResponse\x12\x0e\n\x06symbol\x18\x01 \x01(\t\x12\x1e\n\x05ticks\x18\x02 \x01(\x0b\x32\x0f.mt5.types.Tick2\xf4\x01\n\x0bTickService\x12\x45\n\rCopyTicksFrom\x12\x1a.mt5.ticks.TickFromRequest\x1a\x18.mt5.ticks.TicksResponse\x12G\n\x0e\x43opyTicksRange\x12\x1b.mt5.ticks.TickRangeRequest\x1a\x18.mt5.ticks.TicksResponse\x12U\n\x0fListenToSymbols\x12!.mt5.ticks.ListenToSymbolsRequest\x1a\x1d.mt5.ticks.StreamTickResponse0\x01\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'ticks_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_TICKFROMREQUEST']._serialized_start=52
-  _globals['_TICKFROMREQUEST']._serialized_end=156
-  _globals['_TICKRANGEREQUEST']._serialized_start=158
-  _globals['_TICKRANGEREQUEST']._serialized_end=265
-  _globals['_TICKSRESPONSE']._serialized_start=267
-  _globals['_TICKSRESPONSE']._serialized_end=314
-  _globals['_LISTENTOSYMBOLSREQUEST']._serialized_start=316
-  _globals['_LISTENTOSYMBOLSREQUEST']._serialized_end=357
-  _globals['_STREAMTICKRESPONSE']._serialized_start=359
-  _globals['_STREAMTICKRESPONSE']._serialized_end=427
-  _globals['_TICKSERVICE']._serialized_start=430
-  _globals['_TICKSERVICE']._serialized_end=674
+  _globals['_TICKFROMREQUEST']._serialized_start=86
+  _globals['_TICKFROMREQUEST']._serialized_end=218
+  _globals['_TICKRANGEREQUEST']._serialized_start=221
+  _globals['_TICKRANGEREQUEST']._serialized_end=384
+  _globals['_TICKSRESPONSE']._serialized_start=386
+  _globals['_TICKSRESPONSE']._serialized_end=433
+  _globals['_LISTENTOSYMBOLSREQUEST']._serialized_start=435
+  _globals['_LISTENTOSYMBOLSREQUEST']._serialized_end=476
+  _globals['_STREAMTICKRESPONSE']._serialized_start=478
+  _globals['_STREAMTICKRESPONSE']._serialized_end=546
+  _globals['_TICKSERVICE']._serialized_start=549
+  _globals['_TICKSERVICE']._serialized_end=793
 # @@protoc_insertion_point(module_scope)

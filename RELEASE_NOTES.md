@@ -1,3 +1,35 @@
+# Release Notes - v1.3.0
+
+We are proud to release version `1.3.0` of **MT5 gRPC Service**. This release introduces a complete migration of dates, times, and duration fields from raw `int64` integers to standard gRPC Well-Known Types (`google.protobuf.Timestamp` and `google.protobuf.Duration`), enhancing API compliance, type safety, and readability.
+
+---
+
+## Breaking API Changes in v1.3.0
+
+### 1. Raw Unix Timestamps replaced with `google.protobuf.Timestamp`
+- All date and time fields (e.g. `date_from`, `date_to`, `start_time`, `expiration_time`, `time_expiration`, `time`, `time_setup`, `time_done`, `time_update`, `expiration`) have been changed to `google.protobuf.Timestamp`. 
+- Requests (such as history, copy rates, copy ticks) must now supply valid protobuf Timestamp messages instead of raw Unix timestamp integers.
+
+### 2. Consolidated Second and Millisecond Split Fields
+- MetaTrader 5's split time/milliseconds fields (e.g., `time` / `time_msc`, `time_setup` / `time_setup_msc`, `time_done` / `time_done_msc`, `time_update` / `time_update_msc`) have been consolidated.
+- Deprecated `_msc` fields (like `time_msc`, `time_setup_msc`, `time_done_msc`, `time_update_msc`) have been deleted entirely. Millennium/nanosecond precision is natively stored and handled inside the `nanos` field of the `google.protobuf.Timestamp`.
+
+### 3. Latency Metric to `google.protobuf.Duration`
+- The `ping_last` latency field in `TerminalInfo` has been migrated from `int64` to `google.protobuf.Duration`.
+
+---
+
+## Key Features & Improvements in v1.3.0
+
+### 1. Robust Server-Side Time Processing
+- Implemented automated converting handlers in the Python service backend (`helpers.py`) to parse MT5 datetime attributes and milliseconds, converting them to clean, nanosecond-precise `google.protobuf.Timestamp` objects.
+- Updated gRPC services to seamlessly handle incoming request Timestamp parameters by extracting their `.seconds` components for MT5 backend compatibility.
+
+### 2. Refactored Test Suite
+- Updated all unit and integration tests in the test suite to pass compliant `Timestamp` messages, verifying successful end-to-end communication with the newly typed API.
+
+---
+
 # Release Notes - v1.2.0
 
 We are proud to release version `1.2.0` of **MT5 gRPC Service**. This release introduces significant API improvements (specifically simplifying calculations), supports robust field presence tracking, and resolves several key bugs reported in client environments.

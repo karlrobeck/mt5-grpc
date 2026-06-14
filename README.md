@@ -43,6 +43,8 @@ A production-ready gRPC service layer for MetaTrader5 Python API, providing remo
 
 ### Installation
 
+#### Method 1: Clone & Install (For Development)
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/karlrobeck/mt5-grpc.git
@@ -58,6 +60,13 @@ pip install -e .
 uv sync
 ```
 
+#### Method 2: Install directly via `uv tool`
+
+If you want to install `mt5-grpc` as a standalone CLI tool on your system without cloning the repository:
+```bash
+uv tool install git+https://github.com/karlrobeck/mt5-grpc
+```
+
 ### Running the Server
 
 You can run the MT5 gRPC server directly using `uvx` (without cloning the repository), or run it locally as a package or module.
@@ -68,9 +77,9 @@ You can run the tool directly from git without cloning it first. To run the late
 uvx --from git+https://github.com/karlrobeck/mt5-grpc mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
 
-To run a specific release (such as `1.2.0`), pin the version by appending `@1.2.0` to the Git URL:
+To run a specific release (such as `1.3.0`), pin the version by appending `@1.3.0` to the Git URL:
 ```bash
-uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.2.0 mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
+uvx --from git+https://github.com/karlrobeck/mt5-grpc@1.3.0 mt5-grpc serve --host 127.0.0.1 --port 8080 --max-workers 10
 ```
 
 #### Option B: Run locally after installing the package
@@ -437,7 +446,12 @@ Future enhancements:
 
 ## Version History
 
-### 1.2.0 (Current)
+### 1.3.0 (Current)
+- Migrated date, time, and duration fields in protobuf schemas to standard gRPC `google.protobuf.Timestamp` and `google.protobuf.Duration` types.
+- Consolidated split time/milliseconds fields (e.g. `time` and `time_msc`), removing redundant `_msc` fields.
+- Updated python service classes and test suites to fully support and validate the new datetime-like objects.
+
+### 1.2.0
 - Added SSL/TLS support for secure gRPC communication (`--ssl-key` and `--ssl-cert` CLI flags).
 - Added explicit file existence and readability validation for key/certificate paths.
 - Automatically falls back to insecure communication if SSL flags are omitted.

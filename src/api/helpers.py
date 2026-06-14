@@ -14,6 +14,25 @@ Each conversion function handles:
 
 from typing import Optional, Any
 from src.stubs import types_pb2
+from google.protobuf.timestamp_pb2 import Timestamp
+from google.protobuf.duration_pb2 import Duration
+
+
+def set_timestamp(field: Timestamp, seconds: Optional[Any], milliseconds: Optional[Any] = None) -> None:
+    if milliseconds is not None and milliseconds != 0:
+        val = int(milliseconds)
+        field.seconds = val // 1000
+        field.nanos = (val % 1000) * 1000000
+    elif seconds is not None:
+        field.seconds = int(seconds)
+        field.nanos = 0
+
+
+def set_duration_from_microseconds(field: Duration, us: Optional[Any]) -> None:
+    if us is not None:
+        val = int(us)
+        field.seconds = val // 1000000
+        field.nanos = (val % 1000000) * 1000
 
 
 def get_field(obj: Any, name: str) -> Any:
@@ -147,7 +166,7 @@ def convert_terminal_info(mt5_result: Any) -> types_pb2.TerminalInfo:
         msg.trade_allowed = bool(val)
     val = get_field(mt5_result, "ping_last")
     if val is not None:
-        msg.ping_last = int(val)
+        set_duration_from_microseconds(msg.ping_last, val)
     val = get_field(mt5_result, "company")
     if val is not None:
         msg.company = str(val)
@@ -279,10 +298,10 @@ def convert_symbol_info(mt5_result: Any) -> types_pb2.SymbolInfo:
         msg.price_volatility = float(val)
     val = get_field(mt5_result, "start_time")
     if val is not None:
-        msg.start_time = int(val)
+        set_timestamp(msg.start_time, val)
     val = get_field(mt5_result, "expiration_time")
     if val is not None:
-        msg.expiration_time = int(val)
+        set_timestamp(msg.expiration_time, val)
     val = get_field(mt5_result, "trade_stops_level")
     if val is not None:
         msg.trade_stops_level = int(val)
@@ -454,7 +473,7 @@ def convert_symbol_info(mt5_result: Any) -> types_pb2.SymbolInfo:
         mt5_msg.volumelow = int(val)
     val = get_field(mt5_result, "time")
     if val is not None:
-        mt5_msg.time = int(val)
+        set_timestamp(mt5_msg.time, val)
     val = get_field(mt5_result, "volume_limit")
     if val is not None:
         mt5_msg.volume_limit = float(val)
@@ -527,9 +546,9 @@ def convert_tick(mt5_result: Any) -> types_pb2.Tick:
     msg = types_pb2.Tick()
 
     # Generic fields
-    val = get_field(mt5_result, "time")
-    if val is not None:
-        msg.time = int(val)
+    time_val = get_field(mt5_result, "time")
+    time_msc_val = get_field(mt5_result, "time_msc")
+    set_timestamp(msg.time, time_val, time_msc_val)
     val = get_field(mt5_result, "bid")
     if val is not None:
         msg.bid = float(val)
@@ -542,9 +561,6 @@ def convert_tick(mt5_result: Any) -> types_pb2.Tick:
     val = get_field(mt5_result, "volume")
     if val is not None:
         msg.volume = float(val)
-    val = get_field(mt5_result, "time_msc")
-    if val is not None:
-        msg.time_msc = int(val)
     val = get_field(mt5_result, "volume_real")
     if val is not None:
         msg.volume_real = float(val)
@@ -567,7 +583,7 @@ def convert_rate(mt5_result: Any) -> types_pb2.Rate:
 
     val = get_field(mt5_result, "time")
     if val is not None:
-        msg.time = int(val)
+        set_timestamp(msg.time, val)
     val = get_field(mt5_result, "open")
     if val is not None:
         msg.open = float(val)
@@ -603,21 +619,15 @@ def convert_trade_order(mt5_result: Any) -> types_pb2.TradeOrder:
     val = get_field(mt5_result, "ticket")
     if val is not None:
         msg.ticket = int(val)
-    val = get_field(mt5_result, "time_setup")
-    if val is not None:
-        msg.time_setup = int(val)
-    val = get_field(mt5_result, "time_setup_msc")
-    if val is not None:
-        msg.time_setup_msc = int(val)
-    val = get_field(mt5_result, "time_done")
-    if val is not None:
-        msg.time_done = int(val)
-    val = get_field(mt5_result, "time_done_msc")
-    if val is not None:
-        msg.time_done_msc = int(val)
+    time_setup = get_field(mt5_result, "time_setup")
+    time_setup_msc = get_field(mt5_result, "time_setup_msc")
+    set_timestamp(msg.time_setup, time_setup, time_setup_msc)
+    time_done = get_field(mt5_result, "time_done")
+    time_done_msc = get_field(mt5_result, "time_done_msc")
+    set_timestamp(msg.time_done, time_done, time_done_msc)
     val = get_field(mt5_result, "time_expiration")
     if val is not None:
-        msg.time_expiration = int(val)
+        set_timestamp(msg.time_expiration, val)
     val = get_field(mt5_result, "volume_current")
     if val is not None:
         msg.volume_current = float(val)
@@ -690,18 +700,12 @@ def convert_trade_position(mt5_result: Any) -> types_pb2.TradePosition:
     val = get_field(mt5_result, "ticket")
     if val is not None:
         msg.ticket = int(val)
-    val = get_field(mt5_result, "time")
-    if val is not None:
-        msg.time = int(val)
-    val = get_field(mt5_result, "time_msc")
-    if val is not None:
-        msg.time_msc = int(val)
-    val = get_field(mt5_result, "time_update")
-    if val is not None:
-        msg.time_update = int(val)
-    val = get_field(mt5_result, "time_update_msc")
-    if val is not None:
-        msg.time_update_msc = int(val)
+    time_val = get_field(mt5_result, "time")
+    time_msc_val = get_field(mt5_result, "time_msc")
+    set_timestamp(msg.time, time_val, time_msc_val)
+    time_update_val = get_field(mt5_result, "time_update")
+    time_update_msc_val = get_field(mt5_result, "time_update_msc")
+    set_timestamp(msg.time_update, time_update_val, time_update_msc_val)
     val = get_field(mt5_result, "volume")
     if val is not None:
         msg.volume = float(val)
@@ -765,12 +769,9 @@ def convert_trade_deal(mt5_result: Any) -> types_pb2.TradeDeal:
     val = get_field(mt5_result, "order")
     if val is not None:
         msg.order = int(val)
-    val = get_field(mt5_result, "time")
-    if val is not None:
-        msg.time = int(val)
-    val = get_field(mt5_result, "time_msc")
-    if val is not None:
-        msg.time_msc = int(val)
+    time_val = get_field(mt5_result, "time")
+    time_msc_val = get_field(mt5_result, "time_msc")
+    set_timestamp(msg.time, time_val, time_msc_val)
     val = get_field(mt5_result, "volume")
     if val is not None:
         msg.volume = float(val)

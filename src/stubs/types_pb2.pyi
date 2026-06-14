@@ -1,4 +1,8 @@
+import datetime
+
 import enums_pb2 as _enums_pb2
+from google.protobuf import timestamp_pb2 as _timestamp_pb2
+from google.protobuf import duration_pb2 as _duration_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
 from collections.abc import Mapping as _Mapping
@@ -82,11 +86,11 @@ class TerminalInfo(_message.Message):
     MT5_FIELD_NUMBER: _ClassVar[int]
     connected: bool
     trade_allowed: bool
-    ping_last: int
+    ping_last: _duration_pb2.Duration
     company: str
     name: str
     mt5: Mt5TerminalInfo
-    def __init__(self, connected: _Optional[bool] = ..., trade_allowed: _Optional[bool] = ..., ping_last: _Optional[int] = ..., company: _Optional[str] = ..., name: _Optional[str] = ..., mt5: _Optional[_Union[Mt5TerminalInfo, _Mapping]] = ...) -> None: ...
+    def __init__(self, connected: _Optional[bool] = ..., trade_allowed: _Optional[bool] = ..., ping_last: _Optional[_Union[datetime.timedelta, _duration_pb2.Duration, _Mapping]] = ..., company: _Optional[str] = ..., name: _Optional[str] = ..., mt5: _Optional[_Union[Mt5TerminalInfo, _Mapping]] = ...) -> None: ...
 
 class Mt5TerminalInfo(_message.Message):
     __slots__ = ("community_account", "community_connection", "dlls_allowed", "tradeapi_disabled", "email_enabled", "ftp_enabled", "notifications_enabled", "mqid", "build", "maxbars", "codepage", "community_balance", "retransmission", "language", "path", "data_path", "commondata_path")
@@ -203,8 +207,8 @@ class SymbolInfo(_message.Message):
     margin_hedged: float
     price_change: float
     price_volatility: float
-    start_time: int
-    expiration_time: int
+    start_time: _timestamp_pb2.Timestamp
+    expiration_time: _timestamp_pb2.Timestamp
     trade_stops_level: int
     trade_freeze_level: int
     bidhigh: float
@@ -240,7 +244,7 @@ class SymbolInfo(_message.Message):
     trade_face_value: float
     trade_liquidity_rate: float
     mt5: Mt5SymbolInfo
-    def __init__(self, digits: _Optional[int] = ..., spread: _Optional[int] = ..., spread_float: _Optional[bool] = ..., bid: _Optional[float] = ..., ask: _Optional[float] = ..., last: _Optional[float] = ..., point: _Optional[float] = ..., trade_tick_size: _Optional[float] = ..., trade_contract_size: _Optional[float] = ..., volume_min: _Optional[float] = ..., volume_max: _Optional[float] = ..., volume_step: _Optional[float] = ..., swap_long: _Optional[float] = ..., swap_short: _Optional[float] = ..., margin_initial: _Optional[float] = ..., margin_maintenance: _Optional[float] = ..., margin_hedged: _Optional[float] = ..., price_change: _Optional[float] = ..., price_volatility: _Optional[float] = ..., start_time: _Optional[int] = ..., expiration_time: _Optional[int] = ..., trade_stops_level: _Optional[int] = ..., trade_freeze_level: _Optional[int] = ..., bidhigh: _Optional[float] = ..., bidlow: _Optional[float] = ..., askhigh: _Optional[float] = ..., asklow: _Optional[float] = ..., lasthigh: _Optional[float] = ..., lastlow: _Optional[float] = ..., volume: _Optional[float] = ..., volume_real: _Optional[float] = ..., volumehigh_real: _Optional[float] = ..., volumelow_real: _Optional[float] = ..., currency_base: _Optional[str] = ..., currency_profit: _Optional[str] = ..., currency_margin: _Optional[str] = ..., description: _Optional[str] = ..., exchange: _Optional[str] = ..., isin: _Optional[str] = ..., name: _Optional[str] = ..., trade_tick_value: _Optional[float] = ..., trade_tick_value_profit: _Optional[float] = ..., trade_tick_value_loss: _Optional[float] = ..., price_theoretical: _Optional[float] = ..., price_greeks_delta: _Optional[float] = ..., price_greeks_theta: _Optional[float] = ..., price_greeks_gamma: _Optional[float] = ..., price_greeks_vega: _Optional[float] = ..., price_greeks_rho: _Optional[float] = ..., price_greeks_omega: _Optional[float] = ..., price_sensitivity: _Optional[float] = ..., basis: _Optional[str] = ..., trade_accrued_interest: _Optional[float] = ..., trade_face_value: _Optional[float] = ..., trade_liquidity_rate: _Optional[float] = ..., mt5: _Optional[_Union[Mt5SymbolInfo, _Mapping]] = ...) -> None: ...
+    def __init__(self, digits: _Optional[int] = ..., spread: _Optional[int] = ..., spread_float: _Optional[bool] = ..., bid: _Optional[float] = ..., ask: _Optional[float] = ..., last: _Optional[float] = ..., point: _Optional[float] = ..., trade_tick_size: _Optional[float] = ..., trade_contract_size: _Optional[float] = ..., volume_min: _Optional[float] = ..., volume_max: _Optional[float] = ..., volume_step: _Optional[float] = ..., swap_long: _Optional[float] = ..., swap_short: _Optional[float] = ..., margin_initial: _Optional[float] = ..., margin_maintenance: _Optional[float] = ..., margin_hedged: _Optional[float] = ..., price_change: _Optional[float] = ..., price_volatility: _Optional[float] = ..., start_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., expiration_time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., trade_stops_level: _Optional[int] = ..., trade_freeze_level: _Optional[int] = ..., bidhigh: _Optional[float] = ..., bidlow: _Optional[float] = ..., askhigh: _Optional[float] = ..., asklow: _Optional[float] = ..., lasthigh: _Optional[float] = ..., lastlow: _Optional[float] = ..., volume: _Optional[float] = ..., volume_real: _Optional[float] = ..., volumehigh_real: _Optional[float] = ..., volumelow_real: _Optional[float] = ..., currency_base: _Optional[str] = ..., currency_profit: _Optional[str] = ..., currency_margin: _Optional[str] = ..., description: _Optional[str] = ..., exchange: _Optional[str] = ..., isin: _Optional[str] = ..., name: _Optional[str] = ..., trade_tick_value: _Optional[float] = ..., trade_tick_value_profit: _Optional[float] = ..., trade_tick_value_loss: _Optional[float] = ..., price_theoretical: _Optional[float] = ..., price_greeks_delta: _Optional[float] = ..., price_greeks_theta: _Optional[float] = ..., price_greeks_gamma: _Optional[float] = ..., price_greeks_vega: _Optional[float] = ..., price_greeks_rho: _Optional[float] = ..., price_greeks_omega: _Optional[float] = ..., price_sensitivity: _Optional[float] = ..., basis: _Optional[str] = ..., trade_accrued_interest: _Optional[float] = ..., trade_face_value: _Optional[float] = ..., trade_liquidity_rate: _Optional[float] = ..., mt5: _Optional[_Union[Mt5SymbolInfo, _Mapping]] = ...) -> None: ...
 
 class Mt5SymbolInfo(_message.Message):
     __slots__ = ("custom", "chart_mode", "select", "visible", "trade_calc_mode", "trade_mode", "trade_exemode", "swap_mode", "swap_rollover3days", "margin_hedged_use_leg", "expiration_mode", "filling_mode", "order_mode", "order_gtc_mode", "session_deals", "session_buy_orders", "session_sell_orders", "ticks_bookdepth", "volumehigh", "volumelow", "time", "volume_limit", "session_volume", "session_turnover", "session_interest", "session_buy_orders_volume", "session_sell_orders_volume", "session_open", "session_close", "session_aw", "session_price_settlement", "session_price_limit_min", "session_price_limit_max", "option_mode", "option_right", "option_strike", "category", "bank", "formula", "page", "path")
@@ -305,7 +309,7 @@ class Mt5SymbolInfo(_message.Message):
     ticks_bookdepth: int
     volumehigh: int
     volumelow: int
-    time: int
+    time: _timestamp_pb2.Timestamp
     volume_limit: float
     session_volume: float
     session_turnover: float
@@ -326,27 +330,25 @@ class Mt5SymbolInfo(_message.Message):
     formula: str
     page: str
     path: str
-    def __init__(self, custom: _Optional[bool] = ..., chart_mode: _Optional[_Union[_enums_pb2.SymbolChartMode, str]] = ..., select: _Optional[bool] = ..., visible: _Optional[bool] = ..., trade_calc_mode: _Optional[_Union[_enums_pb2.SymbolCalcMode, str]] = ..., trade_mode: _Optional[_Union[_enums_pb2.SymbolTradeMode, str]] = ..., trade_exemode: _Optional[_Union[_enums_pb2.SymbolTradeExecution, str]] = ..., swap_mode: _Optional[_Union[_enums_pb2.SymbolSwapMode, str]] = ..., swap_rollover3days: _Optional[_Union[_enums_pb2.DayOfWeek, str]] = ..., margin_hedged_use_leg: _Optional[bool] = ..., expiration_mode: _Optional[int] = ..., filling_mode: _Optional[int] = ..., order_mode: _Optional[int] = ..., order_gtc_mode: _Optional[_Union[_enums_pb2.SymbolOrderGtcMode, str]] = ..., session_deals: _Optional[int] = ..., session_buy_orders: _Optional[int] = ..., session_sell_orders: _Optional[int] = ..., ticks_bookdepth: _Optional[int] = ..., volumehigh: _Optional[int] = ..., volumelow: _Optional[int] = ..., time: _Optional[int] = ..., volume_limit: _Optional[float] = ..., session_volume: _Optional[float] = ..., session_turnover: _Optional[float] = ..., session_interest: _Optional[float] = ..., session_buy_orders_volume: _Optional[float] = ..., session_sell_orders_volume: _Optional[float] = ..., session_open: _Optional[float] = ..., session_close: _Optional[float] = ..., session_aw: _Optional[float] = ..., session_price_settlement: _Optional[float] = ..., session_price_limit_min: _Optional[float] = ..., session_price_limit_max: _Optional[float] = ..., option_mode: _Optional[_Union[_enums_pb2.SymbolOptionMode, str]] = ..., option_right: _Optional[_Union[_enums_pb2.SymbolOptionRight, str]] = ..., option_strike: _Optional[float] = ..., category: _Optional[str] = ..., bank: _Optional[str] = ..., formula: _Optional[str] = ..., page: _Optional[str] = ..., path: _Optional[str] = ...) -> None: ...
+    def __init__(self, custom: _Optional[bool] = ..., chart_mode: _Optional[_Union[_enums_pb2.SymbolChartMode, str]] = ..., select: _Optional[bool] = ..., visible: _Optional[bool] = ..., trade_calc_mode: _Optional[_Union[_enums_pb2.SymbolCalcMode, str]] = ..., trade_mode: _Optional[_Union[_enums_pb2.SymbolTradeMode, str]] = ..., trade_exemode: _Optional[_Union[_enums_pb2.SymbolTradeExecution, str]] = ..., swap_mode: _Optional[_Union[_enums_pb2.SymbolSwapMode, str]] = ..., swap_rollover3days: _Optional[_Union[_enums_pb2.DayOfWeek, str]] = ..., margin_hedged_use_leg: _Optional[bool] = ..., expiration_mode: _Optional[int] = ..., filling_mode: _Optional[int] = ..., order_mode: _Optional[int] = ..., order_gtc_mode: _Optional[_Union[_enums_pb2.SymbolOrderGtcMode, str]] = ..., session_deals: _Optional[int] = ..., session_buy_orders: _Optional[int] = ..., session_sell_orders: _Optional[int] = ..., ticks_bookdepth: _Optional[int] = ..., volumehigh: _Optional[int] = ..., volumelow: _Optional[int] = ..., time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., volume_limit: _Optional[float] = ..., session_volume: _Optional[float] = ..., session_turnover: _Optional[float] = ..., session_interest: _Optional[float] = ..., session_buy_orders_volume: _Optional[float] = ..., session_sell_orders_volume: _Optional[float] = ..., session_open: _Optional[float] = ..., session_close: _Optional[float] = ..., session_aw: _Optional[float] = ..., session_price_settlement: _Optional[float] = ..., session_price_limit_min: _Optional[float] = ..., session_price_limit_max: _Optional[float] = ..., option_mode: _Optional[_Union[_enums_pb2.SymbolOptionMode, str]] = ..., option_right: _Optional[_Union[_enums_pb2.SymbolOptionRight, str]] = ..., option_strike: _Optional[float] = ..., category: _Optional[str] = ..., bank: _Optional[str] = ..., formula: _Optional[str] = ..., page: _Optional[str] = ..., path: _Optional[str] = ...) -> None: ...
 
 class Tick(_message.Message):
-    __slots__ = ("time", "bid", "ask", "last", "volume", "time_msc", "volume_real", "mt5")
+    __slots__ = ("time", "bid", "ask", "last", "volume", "volume_real", "mt5")
     TIME_FIELD_NUMBER: _ClassVar[int]
     BID_FIELD_NUMBER: _ClassVar[int]
     ASK_FIELD_NUMBER: _ClassVar[int]
     LAST_FIELD_NUMBER: _ClassVar[int]
     VOLUME_FIELD_NUMBER: _ClassVar[int]
-    TIME_MSC_FIELD_NUMBER: _ClassVar[int]
     VOLUME_REAL_FIELD_NUMBER: _ClassVar[int]
     MT5_FIELD_NUMBER: _ClassVar[int]
-    time: int
+    time: _timestamp_pb2.Timestamp
     bid: float
     ask: float
     last: float
     volume: float
-    time_msc: int
     volume_real: float
     mt5: Mt5Tick
-    def __init__(self, time: _Optional[int] = ..., bid: _Optional[float] = ..., ask: _Optional[float] = ..., last: _Optional[float] = ..., volume: _Optional[float] = ..., time_msc: _Optional[int] = ..., volume_real: _Optional[float] = ..., mt5: _Optional[_Union[Mt5Tick, _Mapping]] = ...) -> None: ...
+    def __init__(self, time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., bid: _Optional[float] = ..., ask: _Optional[float] = ..., last: _Optional[float] = ..., volume: _Optional[float] = ..., volume_real: _Optional[float] = ..., mt5: _Optional[_Union[Mt5Tick, _Mapping]] = ...) -> None: ...
 
 class Mt5Tick(_message.Message):
     __slots__ = ("flags",)
@@ -364,7 +366,7 @@ class Rate(_message.Message):
     TICK_VOLUME_FIELD_NUMBER: _ClassVar[int]
     SPREAD_FIELD_NUMBER: _ClassVar[int]
     REAL_VOLUME_FIELD_NUMBER: _ClassVar[int]
-    time: int
+    time: _timestamp_pb2.Timestamp
     open: float
     high: float
     low: float
@@ -372,7 +374,7 @@ class Rate(_message.Message):
     tick_volume: int
     spread: int
     real_volume: int
-    def __init__(self, time: _Optional[int] = ..., open: _Optional[float] = ..., high: _Optional[float] = ..., low: _Optional[float] = ..., close: _Optional[float] = ..., tick_volume: _Optional[int] = ..., spread: _Optional[int] = ..., real_volume: _Optional[int] = ...) -> None: ...
+    def __init__(self, time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., open: _Optional[float] = ..., high: _Optional[float] = ..., low: _Optional[float] = ..., close: _Optional[float] = ..., tick_volume: _Optional[int] = ..., spread: _Optional[int] = ..., real_volume: _Optional[int] = ...) -> None: ...
 
 class BookInfo(_message.Message):
     __slots__ = ("price", "volume", "volume_dbl", "mt5")
@@ -393,12 +395,10 @@ class Mt5BookInfo(_message.Message):
     def __init__(self, type: _Optional[_Union[_enums_pb2.BookType, str]] = ...) -> None: ...
 
 class TradeOrder(_message.Message):
-    __slots__ = ("ticket", "time_setup", "time_setup_msc", "time_done", "time_done_msc", "time_expiration", "volume_current", "volume_initial", "price_open", "sl", "tp", "price_current", "price_stoplimit", "symbol", "comment", "external_id", "position_id", "mt5")
+    __slots__ = ("ticket", "time_setup", "time_done", "time_expiration", "volume_current", "volume_initial", "price_open", "sl", "tp", "price_current", "price_stoplimit", "symbol", "comment", "external_id", "position_id", "mt5")
     TICKET_FIELD_NUMBER: _ClassVar[int]
     TIME_SETUP_FIELD_NUMBER: _ClassVar[int]
-    TIME_SETUP_MSC_FIELD_NUMBER: _ClassVar[int]
     TIME_DONE_FIELD_NUMBER: _ClassVar[int]
-    TIME_DONE_MSC_FIELD_NUMBER: _ClassVar[int]
     TIME_EXPIRATION_FIELD_NUMBER: _ClassVar[int]
     VOLUME_CURRENT_FIELD_NUMBER: _ClassVar[int]
     VOLUME_INITIAL_FIELD_NUMBER: _ClassVar[int]
@@ -413,11 +413,9 @@ class TradeOrder(_message.Message):
     POSITION_ID_FIELD_NUMBER: _ClassVar[int]
     MT5_FIELD_NUMBER: _ClassVar[int]
     ticket: int
-    time_setup: int
-    time_setup_msc: int
-    time_done: int
-    time_done_msc: int
-    time_expiration: int
+    time_setup: _timestamp_pb2.Timestamp
+    time_done: _timestamp_pb2.Timestamp
+    time_expiration: _timestamp_pb2.Timestamp
     volume_current: float
     volume_initial: float
     price_open: float
@@ -430,7 +428,7 @@ class TradeOrder(_message.Message):
     external_id: str
     position_id: int
     mt5: Mt5TradeOrder
-    def __init__(self, ticket: _Optional[int] = ..., time_setup: _Optional[int] = ..., time_setup_msc: _Optional[int] = ..., time_done: _Optional[int] = ..., time_done_msc: _Optional[int] = ..., time_expiration: _Optional[int] = ..., volume_current: _Optional[float] = ..., volume_initial: _Optional[float] = ..., price_open: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., price_current: _Optional[float] = ..., price_stoplimit: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., position_id: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeOrder, _Mapping]] = ...) -> None: ...
+    def __init__(self, ticket: _Optional[int] = ..., time_setup: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., time_done: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., time_expiration: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., volume_current: _Optional[float] = ..., volume_initial: _Optional[float] = ..., price_open: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., price_current: _Optional[float] = ..., price_stoplimit: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., position_id: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeOrder, _Mapping]] = ...) -> None: ...
 
 class Mt5TradeOrder(_message.Message):
     __slots__ = ("type", "type_time", "type_filling", "state", "magic", "position_by_id", "reason")
@@ -451,12 +449,10 @@ class Mt5TradeOrder(_message.Message):
     def __init__(self, type: _Optional[_Union[_enums_pb2.OrderType, str]] = ..., type_time: _Optional[_Union[_enums_pb2.OrderTypeTime, str]] = ..., type_filling: _Optional[_Union[_enums_pb2.OrderTypeFilling, str]] = ..., state: _Optional[_Union[_enums_pb2.OrderState, str]] = ..., magic: _Optional[int] = ..., position_by_id: _Optional[int] = ..., reason: _Optional[_Union[_enums_pb2.OrderReason, str]] = ...) -> None: ...
 
 class TradePosition(_message.Message):
-    __slots__ = ("ticket", "time", "time_msc", "time_update", "time_update_msc", "volume", "price_open", "sl", "tp", "price_current", "swap", "profit", "symbol", "comment", "external_id", "mt5")
+    __slots__ = ("ticket", "time", "time_update", "volume", "price_open", "sl", "tp", "price_current", "swap", "profit", "symbol", "comment", "external_id", "mt5")
     TICKET_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
-    TIME_MSC_FIELD_NUMBER: _ClassVar[int]
     TIME_UPDATE_FIELD_NUMBER: _ClassVar[int]
-    TIME_UPDATE_MSC_FIELD_NUMBER: _ClassVar[int]
     VOLUME_FIELD_NUMBER: _ClassVar[int]
     PRICE_OPEN_FIELD_NUMBER: _ClassVar[int]
     SL_FIELD_NUMBER: _ClassVar[int]
@@ -469,10 +465,8 @@ class TradePosition(_message.Message):
     EXTERNAL_ID_FIELD_NUMBER: _ClassVar[int]
     MT5_FIELD_NUMBER: _ClassVar[int]
     ticket: int
-    time: int
-    time_msc: int
-    time_update: int
-    time_update_msc: int
+    time: _timestamp_pb2.Timestamp
+    time_update: _timestamp_pb2.Timestamp
     volume: float
     price_open: float
     sl: float
@@ -484,7 +478,7 @@ class TradePosition(_message.Message):
     comment: str
     external_id: str
     mt5: Mt5TradePosition
-    def __init__(self, ticket: _Optional[int] = ..., time: _Optional[int] = ..., time_msc: _Optional[int] = ..., time_update: _Optional[int] = ..., time_update_msc: _Optional[int] = ..., volume: _Optional[float] = ..., price_open: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., price_current: _Optional[float] = ..., swap: _Optional[float] = ..., profit: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., mt5: _Optional[_Union[Mt5TradePosition, _Mapping]] = ...) -> None: ...
+    def __init__(self, ticket: _Optional[int] = ..., time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., time_update: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., volume: _Optional[float] = ..., price_open: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., price_current: _Optional[float] = ..., swap: _Optional[float] = ..., profit: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., mt5: _Optional[_Union[Mt5TradePosition, _Mapping]] = ...) -> None: ...
 
 class Mt5TradePosition(_message.Message):
     __slots__ = ("type", "magic", "identifier", "reason")
@@ -499,11 +493,10 @@ class Mt5TradePosition(_message.Message):
     def __init__(self, type: _Optional[_Union[_enums_pb2.PositionType, str]] = ..., magic: _Optional[int] = ..., identifier: _Optional[int] = ..., reason: _Optional[_Union[_enums_pb2.PositionReason, str]] = ...) -> None: ...
 
 class TradeDeal(_message.Message):
-    __slots__ = ("ticket", "order", "time", "time_msc", "volume", "price", "commission", "swap", "profit", "fee", "symbol", "comment", "external_id", "position_id", "mt5")
+    __slots__ = ("ticket", "order", "time", "volume", "price", "commission", "swap", "profit", "fee", "symbol", "comment", "external_id", "position_id", "mt5")
     TICKET_FIELD_NUMBER: _ClassVar[int]
     ORDER_FIELD_NUMBER: _ClassVar[int]
     TIME_FIELD_NUMBER: _ClassVar[int]
-    TIME_MSC_FIELD_NUMBER: _ClassVar[int]
     VOLUME_FIELD_NUMBER: _ClassVar[int]
     PRICE_FIELD_NUMBER: _ClassVar[int]
     COMMISSION_FIELD_NUMBER: _ClassVar[int]
@@ -517,8 +510,7 @@ class TradeDeal(_message.Message):
     MT5_FIELD_NUMBER: _ClassVar[int]
     ticket: int
     order: int
-    time: int
-    time_msc: int
+    time: _timestamp_pb2.Timestamp
     volume: float
     price: float
     commission: float
@@ -530,7 +522,7 @@ class TradeDeal(_message.Message):
     external_id: str
     position_id: int
     mt5: Mt5TradeDeal
-    def __init__(self, ticket: _Optional[int] = ..., order: _Optional[int] = ..., time: _Optional[int] = ..., time_msc: _Optional[int] = ..., volume: _Optional[float] = ..., price: _Optional[float] = ..., commission: _Optional[float] = ..., swap: _Optional[float] = ..., profit: _Optional[float] = ..., fee: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., position_id: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeDeal, _Mapping]] = ...) -> None: ...
+    def __init__(self, ticket: _Optional[int] = ..., order: _Optional[int] = ..., time: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., volume: _Optional[float] = ..., price: _Optional[float] = ..., commission: _Optional[float] = ..., swap: _Optional[float] = ..., profit: _Optional[float] = ..., fee: _Optional[float] = ..., symbol: _Optional[str] = ..., comment: _Optional[str] = ..., external_id: _Optional[str] = ..., position_id: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeDeal, _Mapping]] = ...) -> None: ...
 
 class Mt5TradeDeal(_message.Message):
     __slots__ = ("type", "entry", "magic", "reason")
@@ -565,12 +557,12 @@ class TradeRequest(_message.Message):
     sl: float
     tp: float
     deviation: int
-    expiration: int
+    expiration: _timestamp_pb2.Timestamp
     comment: str
     order: int
     position: int
     mt5: Mt5TradeRequest
-    def __init__(self, symbol: _Optional[str] = ..., volume: _Optional[float] = ..., price: _Optional[float] = ..., stoplimit: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., deviation: _Optional[int] = ..., expiration: _Optional[int] = ..., comment: _Optional[str] = ..., order: _Optional[int] = ..., position: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeRequest, _Mapping]] = ...) -> None: ...
+    def __init__(self, symbol: _Optional[str] = ..., volume: _Optional[float] = ..., price: _Optional[float] = ..., stoplimit: _Optional[float] = ..., sl: _Optional[float] = ..., tp: _Optional[float] = ..., deviation: _Optional[int] = ..., expiration: _Optional[_Union[datetime.datetime, _timestamp_pb2.Timestamp, _Mapping]] = ..., comment: _Optional[str] = ..., order: _Optional[int] = ..., position: _Optional[int] = ..., mt5: _Optional[_Union[Mt5TradeRequest, _Mapping]] = ...) -> None: ...
 
 class Mt5TradeRequest(_message.Message):
     __slots__ = ("action", "magic", "type", "type_filling", "type_time", "position_by")

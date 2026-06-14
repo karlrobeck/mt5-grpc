@@ -57,7 +57,7 @@ class TicksService(TickServiceServicer):
 
         # Call MT5 API to get ticks starting from a specific date
         result = mt5.copy_ticks_from(
-            request.symbol, request.date_from, request.count, request.flags
+            request.symbol, request.date_from.seconds, request.count, request.flags
         )
 
         # Check if result is falsy (None or empty array)
@@ -104,7 +104,7 @@ class TicksService(TickServiceServicer):
 
         # Call MT5 API to get ticks within a date range
         result = mt5.copy_ticks_range(
-            request.symbol, request.date_from, request.date_to, request.flags
+            request.symbol, request.date_from.seconds, request.date_to.seconds, request.flags
         )
 
         # Check if result is falsy (None or empty array)

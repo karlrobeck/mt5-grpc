@@ -1,6 +1,7 @@
 import pytest
 import grpc
 from unittest.mock import patch
+from google.protobuf.timestamp_pb2 import Timestamp
 from src.stubs import ticks_pb2, types_pb2
 
 class MockObject:
@@ -21,7 +22,7 @@ def test_copy_ticks_from_success(grpc_server, mt5_mock):
     )
     mt5_mock.copy_ticks_from.return_value = (mock_tick,)
 
-    req = ticks_pb2.TickFromRequest(symbol="EURUSD", date_from=1600000000, count=10, flags=1)
+    req = ticks_pb2.TickFromRequest(symbol="EURUSD", date_from=Timestamp(seconds=1600000000), count=10, flags=1)
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=ticks_pb2.DESCRIPTOR.services_by_name['TickService'].methods_by_name['CopyTicksFrom'],
         invocation_metadata=[
@@ -42,7 +43,7 @@ def test_copy_ticks_from_failure(grpc_server, mt5_mock):
     mt5_mock.copy_ticks_from.return_value = None
     mt5_mock.last_error.return_value = (1000, "Copy ticks failed")
 
-    req = ticks_pb2.TickFromRequest(symbol="EURUSD", date_from=1600000000, count=10, flags=1)
+    req = ticks_pb2.TickFromRequest(symbol="EURUSD", date_from=Timestamp(seconds=1600000000), count=10, flags=1)
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=ticks_pb2.DESCRIPTOR.services_by_name['TickService'].methods_by_name['CopyTicksFrom'],
         invocation_metadata=[
@@ -70,7 +71,7 @@ def test_copy_ticks_range_success(grpc_server, mt5_mock):
     )
     mt5_mock.copy_ticks_range.return_value = (mock_tick,)
 
-    req = ticks_pb2.TickRangeRequest(symbol="EURUSD", date_from=1600000000, date_to=1600010000, flags=1)
+    req = ticks_pb2.TickRangeRequest(symbol="EURUSD", date_from=Timestamp(seconds=1600000000), date_to=Timestamp(seconds=1600010000), flags=1)
     rpc = grpc_server.invoke_unary_unary(
         method_descriptor=ticks_pb2.DESCRIPTOR.services_by_name['TickService'].methods_by_name['CopyTicksRange'],
         invocation_metadata=[

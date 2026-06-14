@@ -4,6 +4,7 @@ package mt5.rates;
 
 import "enums.proto";
 import "types.proto";
+import "google/protobuf/timestamp.proto";
 
 service RatesService {
   rpc CopyRatesFrom(RatesFromRequest) returns (RatesResponse);
@@ -14,7 +15,7 @@ service RatesService {
 message RatesFromRequest {
   string symbol = 1;
   enums.Timeframe timeframe = 2;
-  int64 date_from = 3;
+  google.protobuf.Timestamp date_from = 3;
   int32 count = 4;
 }
 
@@ -28,8 +29,8 @@ message RatesFromPosRequest {
 message RatesRangeRequest {
   string symbol = 1;
   enums.Timeframe timeframe = 2;
-  int64 date_from = 3;
-  int64 date_to = 4;
+  google.protobuf.Timestamp date_from = 3;
+  google.protobuf.Timestamp date_to = 4;
 }
 
 message RatesResponse {

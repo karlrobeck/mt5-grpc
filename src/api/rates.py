@@ -53,12 +53,12 @@ class RatesService(RatesServiceServicer):
             "CopyRatesFrom called: symbol=%s, timeframe=%d, date_from=%d, count=%d",
             request.symbol,
             request.timeframe,
-            request.date_from,
+            request.date_from.seconds,
             request.count,
         )
         
         result = mt5.copy_rates_from(
-            request.symbol, request.timeframe, request.date_from, request.count
+            request.symbol, request.timeframe, request.date_from.seconds, request.count
         )
         
         if result is None or (hasattr(result, "__len__") and len(result) == 0 and result is None):
@@ -139,12 +139,12 @@ class RatesService(RatesServiceServicer):
             "CopyRatesRange called: symbol=%s, timeframe=%d, date_from=%d, date_to=%d",
             request.symbol,
             request.timeframe,
-            request.date_from,
-            request.date_to,
+            request.date_from.seconds,
+            request.date_to.seconds,
         )
         
         result = mt5.copy_rates_range(
-            request.symbol, request.timeframe, request.date_from, request.date_to
+            request.symbol, request.timeframe, request.date_from.seconds, request.date_to.seconds
         )
         
         if result is None or (hasattr(result, "__len__") and len(result) == 0 and result is None):

@@ -3,6 +3,8 @@ syntax = "proto3";
 package mt5.types;
 
 import "enums.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 // -- AccountInfo (Section 2.1) --
 message AccountInfo {
@@ -47,7 +49,7 @@ message Mt5AccountInfo {
 message TerminalInfo {
   bool connected = 1;
   bool trade_allowed = 2;
-  int64 ping_last = 3;
+  google.protobuf.Duration ping_last = 3;
   string company = 4;
   string name = 5;
 
@@ -98,8 +100,8 @@ message SymbolInfo {
   double margin_hedged = 17;
   double price_change = 18;
   double price_volatility = 19;
-  int64 start_time = 20;
-  int64 expiration_time = 21;
+  google.protobuf.Timestamp start_time = 20;
+  google.protobuf.Timestamp expiration_time = 21;
   int32 trade_stops_level = 22;
   int32 trade_freeze_level = 23;
   double bidhigh = 24;
@@ -161,7 +163,7 @@ message Mt5SymbolInfo {
   int32 ticks_bookdepth = 18;
   int64 volumehigh = 19;
   int64 volumelow = 20;
-  int64 time = 21;
+  google.protobuf.Timestamp time = 21;
   double volume_limit = 22;
   double session_volume = 23;
   double session_turnover = 24;
@@ -186,12 +188,11 @@ message Mt5SymbolInfo {
 
 // -- Tick (Sections 3.4, 6) --
 message Tick {
-  int64 time = 1;
+  google.protobuf.Timestamp time = 1;
   double bid = 2;
   double ask = 3;
   double last = 4;
   double volume = 5;
-  int64 time_msc = 6;
   double volume_real = 7;
 
   oneof broker_ext {
@@ -205,7 +206,7 @@ message Mt5Tick {
 
 // -- Rate (Section 5) --
 message Rate {
-  int64 time = 1;
+  google.protobuf.Timestamp time = 1;
   double open = 2;
   double high = 3;
   double low = 4;
@@ -233,11 +234,9 @@ message Mt5BookInfo {
 // -- TradeOrder (Sections 7.2, 9.2) --
 message TradeOrder {
   int64 ticket = 1;
-  int64 time_setup = 2;
-  int64 time_setup_msc = 3;
-  int64 time_done = 4;
-  int64 time_done_msc = 5;
-  int64 time_expiration = 6;
+  google.protobuf.Timestamp time_setup = 2;
+  google.protobuf.Timestamp time_done = 4;
+  google.protobuf.Timestamp time_expiration = 6;
   double volume_current = 7;
   double volume_initial = 8;
   double price_open = 9;
@@ -268,10 +267,8 @@ message Mt5TradeOrder {
 // -- TradePosition (Section 8.2) --
 message TradePosition {
   int64 ticket = 1;
-  int64 time = 2;
-  int64 time_msc = 3;
-  int64 time_update = 4;
-  int64 time_update_msc = 5;
+  google.protobuf.Timestamp time = 2;
+  google.protobuf.Timestamp time_update = 4;
   double volume = 6;
   double price_open = 7;
   double sl = 8;
@@ -299,8 +296,7 @@ message Mt5TradePosition {
 message TradeDeal {
   int64 ticket = 1;
   int64 order = 2;
-  int64 time = 3;
-  int64 time_msc = 4;
+  google.protobuf.Timestamp time = 3;
   double volume = 5;
   double price = 6;
   double commission = 7;
@@ -333,7 +329,7 @@ message TradeRequest {
   optional double sl = 5;
   optional double tp = 6;
   optional int32 deviation = 7;
-  optional int64 expiration = 8;
+  optional google.protobuf.Timestamp expiration = 8;
   optional string comment = 9;
   optional int64 order = 10;
   optional int64 position = 11;
